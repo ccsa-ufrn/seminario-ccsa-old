@@ -1,0 +1,36 @@
+{ 
+    "files" : [
+        
+        {
+            "vendor" : [ 
+                "bootstrap.min.js", 
+                "enquire.js"
+            ], 
+            "custom" : [ 
+                
+            ], 
+            "outputname" : "base.min.js" 
+        },
+        
+        {
+            "vendor" : [
+            
+            ],
+            "custom" : [
+            
+            ],
+            "outputname" : "base.admin.min.js"
+        },
+        
+        {
+            "vendor" : [
+                "html5shiv.min.js"
+            ],
+            "custom" : [
+            
+            ],
+            "outputname" : "base.install.min.js"
+        }
+        
+    ]
+}

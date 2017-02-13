@@ -1,0 +1,817 @@
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans:400,700);
+
+body{
+    background-image: url(../img/pattern.jpg);
+    font-family: 'Droid Sans', sans-serif;
+}
+
+.green-pattern{
+    background-image: url(../img/green_pattern.png);
+    height:11px;
+    background-repeat: repeat-x;
+    display: block;
+    padding:0px;
+    margin:20px 0px;
+}
+
+section{
+    margin-bottom:80px;
+}
+
+/* =========================================
+    MAIN NAV
+========================================== */
+
+nav.main{
+    background-color:#d45153;
+    padding:10px 10px;
+    box-shadow: 0px 3px 0px #c1494b;
+    border-radius: 0 0 2px 2px;
+    margin-bottom:3px;
+}
+
+nav.main a{
+    color:#faf6eb;
+    text-decoration:none;
+}
+
+nav.main a:after{
+    content: " | ";
+    padding:0px 5px;
+    color:#faf6eb;
+}
+
+nav.main a:after:hover{
+    color:#faf6eb;
+}
+
+nav.main a:last-child:after{
+    content: "";
+    padding:0px;
+}
+
+/* =========================================
+    SECONDARY NAV
+========================================== */
+
+nav.secondary{
+    background: linear-gradient(#cbe294, #b6cc7f);
+    padding:10px 10px;
+    box-shadow: 0px 3px 0px #87a060;
+    border-radius: 0 0 2px 2px;
+    border: 1px solid #87a060;
+    border-top:none;
+    border-bottom:none;
+    margin-bottom:20px;
+}
+
+nav.secondary a{
+    color:black;
+    text-decoration:none;
+}
+
+nav.secondary a::after{
+    content: " | ";
+    padding:0px 5px;
+    color:black;
+}
+
+nav.secondary a:last-child::after{
+    content: "";
+    padding:0px;
+}
+
+nav.secondary a:hover{
+    color:#FF4D4D;
+}
+
+/* =========================================
+    SECTION ABOUT
+========================================== */
+
+section.about{
+    margin-bottom:50px;
+}
+
+section.about p{
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+section.about a.signup{
+    background: linear-gradient(#cbe294, #b6cc7f);
+    box-shadow: 0px 3px 0px #87a060;
+    padding:10px 40px;
+    border-radius: 0 0 2px 2px;
+    color:white;
+    font-size:36px;
+    text-decoration:none;
+    text-shadow: 2px 2px 0px #000000;
+}
+
+section.about a.signup:hover{
+    background: linear-gradient(#b6cc7f,#cbe294);
+    box-shadow: 0px 3px 0px #87a060;
+    color:white;
+}
+
+section.about div.signup-container{
+    margin:40px 0px;
+}
+
+section.about div.news{
+    margin-bottom:30px;
+}
+
+section.about div.news > div h1{
+    margin:0px;
+    margin-bottom:5px;
+}
+
+section.about div.news > div h1 a{
+    font-size:22px;
+    color:black;
+    text-decoration: none;
+}
+
+section.about div.news > div p{
+    font-size:12px;
+}
+
+section.about div.news > div p a{
+    text-decoration:none;
+    color:black;
+}
+
+/* =========================================
+    SECTION INFO
+========================================== */
+
+section.info div div.header{
+    background-color:white;
+}
+
+section.info div div.header div.circle{
+    position: relative;
+    background-color:#FF7575;
+    color:white;  
+}
+
+section.info div div.header h1{
+    font-weight:bold;
+}
+
+section.info div div.content{
+    background-color:#FF7575;
+}
+
+section.info div div.content a{
+    font-size:24px;
+    color:white;
+    display: inline-block;
+    margin-right:30px;
+}
+
+section.info div div.header{
+    border-radius:20px 0px 0px 20px;
+}
+
+section.info div div.content{
+    border-radius:0px 20px 20px 0px;
+}
+
+section.info div.header h1{
+    margin:10px 0px 4px 0px;
+}
+
+/* ACTIVITIES */
+
+section.info div.activities div.content{
+    background-color:#FF7575; 
+}
+
+/* STANDARDS */
+
+section.info div.standards div.header{
+    border-radius:0px 20px 20px 0px;
+}
+
+section.info div.standards div.content{
+    background-color:#FF7575; 
+    border-radius:20px 0px 0px 20px;
+}
+
+/*   THEMATIC GROUPS SECTION */
+
+section.thematic-groups{
+    margin-bottom:40px;
+}
+
+section.thematic-groups header div.circle{
+    background-color: #FF7575;
+    color:white;
+    position:relative;
+}
+
+section.thematic-groups header h1{
+    font-weight: bold;
+}
+
+section.thematic-groups .content h1,
+div.modal-thematic-groups-syllabus h1,
+div.modal-standards h1{
+    font-size:16px;
+    text-transform:uppercase;
+    font-weight:bold;
+    color:#d45153;
+}
+
+div.modal-standards h2{
+    font-size:12px;
+    text-transform:uppercase;
+    font-weight:bold;
+    color:#d45153;
+}
+
+div.modal-thematic-groups-syllabus p,
+div.modal-standards p{
+    font-size:12px;
+}
+
+div.modal-thematic-groups-syllabus p.coordinators{
+    font-weight:bold;
+}
+
+
+section.thematic-groups .content ul{
+    padding:6px 0px;
+    margin:0px;
+}
+
+section.thematic-groups .content ul li{
+    list-style: none;
+    margin:4px 0px;
+}
+
+section.thematic-groups .content ul li a{
+    text-decoration: none;
+    color:black;
+    cursor: pointer;
+}
+
+section.thematic-groups .content ul li a:hover{
+    text-decoration: none;
+    color:#d45153;
+}
+
+section.thematic-groups .content ul li i{
+    color:#d45153;
+}
+
+/*   FOOTER */
+
+footer.common div.ccr{
+    background-color: #d45153;
+    box-shadow: -5px -5px 0px #c1494b;
+    border-radius: 0 0 2px 2px;
+    padding:20px 40px;
+    color:#faf6eb;
+    font-weight:bold;
+    font-size:18px;
+    
+}
+
+footer.common div.ccr span{
+    margin-top:-10px;
+}
+
+/* REALIZATION SECTION */
+
+section.realization header h1{
+
+}
+
+
+/* ======================================
+    REGISTER PAGE / CONTACT PAGE
+====================================== */
+
+div.register-form, 
+div.contact-form,
+div.signin-form,
+div.resetpassword-form{
+    margin:20px 0px;
+    margin-bottom: 70px;
+}
+
+div.register-form h1, 
+div.register-form h2,
+div.contact-form h1, 
+div.contact-form h2,
+div.signin-form h1, 
+div.signin-form h2,
+div.resetpassword-form h1,
+div.resetpassword-form h2{
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+div.register-form .form,
+div.contact-form .form,
+div.signin-form .form,
+div.resetpassword-form .form{
+    background-color: #d45153;
+    box-shadow: 0px 3px 0px #c1494b;
+    border-radius: 0 0 2px 2px;
+    padding:20px 20px;
+}
+
+div.register-form .form h2,
+div.contact-form .form h2,
+div.signin-form .form h2,
+div.resetpassword-form .form h2{
+    color: white;
+    font-size:24px;
+}
+
+div.register-form .form label,
+div.contact-form .form label,
+div.signin-form .form label,
+div.resetpassword-form .form label{
+    color: white;
+    text-transform: uppercase;
+    font-size:13px;
+}
+
+div.register-form .form .text-validation,
+div.contact-form .form .text-validation,
+div.signin-form .form .text-validation,
+div.resetpassword-form .form .text-validation{
+    color:yellow;
+    text-shadow: 1px 1px 0px rgba(150, 150, 150, 1);
+}
+
+div.register-form .form button,
+div.contact-form .form button,
+div.signin-form .form button,
+div.resetpassword-form .form button{
+    margin-top:10px;
+    width:100%;
+    padding:10px 0px;
+    background: linear-gradient(#cbe294, #b6cc7f);
+    box-shadow: 0px 3px 0px #87a060;
+    padding:10px 40px;
+    border-radius: 0 0 2px 2px;
+    color:white;
+    text-decoration:none;
+    text-shadow: 1px 1px 0px #000000;
+    font-size:22px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border:none;
+}
+
+div.register-form .form button:hover,
+div.contact-form .form button:hover,
+div.signin-form .form button:hover,
+div.resetpassword-form .form button:hover{
+    background: linear-gradient(#b6cc7f, #cbe294);
+}
+
+div.signin-form .form p{
+    margin-top: 20px;
+    color:white;
+    text-align: center;
+}
+
+div.signin-form .form p a{
+    color:black;
+}
+
+/* =========================================
+    NEWS PAGE
+========================================== */
+
+section.news-list > div > h1 > a{
+    font-size:18px;
+    font-weight:bold;
+    text-transform: uppercase;
+    color:#c1494b;
+    margin-top:20px;
+    text-decoration:none;
+}
+
+section.news-list > div > h1 > span{
+    font-weight: normal;
+    font-size:12px;
+}
+
+/* =========================================
+    ACTIVITIES PAGE
+========================================== */
+
+section.activities{
+    margin-top:20px;
+    margin-bottom:20px;
+}
+
+section.activities > a{
+    display:block;
+    font-size:22px;
+    margin: 10px 0px 10px 20px;
+
+}
+
+/* =========================================
+    SUBEVENT PAGE
+========================================== */
+
+section.gen-subevent{
+    margin-bottom:40px;
+}
+
+section.gen-subevent h2{
+    font-size:16px;
+    font-weight:bold;
+    text-transform:uppercase;
+}
+
+section.gen-subevent p{
+    text-align:justify;
+}
+
+
+/* =========================================
+    GENERAL
+========================================== */
+
+header.logo{
+    margin:20px 0px;
+}
+
+header.logo h1{
+    font-size:18px;
+    font-weight:bold;
+    text-transform: uppercase;
+    color:#c1494b;
+    margin-top:20px;
+}
+
+h1.like,h2.like{
+    font-size:18px;
+    font-weight:bold;
+    text-transform: uppercase;
+    color:#c1494b;
+    margin-top:20px;
+}
+/* =========================================
+    MEDIAS QUERIES
+========================================== */
+
+@media (max-width:767px) and (max-width:767px){
+
+    section.about p{
+        font-size:16px;
+    }
+
+    section.about a.signup{
+        font-size:16px;
+        padding:20px 30px;
+        text-shadow: 1px 1px 0px #000000;
+    }
+    
+    /* SECTION INFO */
+    
+    section.info div.standards div.header,
+    section.info div.credits div.header,
+    section.info div.activities div.header{
+        border-radius:20px 20px 0px 0px;
+        overflow:hidden;
+    }
+    
+    section.info div.standards div.content,
+    section.info div.credits div.content,
+    section.info div.activities div.content{
+        border-radius:0px 0px 20px 20px;
+    }
+    
+    section.info  div.activities, section.info  div.standards{
+        margin-bottom:40px;
+    }
+    
+    section.info div.header div.circle{
+        font-size:36px;
+        padding:10px 0px;
+    }
+    
+    section.info div.content{
+        padding:16px 16px 6px 16px;
+    }
+    
+    section.info div div.content a{
+        margin-bottom:10px;
+    }
+    
+    /* ACTIVITIES */
+    
+    section.info div.activities div.content a{
+        font-size:16px;
+    }
+    
+    /* STANDARDS */
+    
+    section.info div.standards div.content a{
+        font-size:19px;
+    }
+    
+    /* CREDITS */
+    
+    section.info div.credits div.content a{
+        font-size:16px;
+    }
+
+    /* ======================================
+        THEMATIC GROUPS SECTION
+    ====================================== */
+    
+    section.thematic-groups header div.circle{
+        width:100px;
+        height:100px;
+        border-radius:100px;
+        font-size:36px;
+        padding-top:28px;
+        left:50%;
+        margin-left:-50px;
+    }
+    
+    /* FOOTER */
+    
+    footer.common div.ccr span{
+        font-size:12px;
+    }
+
+}
+
+/* =========================================
+    MIN WIDTH 768px and MAX WIDTH 991px
+========================================== */
+
+@media (min-width:768px) and (max-width:991px){
+
+    section.about p{
+        font-size:14px;
+    }
+    
+    section.info div.standards div.header,
+    section.info div.credits div.header,
+    section.info div.activities div.header{
+        border-radius:20px 20px 0px 0px;
+        overflow:hidden;
+    }
+    
+    section.info div.standards div.content,
+    section.info div.credits div.content,
+    section.info div.activities div.content{
+        border-radius:0px 0px 20px 20px;
+    }
+    
+    section.info  div.activities, section.info  div.standards{
+        margin-bottom:40px;
+    }
+    
+    section.info div.header div.circle{
+        font-size:36px;
+        padding:10px 0px;
+    }
+    
+    section.info div.content{
+        padding:16px 16px 6px 16px;
+    }
+    
+    section.info div div.content a{
+        margin-bottom:10px;
+    }
+    
+    /* ACTIVITIES */
+    
+    section.info div.activities div.content a{
+        font-size:16px;
+    }
+    
+    /* STANDARDS */
+    
+    section.info div.standards div.content a{
+        font-size:19px;
+    }
+    
+    /* CREDITS */
+    
+    section.info div.credits div.content a{
+        font-size:16px;
+    }
+
+    /* ======================================
+        THEMATIC GROUPS SECTION
+    ====================================== */
+    
+    section.thematic-groups header div.circle{
+        width:100px;
+        height:100px;
+        border-radius:100px;
+        font-size:36px;
+        padding-top:28px;
+        left:50%;
+        margin-left:-50px;
+    }
+
+}
+
+/* ========================================================
+    MIN-WIDTH 992px AND MAX-WIDTH 1199px
+======================================================== */
+
+@media (min-width:992px) and (max-width:1199px){
+
+    section.about p{
+        font-size:16px;
+    }
+    
+    /* SECTION INFO */
+
+    section.info div.header div.circle{
+        width:90px;
+        height:90px;
+        border-radius:90px;
+        font-size:36px;
+        padding-top:22px;
+        left:50%;
+        margin-left:-45px;
+    }
+    
+    section.info  div.activities, section.info  div.standards{
+        margin-bottom:40px;
+    }
+    
+    section.info div.header h1{
+        font-size:26px;
+    }
+    
+    section.info div.header p{
+        font-size:14px;
+        
+    }
+    
+    /* ACTIVITIES */
+    
+    section.info div.activities div.header{
+        height:210px;
+        padding:20px 20px;
+    }
+    
+    section.info div.activities div.content{
+        height:210px;
+        padding:20px 30px;
+        padding-top:57px;
+    }
+    
+    section.info div.activities div.content a{
+        font-size:22px;
+    }
+    
+    /* STANDARDS */
+    
+    section.info div.standards div.header{
+        height:230px;
+        padding:20px 20px;
+    }
+    
+    section.info div.standards div.content{
+        height:230px;
+        padding:20px 30px;
+        padding-top:52px;
+    }
+    
+    section.info div.standards div.content a{
+        font-size:18px;
+    }
+    
+    /* CREDITS */
+    
+    section.info div.credits div.header{
+        height:236px;
+        padding:20px 20px;
+    }
+    
+    section.info div.credits div.content{
+        height:236px;
+        padding:20px 30px;
+        padding-top:70px;
+    }
+    
+    section.info div.credits div.content a{
+        font-size:22px;
+    }
+
+    /* ======================================
+        THEMATIC GROUPS SECTION
+    ====================================== */
+    
+    section.thematic-groups header div.circle{
+        width:120px;
+        height:120px;
+        border-radius:120px;
+        font-size:40px;
+        padding-top:34px;
+        left:50%;
+        margin-left:-60px;
+    }
+
+
+
+}
+
+/* ========================================================
+    MIN-WIDTH 1200px
+======================================================== */
+
+@media(min-width:1200px){
+
+    section.about p{
+        font-size:18px;
+    }
+    
+    /* SECTION INFO */
+
+    section.info div.header div.circle{
+        width:120px;
+        height:120px;
+        border-radius:120px;
+        font-size:40px;
+        padding-top:34px;
+        left:50%;
+        margin-left:-60px;
+    }
+    
+    section.info  div.activities, section.info  div.standards{
+        margin-bottom:40px;
+    }
+
+    /* ACTIVITIES */
+    
+    section.info div.activities div.header{
+        height:226px;
+        padding:20px 0px;
+    }
+    
+    section.info div.activities div.content{
+        height:226px;
+        padding:20px 30px;
+        padding-top:64px;
+    }
+    
+    /* STANDARDS */
+    
+    section.info div.standards div.header{
+        height:250px;
+        padding:20px 20px;
+    }
+    
+    section.info div.standards div.content{
+        height:250px;
+        padding:20px 30px;
+        padding-top:46px;
+    }
+    
+    section.info div.standards div.content a{
+        font-size:22px;
+    }
+    
+    /* CREDITS */
+    
+    section.info div.credits div.header{
+        height:250px;
+        padding:20px 20px;
+    }
+    
+    section.info div.credits div.content{
+        height:250px;
+        padding:20px 30px;
+        padding-top:92px;
+    }
+
+    /* ======================================
+        THEMATIC GROUPS SECTION
+    ====================================== */
+    
+    section.thematic-groups header div.circle{
+        width:120px;
+        height:120px;
+        border-radius:120px;
+        font-size:40px;
+        padding-top:34px;
+        left:50%;
+        margin-left:-60px;
+    }
+
+}

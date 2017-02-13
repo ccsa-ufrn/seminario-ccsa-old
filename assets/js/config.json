@@ -1,0 +1,41 @@
+{ 
+    "files" : [
+        
+        {
+            "vendor" : [ 
+                "bootstrap.min.js", 
+                "enquire.js"
+            ], 
+            "custom" : [ 
+                ""
+            ], 
+            "outputname" : "base.min.js" 
+        },
+        
+        {
+            "vendor" : [
+                ""
+            ],
+            "custom" : [
+                ""
+            ],
+            "outputname" : "base.admin.min.js"
+        },
+        
+        {
+            "vendor" : [
+                "angular.min.js",
+                "ui-bootstrap.min.js",
+                "html5shiv.min.js",
+                "jquery.min.js",
+                "respond.min.js"
+            ],
+            "custom" : [
+                "angular.app.js",
+                "angular.databaseForm.js"
+            ],
+            "outputname" : "base.install.min.js"
+        }
+        
+    ]
+}
