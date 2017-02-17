@@ -32,7 +32,7 @@ class API extends CI_Controller {
      *
      * Endpoint: http://URL_TO_CCSA/index.php?/api/message
      */
-    public function message() {
+     public function message() {
       $this->load->library(array('output', 'rb'));
       $this->load->helper(array('date'));
       $this->output->set_content_type('application/json', 'utf-8');
@@ -40,55 +40,59 @@ class API extends CI_Controller {
       $fields = array('name', 'email', 'subject', 'message');
 
       /* validating fields */
+      $validated = true;
       foreach ($fields as $field) {
         if(empty($this->input->post($field))) {
+          $validated = false;
+          break;
+        }
+      }
+
+      if($validated) {
+          /* create RB instance and data terms */
+          $message = R::dispense('message');
+          foreach ($fields as $field) {
+            /* this fits only name, email, subject and message */
+            $message[$field] = $this->input->post($field);
+          }
+          $message->created_at = mdate('%Y-%m-%d %H:%i:%s');
+          $message->answered = 'no';
+
+          /* store it at database */
+          try {
+            $id = R::store($message);
+
+            /* mount data object to return*/
+            $data = array(
+              'id'=>$id,
+              'name'=>$message->name,
+              'email'=>$message->email,
+              'subject'=>$message->subject,
+              'message'=>$message->message
+            );
+
+            /* returns status and data */
+            $this->output->set_status_header(200)
+              ->set_output(json_encode(array(
+                'status'=>'success',
+                'message'=>'Mensagem enviada com sucesso',
+                'data'=> $data
+              )));
+          } catch(Exception $e) {
+            /* handle the error */
+            $this->output->set_status_header(500) // Internal Server Error
+              ->set_output(json_encode(array(
+                'status'=>'error',
+                'message'=>'Ocorreu um erro de conexão ao banco de dados'
+              )));
+          }
+      } else {
           $this->output->set_status_header(400) // Bad Request
           ->set_output(json_encode(array(
             'status'=>'error',
             'message'=>'Campo(s) obrigatório(s) não preenchido(s)'
           )));
-          break;
-        }
       }
+  } /* Ends function message()*/
 
-      /* create RB instance and data terms */
-      $message = R::dispense('message');
-      foreach ($fields as $field) {
-        /* this fits only name, email, subject and message */
-        $message[$field] = $this->input->post($field);
-      }
-      $message->created_at = mdate('%Y-%m-%d %H:%i:%s');
-      $message->answered = 'no';
-
-      /* store it at database */
-      try {
-        $id = R::store($message);
-
-        /* mount data object to return*/
-        $data = array(
-          'id'=>$id,
-          'name'=>$message->name,
-          'email'=>$message->email,
-          'subject'=>$message->subject,
-          'message'=>$message->message
-        );
-
-        /* returns status and data */
-        $this->output->set_status_header(200)
-          ->set_output(json_encode(array(
-            'status'=>'success',
-            'message'=>'Mensagem enviada com sucesso',
-            'data'=> $data
-          )));
-      } catch(Exception $e) {
-        /* handle the error */
-        $this->output->set_status_header(500) // Internal Server Error
-          ->set_output(json_encode(array(
-            'status'=>'error',
-            'message'=>'Ocorreu um erro de conexão ao banco de dados'
-          )));
-      }
-
-    }
-
-}
+} /* Ends class Api*/
