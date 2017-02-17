@@ -40,23 +40,22 @@ class API extends CI_Controller {
       $fields = array('name', 'email', 'subject', 'message');
 
       /* validating fields */
-    //   foreach ($fields as $field) {
-    //     if(empty($this->input->post($field))) {
-    //       $this->output->set_status_header(400) // Bad Request
-    //       ->set_output(json_encode(array(
-    //         'status'=>'error',
-    //         'message'=>'Campo(s) obrigatório(s) não preenchido(s)'
-    //       )));
-    //       break;
-    //     }
-    //   }
+      foreach ($fields as $field) {
+        if(empty($this->input->post($field))) {
+          $this->output->set_status_header(400) // Bad Request
+          ->set_output(json_encode(array(
+            'status'=>'error',
+            'message'=>'Campo(s) obrigatório(s) não preenchido(s)'
+          )));
+          break;
+        }
+      }
 
       /* create RB instance and data terms */
       $message = R::dispense('message');
       foreach ($fields as $field) {
         /* this fits only name, email, subject and message */
-        // $message[$field] = $this->input->post($field);
-        $message[$field] = $field;
+        $message[$field] = $this->input->post($field);
       }
       $message->created_at = mdate('%Y-%m-%d %H:%i:%s');
       $message->answered = 'no';
