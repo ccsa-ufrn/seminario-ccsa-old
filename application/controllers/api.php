@@ -175,7 +175,7 @@ class API extends CI_Controller {
    * Endpoint: http://URL_TO_CCSA/index.php?/api/new_user
    */
   public function new_user() {
-      $this->load->library(array('output', 'rb', 'gomail'));
+      $this->load->library(array('output', 'rb', 'email', 'gomail'));
       $this->load->helper(array('date', 'security'));
       $this->output->set_content_type('application/json', 'utf-8');
 
@@ -289,7 +289,71 @@ class API extends CI_Controller {
               'message'=>'Ocorreu um erro de conexão ao banco de dados'
           )));
       }
+  } /* Ends new_user() function*/
 
+  /*
+   * Login function. It expects:
+   * @param email user email
+   * @param pass
+   * @return error|succes
+   *
+   * Endpoint: http://URL_TO_CCSA/index.php?/api/login
+   */
+  public function login() {
+      $this->load->library(array('rb', 'session', 'email', 'gomail'));
+      $this->load->helper( array('form' , 'url' , 'date' , 'security', 'utility' ) );
+
+      $this->output->set_content_type('application/json', 'utf-8');
+
+      $email = $this->input->post('email');
+      $password = $this->input->post('pass');
+
+      /* validating fields */
+      if(empty($email)||empty($password)) {
+          $this->output->set_status_header(400) // Bad Request
+            ->set_output(json_encode(array(
+            'status'=>'error',
+            'message'=>'Preencha todos os campos'
+          )))->_display();
+          exit;
+      }
+
+      /* Search for user with this mail */
+      $user = R::findOne('user', 'email = ?', [$email]);
+      if(!count($user)) {
+          $this->output->set_status_header(404) // Not Found
+            ->set_output(json_encode(array(
+            'status'=>'error',
+            'message'=>'Usuário não encontrado'
+          )))->_display();
+          exit;
+      }
+
+      /* check password */
+      if($user->password !== do_hash($password, 'md5')) {
+          $this->output->set_status_header(400) // Bad Request
+            ->set_output(json_encode(array(
+            'status'=>'error',
+            'message'=>'Senha incorreta'
+          )))->_display();
+          exit;
+      }
+
+      $this->session->set_userdata(
+        array(
+            'user_id'=>$user->id,
+            'user_name'=>$user->name,
+            'user_email'=>$user->email,
+            'user_type'=>$user->type,
+            'user_logged_in' => mdate('%Y-%m-%d %H:%i:%s')
+        )
+      );
+
+      $this->output->set_status_header(200)
+        ->set_output(json_encode(array(
+          'status'=>'success',
+          'message'=>'successfuly logged in'
+      )));
 
   }
 

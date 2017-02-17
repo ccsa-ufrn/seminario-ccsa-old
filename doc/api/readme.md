@@ -1,5 +1,24 @@
 ### Main Page Content Provider API
 
+#### POST /login
+About: log in the system  
+Endpoint: ``http://PATH_TO_CCSA/index.php?/api/login``  
+Method: ``POST``  
+Requires:
+```
+{
+    'email': 'mail@example.com',
+    'pass': 'user_pass'
+}
+```
+Returns:
+```
+{
+    'status': 'error|success',
+    'message': 'successfuly logged in'
+}
+```
+
 #### POST /new_user
 About: Record a new user at the system  
 Endpoint: ``http://PATH_TO_CCSA/index.php?/api/new_user``  
