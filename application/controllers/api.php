@@ -3,8 +3,6 @@
 # >> Seminário CCSA - Assessoria Técnica
 # > Contributor: Maradona Morais (maradona.morais@hotmail.com)
 # > Last update: 2017-02-15 17:05:00 by Maradona Morais
-# > TODO 1 Read from helper the datetime and increase the $message->created_at
-#   on message() function.
 
 
 /* API Class. Expects REST requests and respond to them with JSON object */
@@ -14,7 +12,7 @@ class API extends CI_Controller {
     }
 
     /*
-     * Main API endpoint. Useless
+     * Ma in API endpoint. Useless
      */
     public function index() {
       $this->load->library(array('output'));
@@ -36,29 +34,31 @@ class API extends CI_Controller {
      */
     public function message() {
       $this->load->library(array('output', 'rb'));
+      $this->load->helper(array('date'));
       $this->output->set_content_type('application/json', 'utf-8');
 
       $fields = array('name', 'email', 'subject', 'message');
 
       /* validating fields */
-      foreach ($fields as $field) {
-        if(empty($this->input->post($field))) {
-          $this->output->set_status_header(400) // Bad Request
-          ->set_output(json_encode(array(
-            'status'=>'error',
-            'message'=>'Campo(s) obrigatório(s) não preenchido(s)'
-          )));
-          break;
-        }
-      }
+    //   foreach ($fields as $field) {
+    //     if(empty($this->input->post($field))) {
+    //       $this->output->set_status_header(400) // Bad Request
+    //       ->set_output(json_encode(array(
+    //         'status'=>'error',
+    //         'message'=>'Campo(s) obrigatório(s) não preenchido(s)'
+    //       )));
+    //       break;
+    //     }
+    //   }
 
       /* create RB instance and data terms */
       $message = R::dispense('message');
       foreach ($fields as $field) {
         /* this fits only name, email, subject and message */
-        $message[$field] = $this->input->post($field);
+        // $message[$field] = $this->input->post($field);
+        $message[$field] = $field;
       }
-      $message->created_at = '2017-02-15 16:44:46'; #TODO 1
+      $message->created_at = mdate('%Y-%m-%d %H:%i:%s');
       $message->answered = 'no';
 
       /* store it at database */
