@@ -32,7 +32,7 @@ class gomail {
 		$mail->Password = 'UBUNTO-2013#';                           // SMTP password
 		$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
 		$mail->Port = 465;                                    // TCP port to connect to
-		$mail->isHTML(true);  
+		$mail->isHTML(true);
 
 		$mail->setFrom($mailFrom, $title);
 		$mail->addAddress($mailTo, '');
@@ -40,7 +40,7 @@ class gomail {
 		$mail->Body    = $body;
 
 		return $mail->send();
-	
+
 	}
-	
+
 }

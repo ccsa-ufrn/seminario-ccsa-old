@@ -7,7 +7,7 @@ class User extends CI_Controller {
 
         if(!verifyingInstallationConf())
             redirect(base_url('install'));
-        
+
     }
 
 	public function index(){
@@ -20,7 +20,7 @@ class User extends CI_Controller {
 
         if(!$usera)
         	redirect(base_url());
-        
+
         $data = array(
             'news' => R::find('news','ORDER BY created_at DESC LIMIT 10'),
             'user' => R::findOne('user','id=?',array($this->session->userdata('user_id'))),
@@ -47,9 +47,9 @@ class User extends CI_Controller {
         }else{
             $this->load->view('dashboard/home_participant',$data);
         }
-		
+
         $this->load->view('dashboard/footer');
-        
+
 	}
 
     public function paymentView(){
@@ -58,7 +58,7 @@ class User extends CI_Controller {
         $this->load->helper(array('url','form'));
 
         $user = R::findOne('user','id=?',array($this->session->userdata('user_id')));
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -73,8 +73,8 @@ class User extends CI_Controller {
             redirect(base_url('dashboard'));
         /* =================================================
             END - CAPABILITIES SECURITY
-        ================================================== */ 
-        
+        ================================================== */
+
         $data = array(
                 'success' => $this->session->flashdata('success'),
                 'error' => $this->session->flashdata('error'),
@@ -100,49 +100,49 @@ class User extends CI_Controller {
         $this->load->view('dashboard/footer');
 
     }
-    
+
     public function paymentUpload(){
-        
+
         $this->load->library( array('rb') );
         $this->load->helper( array('string') );
-        
+
         $config['upload_path'] = './assets/upload/payment/';
         $config['file_name'] = random_string('unique');
         $config['allowed_types'] = 'gif|jpg|jpeg|png|pdf';
-        
+
         $this->load->library('upload', $config); // upload
-        
+
         if ( ! $this->upload->do_upload() ){
-            
+
             $log = R::dispense('log');
             $log['msg'] = (string) $this->upload->display_errors();
             R::store($log);
-            
+
             /* ================================================
                 BEGIN - PREAPERING TO RETURN JSON OF ERROR
             ================================================ */
-            
+
             // If there is any error, then prop 'error' will be 'true', and message will be set
             $info = new StdClass;
             $info->error = true;
             $info->message = (string) $this->upload->display_errors();
-            
+
             echo json_encode(array("file" => $info));
-            
+
             /* ================================================
                 END - PREAPERING TO RETURN JSON OF ERROR
             ================================================ */
-            
+
             exit;
-            
+
         }else{
-            
+
             /* ================================================
                 BEGIN - PREAPERING TO RETURN JSON OF FILE
             ================================================ */
-            
+
             $data = $this->upload->data();
-            
+
             $info = new StdClass;
             $info->name = $data['file_name'];
             $info->size = $data['file_size'] * 1024;
@@ -152,25 +152,25 @@ class User extends CI_Controller {
             $info->deleteUrl = "";
             $info->deleteType = 'DELETE';
             $info->error = null;
-            
+
             echo json_encode(array("file" => $info));
-            
+
             /* ================================================
                 END - PREAPERING TO RETURN JSON OF FILE
             ================================================ */
-            
+
             exit;
         }
-        
+
     }
-    
+
     public function submitPayment(){
-        
+
         $this->load->library( array('session','rb','form_validation') );
         $this->load->helper( array('url') );
 
         $user = R::findOne('user','id=?',array($this->session->userdata('user_id')));
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -186,7 +186,7 @@ class User extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         /* ===========================================
             BEGIN - VALIDATION
         ============================================ */
@@ -198,7 +198,7 @@ class User extends CI_Controller {
                 'rules' => 'required'
             )
         );
-        
+
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules($validation);
         customErrorMessages($this->form_validation);
@@ -230,7 +230,7 @@ class User extends CI_Controller {
 
         $this->session->set_flashdata('success', 'O comprovante de pagamento foi enviado com sucesso.');
         redirect(base_url('dashboard/user/payment'));
-        
+
     }
 
 	public function loginView(){
@@ -249,7 +249,7 @@ class User extends CI_Controller {
                     'validation' => $this->session->flashdata('validation'),
                     'popform' => $this->session->flashdata('popform')
                 );
-        
+
         $this->load->view('template/header');
         $this->load->view('signin',$data);
         $this->load->view('template/footer');
@@ -257,23 +257,23 @@ class User extends CI_Controller {
 	}
 
 	public function login(){
-        
+
         $this->load->library( array('rb', 'session', 'email', 'gomail') );
 		$this->load->helper( array('form' , 'url' , 'date' , 'security', 'utility' ) );
-        
+
         $this->output->set_header('Content-Type: application/json');
-        
+
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
         $email = $this->input->post('email');
 		$password = $this->input->post('password');
-        
+
         /* ===========================================
             END - PREPARING DATA
         ============================================ */
-        
+
         $users = R::find('user', "email = '".$email."'");
 
 		// Is there any user with this email?
@@ -290,7 +290,7 @@ class User extends CI_Controller {
 		}
 
 		foreach ($users as $user) {
-			
+
 			// Password is not correct
 			if( $user->password!=do_hash($password,'md5') ){
 
@@ -301,11 +301,11 @@ class User extends CI_Controller {
                     )
                 );
                 exit;
-            
+
 			}else{
-                
-                $this->session->set_userdata( 
-                    array( 
+
+                $this->session->set_userdata(
+                    array(
                         'user_id' => $user->id,
                         'user_name' => $user->name,
                         'user_email' => $user->email,
@@ -313,7 +313,7 @@ class User extends CI_Controller {
                         'user_logged_in' =>  mdate('%Y-%m-%d %H:%i:%s')
                         )
                 );
-                
+
                 echo json_encode(
                     array(
                         'status' => 'success'
@@ -331,9 +331,9 @@ class User extends CI_Controller {
 
 		$this->load->library( array('rb', 'form_validation', 'session', 'email', 'gomail') );
 		$this->load->helper( array('form' , 'url' , 'date' , 'security', 'utility' ) );
-        
+
         $this->output->set_header('Content-Type: application/json');
-        
+
         /* ===========================================
             BEGIN - VALIDATION
         ============================================ */
@@ -344,7 +344,7 @@ class User extends CI_Controller {
                 'label' => 'Nome',
                 'rules' => 'required'
             ),
-            
+
             array(
                 'field' => 'cpf',
                 'label' => 'CPF',
@@ -381,14 +381,14 @@ class User extends CI_Controller {
                 'rules' => 'required'
             )
         );
-        
+
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules($validation);
         customErrorMessages($this->form_validation);
 
         // Verifyng validation error
         if(!$this->form_validation->run()){
-            
+
             echo json_encode(
                 array(
                     'status' => 'error',
@@ -396,17 +396,17 @@ class User extends CI_Controller {
                 )
             );
             exit;
-            
+
         }
-        
+
         /* ===========================================
             END - VALIDATION
         ============================================ */
-        
+
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
         $name = $this->input->post('name');
 		$email = $this->input->post('email');
         $cpf = $this->input->post('cpf');
@@ -414,11 +414,11 @@ class User extends CI_Controller {
 		$password = $this->input->post('password');
         $rpassword = $this->input->post('rpassword');
         $institution = $this->input->post('institution');
-        
+
         $category = $this->input->post('category');
-        
+
         if( $rpassword != $password ){
-            
+
             echo json_encode(
                 array(
                     'status' => 'error',
@@ -426,9 +426,9 @@ class User extends CI_Controller {
                 )
             );
             exit;
-            
+
         }
-        
+
         if($category=="instructor")
             $category  = "instructor";
         else if($category=="student")
@@ -436,7 +436,7 @@ class User extends CI_Controller {
         else if($category=='noacademic')
             $category = 'noacademic';
         else{
-            
+
             echo json_encode(
                 array(
                     'status' => 'error',
@@ -444,19 +444,19 @@ class User extends CI_Controller {
                 )
             );
             exit;
-            
+
         }
-            
+
         /* ===========================================
             END - PREPARING DATA
         ============================================ */
-        
+
 
 		// Verifying if user already exists ( the key email can change )
 		$users = R::find('user',"email = '".$email."'");
 
 		if(count($users)){ // This user already exists
-        
+
             echo json_encode(
                 array(
                     'status' => 'error',
@@ -466,7 +466,7 @@ class User extends CI_Controller {
             exit;
 
 		}
-			
+
 		$user = R::dispense("user");
 		$user['name'] = $name;
 		$user['email'] = $email;
@@ -475,12 +475,13 @@ class User extends CI_Controller {
         $user['institution'] = $institution;
 		$user['password'] = do_hash($password,'md5');
 		$user['type'] = $category;
+
         $user['payment'] = '';
         $user['paid'] = 'no';
         $user['authorizedinevent'] = 'no';
 		$user['created_at'] = mdate('%Y-%m-%d %H:%i:%s');
 		R::store($user);
-        
+
         /* ===========================================
             BEGIN - SENDING EMAIL CONFIRMATION
         ============================================ */
@@ -495,14 +496,14 @@ class User extends CI_Controller {
 
         try {
             $status = $this->gomail->send_email(
-                'seminario@ccsa.ufrn.br', 
-                'Seminário de Pesquisa do CCSA', 
-                $email, 
-                '[Cadastro no Sistema] Seminário de Pesquisa do CCSA', 
+                'seminario@ccsa.ufrn.br',
+                'Seminário de Pesquisa do CCSA',
+                $email,
+                '[Cadastro no Sistema] Seminário de Pesquisa do CCSA',
                 emailMsg($msg)
             );
         } catch (Exception $e) {
-            
+
         }
 
         if(!$status){
@@ -510,22 +511,22 @@ class User extends CI_Controller {
 </head><body><p>VOCÊ FOI CADASTRADO COM SUCESSO, porém o servidor de emails, neste momento, parece estar fora do ar. Segue a mensagem que iria ser enviada para seu email:</p>'.$msg.' <p><a href=\''.base_url('dashboard').'\'>Clique aqui para entrar no sistema</a></p></body></html>';
             exit;
         }
-        
+
         /* ===========================================
             END - SENDING EMAIL CONFIRMATION
         ============================================ */
 
         /*
-        
+
             GAMBIARRA DE PRIMEIRA KKKKKKKKKKKK
-        
+
         $javascript = "";
 
         if(R::count('user','type = "instructor" OR type = "student" ')>1500)
             $javascript = "Informamos que diante do grande número de inscritos no Seminário a entrega de material (pasta com programação, bloco, caneta) está limitada a 1500 participantes.  Assim, o sistema irá contabilizando as inscrições efetivamente concluídas até este número para efeito de entrega de material. Após este número, as inscrições poderão ser feitas mas o participante fica ciente de que não receberá o material do evento. No entanto, isso não impedirá a participação nas atividades programadas nem a sua certificação.";
-        
+
         */
-            
+
 		echo json_encode(
             array(
                 'status' => 'success',
@@ -548,7 +549,7 @@ class User extends CI_Controller {
                     'validation' => $this->session->flashdata('validation'),
                     'popform' => $this->session->flashdata('popform')
                 );
-        
+
 
 		$this->load->view('template/header');
         $this->load->view('resetpassword',$data);
@@ -570,15 +571,15 @@ class User extends CI_Controller {
 
 		$this->load->library( array('rb', 'form_validation','email','session', 'gomail') );
         $this->load->helper( array('url','security','date','string') );
-        
+
         $this->output->set_header('Content-Type: application/json');
-        
+
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
         $email = $this->input->post('email');
-        
+
         /* ===========================================
             END - PREPARING DATA
         ============================================ */
@@ -587,7 +588,7 @@ class User extends CI_Controller {
 
 		// Is there any user with this email?
 		if(!count($users)){
-            
+
 			echo json_encode(
                 array(
                     'status' => 'error',
@@ -595,30 +596,30 @@ class User extends CI_Controller {
                 )
             );
             exit;
-            
+
 		}
 
 		foreach ($users as $user) {
-			
+
 			$newPass = random_string('alnum',8);
 			$encNewPass = do_hash($newPass,'md5');
 
 			$status = false;
-            
+
             $msg = "<h1>Recuperação de Senha</h1>";
             $msg .= "<p>Olá, sua nova senha é: ".$newPass."</p>";
             $msg .= "<p>Acesse <a href='".base_url()."'>o seu painel</a> utilizando a nova senha, vá em <b>Meus dados</b> na parte superior direita, e escolha sua nova senha.</p> ";
 
 			$status = $this->gomail->send_email(
-                'assessoriatecnica@ccsa.ufrn.br', 
-                'Seminário de Pesquisa do CCSA', 
-                $email, 
-                '[Recuperando senha] Seminário de Pesquisa do CCSA', 
+                'assessoriatecnica@ccsa.ufrn.br',
+                'Seminário de Pesquisa do CCSA',
+                $email,
+                '[Recuperando senha] Seminário de Pesquisa do CCSA',
                 emailMsg($msg)
             );
 
 			if(!$status){
-                
+
                 echo json_encode(
                     array(
                         'status' => 'error',
@@ -631,9 +632,9 @@ class User extends CI_Controller {
 
 			$user->password = $encNewPass;
             $user->retrievepass = 'yes';
-            
+
 			R::store($user);
-            
+
             echo json_encode(
                 array(
                     'status' => 'success',
@@ -645,7 +646,7 @@ class User extends CI_Controller {
 		}
 
 	}
-    
+
     public function myInformation(){
 
         $this->load->library( array('session','rb') );
@@ -658,7 +659,7 @@ class User extends CI_Controller {
         	redirect(base_url('dashboard/login'));
 
         $user = R::findOne('user','id=?', array($this->session->userdata('user_id')));
-        
+
         $data = array(
         		'user' => $user,
                 'active' => 'my-information'
@@ -671,17 +672,17 @@ class User extends CI_Controller {
         }else if($this->session->userdata('user_type')=='coordinator'){
             $this->load->view('dashboard/template/menuCoordinator');
         }else{
-            
+
             if($this->session->userdata('user_type')=='instructor')
                 $this->load->view('dashboard/template/menuInstructor',$data);
             else
                 $this->load->view('dashboard/template/menuStudent',$data);
-            
+
         }
-        
+
 		$this->load->view('dashboard/myInformation',$data);
         $this->load->view('dashboard/footer');
-        
+
 	}
 
 	public function updateUser(){
@@ -692,7 +693,7 @@ class User extends CI_Controller {
         /* ===========================================
             BEGIN - VALIDATION
         ============================================ */
-        
+
         $validation = array(
             array(
                 'field' => 'phone',
@@ -720,32 +721,32 @@ class User extends CI_Controller {
                 'rules' => 'required'
             )
         );
-        
+
         $this->form_validation->set_error_delimiters('', '<br/>');
         $this->form_validation->set_rules($validation);
         customErrorMessages($this->form_validation);
-        
+
         // Verifyng validation error
         if(!$this->form_validation->run()){
             echo "0,".validation_errors();
 			exit;
         }
-        
+
         /* ===========================================
             END - VALIDATION
         ============================================ */
-        
+
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
 		$phone = $this->input->post('phone');
 		$oldPass = $this->input->post('oldPass');
 		$newPass = $this->input->post('newPass');
 		$newRpass = $this->input->post('newRpass');
         $name = $this->input->post('name');
         $cpf = $this->input->post('cpf');
-        
+
         /* ===========================================
             END - PREPARING DATA
         ============================================ */
@@ -756,12 +757,12 @@ class User extends CI_Controller {
 		$user = R::findOne('user','id=?', array($id) );
 
 		// If new pass is set but the old password do not match, then...
-		if( ( $newPass!="" || $newRpass!="" ) 
+		if( ( $newPass!="" || $newRpass!="" )
 			&&  do_hash($oldPass,'md5')!=$user->password){
 			echo "1";
 			exit;
 		}
-			
+
 		// If the new pass and the new pass confirmation are different
 		if($newPass!=$newRpass){
 			echo "2";
@@ -774,7 +775,7 @@ class User extends CI_Controller {
 		if($newPass!=""){
             $user['password'] = do_hash($newPass,'md5');
             $user['retrievepass'] = 'no';
-        } 
+        }
 
         $user->cpf = $cpf;
 
@@ -786,7 +787,7 @@ class User extends CI_Controller {
 	}
 
     public function myActivitiesView(){
-        
+
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
 
@@ -800,7 +801,7 @@ class User extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $data = array(
                     'user' => $user,
                     'active' => 'myactivities'
@@ -831,14 +832,14 @@ class User extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         /* GETTING PARAMETERS */
         // http://www.codeigniter.com/user_guide/helpers/url_helper.html
         // http://stackoverflow.com/questions/2728978/codeigniter-passing-variables-via-url-alternatives-to-using-get
         // http://stackoverflow.com/questions/5809774/manipulate-a-url-string-by-adding-get-parameters
         // http://www.codeigniter.com/user_guide/libraries/uri.html
         $params = $this->uri->uri_to_assoc(2);
-        
+
         /* MANUALLY PAGINATION */
         // Pagination start in page 1 and so on
         $page = 1;
@@ -846,11 +847,11 @@ class User extends CI_Controller {
             $page = $params['page'];
         if($page<1)
             $page = 1;
-        
+
         $limit = 10;
-        
+
         /* SELECTING USERS */
-        
+
         $sqla = "";
         $arra = Array();
 
@@ -859,10 +860,10 @@ class User extends CI_Controller {
             $searchf = str_replace("%20", "%",$params['search']);
             $arra[] = '%'.$searchf.'%';
         }
-        
+
         $users = R::find('user',' ( type="student" OR type="instructor" OR type="noacademic" ) '.$sqla.' LIMIT ? , ? ',array_merge($arra,array(($page-1)*$limit,$limit)));
         $userscount = R::count('user',' ( type="student" OR type="instructor" OR type="noacademic" ) '.$sqla, $arra );
-        
+
         $data = array(
                     'success' => $this->session->flashdata('success'),
                     'error' => $this->session->flashdata('error'),
@@ -878,12 +879,12 @@ class User extends CI_Controller {
         $this->load->view('dashboard/footer');
 
     }
-    
-    
+
+
     public function createReportInscription()
     {
-        
-        /* 
+
+        /*
          * Loading libraries and helpers
         */
         $this->load->library(
@@ -893,13 +894,13 @@ class User extends CI_Controller {
                 'session'
             )
         );
-        
+
         $this->load->helper(
             array(
                 'text'
             )
         );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -913,167 +914,167 @@ class User extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
-        
+
+
         /*
          * Creating PDF
         */
         $pdf = new FPDI();
-        
+
         $pdf->addPage('L');
-        
+
         /* *********************************************************
          * BEGIN  - HEADER
          ********************************************************* */
-        
+
         $pdf->image(
             asset_url().'img/logopdf.png',
             132,
             5
         );
-        
+
         $pdf->ln(14);
         $pdf->SetFont('Courier','B',12);
-        
+
         $pdf->Cell(
             0,
-            0, 
-            utf8_decode( 'SEMINÁRIO DE PESQUISA DO CCSA' ), 
-            0, 
+            0,
+            utf8_decode( 'SEMINÁRIO DE PESQUISA DO CCSA' ),
+            0,
             0,
             'C'
         );
 
         $pdf->Ln(7);
         $pdf->SetFont('Courier','',9);
-        
+
         $pdf->Cell(
             0,
-            0, 
-            utf8_decode( 'Relatório de Inscrito' ), 
-            0, 
+            0,
+            utf8_decode( 'Relatório de Inscrito' ),
+            0,
             0,
             'C'
         );
-        
+
         /* *********************************************************
         * END - HEADER
         ********************************************************* */
-        
+
         $params = $this->uri->uri_to_assoc(2);
-        
-        /* 
+
+        /*
          * Loading User
         */
         $user = R::findOne(
             'user',
             ' id = ? ',
-            array( 
+            array(
                 $params['id']
             )
         );
 
-        
-        /* 
-         * General Info 
+
+        /*
+         * General Info
         */
         $pdf->Ln(6);
-        
+
         $pdf->SetFont('Courier','B',9);
-        
+
         $pdf->SetDrawColor(170,170,170);
         $pdf->SetFillColor(244,244,244);
         $pdf->Cell(
-            0, 
-            10, 
-            utf8_decode( $user->name ), 
+            0,
+            10,
+            utf8_decode( $user->name ),
             'LRT',
             0,
             'C',
             true
-        ); 
+        );
 
-        
+
         $pdf->Ln(10);
-        
+
         $pdf->SetFillColor(255,255,255);
-        
+
         $pdf->Cell(
-            20, 
-            10, 
-            utf8_decode( ' Email : ' ), 
+            20,
+            10,
+            utf8_decode( ' Email : ' ),
             'LT',
             0,
             'L',
             true
-        ); 
-        
-        $pdf->Cell(
-            120, 
-            10, 
-            utf8_decode($user->email), 
-            'T',
-            0,
-            'L',
-            true
-        ); 
+        );
 
         $pdf->Cell(
-            26, 
-            10, 
-            utf8_decode( ' Telefone : ' ), 
+            120,
+            10,
+            utf8_decode($user->email),
             'T',
             0,
             'L',
             true
-        ); 
-        
+        );
+
         $pdf->Cell(
-            111, 
-            10, 
-            utf8_decode($user->phone), 
+            26,
+            10,
+            utf8_decode( ' Telefone : ' ),
+            'T',
+            0,
+            'L',
+            true
+        );
+
+        $pdf->Cell(
+            111,
+            10,
+            utf8_decode($user->phone),
             'RT',
             0,
             'L',
             true
-        ); 
-        
+        );
+
         $pdf->Ln(10);
-        
+
         $pdf->Cell(
-            30, 
-            10, 
-            utf8_decode( ' Instituição : ' ), 
+            30,
+            10,
+            utf8_decode( ' Instituição : ' ),
             'LB',
             0,
             'L',
             true
-        ); 
-        
-        $pdf->Cell(
-            110, 
-            10, 
-            utf8_decode($user->institution), 
-            'B',
-            0,
-            'L',
-            true
-        ); 
+        );
 
         $pdf->Cell(
-            26, 
-            10, 
-            utf8_decode( ' Pagamento : ' ), 
+            110,
+            10,
+            utf8_decode($user->institution),
             'B',
             0,
             'L',
             true
-        ); 
-        
+        );
+
+        $pdf->Cell(
+            26,
+            10,
+            utf8_decode( ' Pagamento : ' ),
+            'B',
+            0,
+            'L',
+            true
+        );
+
         // Verifying
-        
+
         $pag = "";
-        
+
         if( $user->paid == 'accepted' )
             $pag =  "Realizado";
         else if($user->paid=='pendent')
@@ -1084,277 +1085,277 @@ class User extends CI_Controller {
             $pag =  "Ainda não enviou nenhum comprovante";
         else if($user->paid=='free')
             $pag =  "Isento";
-        
+
         $pdf->Cell(
-            111, 
-            10, 
-            utf8_decode( $pag ), 
+            111,
+            10,
+            utf8_decode( $pag ),
             'RB',
             0,
             'L',
             true
-        ); 
-        
+        );
+
         $pdf->Ln(10);
-        
-        
-        /* 
+
+
+        /*
          * Papers
         */
-        
+
         $pdf->Ln(10);
-        
+
         $pdf->SetDrawColor(170,170,170);
         $pdf->SetFillColor(244,244,244);
         $pdf->Cell(
-            0, 
-            10, 
-            utf8_decode( 'ARTIGOS SUBMETIDOS' ), 
+            0,
+            10,
+            utf8_decode( 'ARTIGOS SUBMETIDOS' ),
             'LRTB',
             0,
             'C',
             true
-        ); 
-        
+        );
+
         $pdf->Ln(10);
-        
-        foreach ($user->with('ORDER BY title ASC')->ownPaperList as $p) : 
-            
-            $pdf->SetFillColor(255,255,255);    
-            
+
+        foreach ($user->with('ORDER BY title ASC')->ownPaperList as $p) :
+
+            $pdf->SetFillColor(255,255,255);
+
             $pdf->MultiCell(
-                0, 
-                10, 
-                utf8_decode( ' '.$p->title ), 
+                0,
+                10,
+                utf8_decode( ' '.$p->title ),
                 'LRB',
                 'L',
                 false
-            ); 
-        
+            );
+
         endforeach;
-        
-        
-        /* 
+
+
+        /*
          * Posters
         */
-        
+
         $pdf->Ln(10);
-        
+
         $pdf->SetDrawColor(170,170,170);
         $pdf->SetFillColor(244,244,244);
         $pdf->Cell(
-            0, 
-            10, 
-            utf8_decode( 'PÔSTERES SUBMETIDOS' ), 
+            0,
+            10,
+            utf8_decode( 'PÔSTERES SUBMETIDOS' ),
             'LRTB',
             0,
             'C',
             true
-        ); 
-        
+        );
+
         $pdf->Ln(10);
 
-        foreach ($user->with('ORDER BY title ASC')->ownPosterList as $p) : 
+        foreach ($user->with('ORDER BY title ASC')->ownPosterList as $p) :
 
             $pdf->SetDrawColor(170,170,170);
-            $pdf->SetFillColor(255,255,255);    
-            
+            $pdf->SetFillColor(255,255,255);
+
             $pdf->MultiCell(
-                0, 
-                10, 
-                utf8_decode( ' '.$p->title ), 
+                0,
+                10,
+                utf8_decode( ' '.$p->title ),
                 'LRB',
                 'L',
                 false
-            ); 
+            );
 
         endforeach;
-        
-        
-        /* 
+
+
+        /*
          * RoundTables
         */
-        
+
         $pdf->Ln(10);
-        
+
         $pdf->SetDrawColor(170,170,170);
         $pdf->SetFillColor(244,244,244);
         $pdf->Cell(
-            0, 
-            10, 
-            utf8_decode( 'MESAS-REDONDAS SUBMETIDAS' ), 
+            0,
+            10,
+            utf8_decode( 'MESAS-REDONDAS SUBMETIDAS' ),
             'LRTB',
             0,
             'C',
             true
-        ); 
-        
+        );
+
         $pdf->Ln(10);
 
-        foreach ($user->with('ORDER BY title ASC')->ownRoundtableList as $p) : 
+        foreach ($user->with('ORDER BY title ASC')->ownRoundtableList as $p) :
 
             $pdf->SetDrawColor(170,170,170);
-            $pdf->SetFillColor(255,255,255);    
-            
+            $pdf->SetFillColor(255,255,255);
+
             $pdf->MultiCell(
-                0, 
-                10, 
-                utf8_decode( ' '.$p->title ), 
+                0,
+                10,
+                utf8_decode( ' '.$p->title ),
                 'LRB',
                 'L',
                 false
-            ); 
+            );
 
         endforeach;
-        
-        
-        /* 
+
+
+        /*
          * Minicourse Inscriptions
         */
-        
+
         $pdf->Ln(10);
-        
+
         $pdf->SetDrawColor(170,170,170);
         $pdf->SetFillColor(244,244,244);
         $pdf->Cell(
-            0, 
-            10, 
-            utf8_decode( 'INSCRIÇÕES EM MINICURSOS' ), 
+            0,
+            10,
+            utf8_decode( 'INSCRIÇÕES EM MINICURSOS' ),
             'LRTB',
             0,
             'C',
             true
-        ); 
-        
+        );
+
         $pdf->Ln(10);
 
-        foreach ($user->with('ORDER BY title ASC')->sharedMinicourseList as $p) : 
+        foreach ($user->with('ORDER BY title ASC')->sharedMinicourseList as $p) :
 
             $pdf->SetDrawColor(170,170,170);
-            $pdf->SetFillColor(255,255,255);    
-            
+            $pdf->SetFillColor(255,255,255);
+
             $pdf->MultiCell(
-                0, 
-                10, 
-                utf8_decode( ' '.$p->title ), 
+                0,
+                10,
+                utf8_decode( ' '.$p->title ),
                 'LRB',
                 'L',
                 false
-            ); 
+            );
 
         endforeach;
-        
-        
-        /* 
+
+
+        /*
          * Minicourse Conferences
         */
-        
+
         $pdf->Ln(10);
-        
+
         $pdf->SetDrawColor(170,170,170);
         $pdf->SetFillColor(244,244,244);
         $pdf->Cell(
-            0, 
-            10, 
-            utf8_decode( 'INSCRIÇÕES EM CONFERÊNCIAS' ), 
+            0,
+            10,
+            utf8_decode( 'INSCRIÇÕES EM CONFERÊNCIAS' ),
             'LRTB',
             0,
             'C',
             true
-        ); 
-        
+        );
+
         $pdf->Ln(10);
 
-        foreach ($user->with('ORDER BY title ASC')->sharedConferenceList as $p) : 
+        foreach ($user->with('ORDER BY title ASC')->sharedConferenceList as $p) :
 
             $pdf->SetDrawColor(170,170,170);
-            $pdf->SetFillColor(255,255,255);    
-            
+            $pdf->SetFillColor(255,255,255);
+
             $pdf->MultiCell(
-                0, 
-                10, 
-                utf8_decode( ' '.$p->title ), 
+                0,
+                10,
+                utf8_decode( ' '.$p->title ),
                 'LRB',
                 'L',
                 false
-            ); 
+            );
 
         endforeach;
-        
-        /* 
+
+        /*
          * Round Table Inscription
         */
-        
+
         $pdf->Ln(10);
-        
+
         $pdf->SetDrawColor(170,170,170);
         $pdf->SetFillColor(244,244,244);
         $pdf->Cell(
-            0, 
-            10, 
-            utf8_decode( 'INSCRIÇÕES EM MESAS-REDONDAS' ), 
+            0,
+            10,
+            utf8_decode( 'INSCRIÇÕES EM MESAS-REDONDAS' ),
             'LRTB',
             0,
             'C',
             true
-        ); 
-        
+        );
+
         $pdf->Ln(10);
 
-        foreach ($user->with('ORDER BY title ASC')->sharedRoundtableList as $p) : 
+        foreach ($user->with('ORDER BY title ASC')->sharedRoundtableList as $p) :
 
             $pdf->SetDrawColor(170,170,170);
-            $pdf->SetFillColor(255,255,255);    
-            
+            $pdf->SetFillColor(255,255,255);
+
             $pdf->MultiCell(
-                0, 
-                10, 
-                utf8_decode( ' '.$p->title ), 
+                0,
+                10,
+                utf8_decode( ' '.$p->title ),
                 'LRB',
                 'L',
                 false
-            ); 
+            );
 
         endforeach;
-        
-        
-        /* 
+
+
+        /*
          * Minicourse Round Table
         */
-        
+
         $pdf->Ln(10);
-        
+
         $pdf->SetDrawColor(170,170,170);
         $pdf->SetFillColor(244,244,244);
         $pdf->Cell(
-            0, 
-            10, 
-            utf8_decode( 'INSCRIÇÕES EM OFICINAS' ), 
+            0,
+            10,
+            utf8_decode( 'INSCRIÇÕES EM OFICINAS' ),
             'LRTB',
             0,
             'C',
             true
-        ); 
-        
+        );
+
         $pdf->Ln(10);
 
-        foreach ($user->with('ORDER BY title ASC')->sharedWorkshopList as $p) : 
+        foreach ($user->with('ORDER BY title ASC')->sharedWorkshopList as $p) :
 
             $pdf->SetDrawColor(170,170,170);
-            $pdf->SetFillColor(255,255,255);    
-            
+            $pdf->SetFillColor(255,255,255);
+
             $pdf->MultiCell(
-                0, 
-                10, 
-                utf8_decode( ' '.$p->title ), 
+                0,
+                10,
+                utf8_decode( ' '.$p->title ),
                 'LRB',
                 'L',
                 false
-            ); 
+            );
 
         endforeach;
-        
-        
+
+
         $pdf->Output();
 
     }
@@ -1377,11 +1378,11 @@ class User extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $adms = R::find('user','type=?',array('administrator'));
-        
+
         /* LIST OF FIELDS THAT CAN BE GENERATED WITH REPORT */
-        
+
         $fields = array(
             'name' => 'Nome',
             'id' => 'ID',
@@ -1392,7 +1393,7 @@ class User extends CI_Controller {
             'institution' => 'Instituição',
             'created_at' => 'Data de Cadastro'
         );
-        
+
         $data = array(
                     'success' => $this->session->flashdata('success'),
                     'error' => $this->session->flashdata('error'),
@@ -1407,18 +1408,18 @@ class User extends CI_Controller {
         $this->load->view('dashboard/footer');
 
 	}
-    
+
     public function createReport(){
-        
+
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
          // It's a POST request?
         if($this->input->server('REQUEST_METHOD')!='POST'){
             echo "Don't do that. :D";
             exit;
         }
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1432,11 +1433,11 @@ class User extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
         $filter1 = $this->input->post('filter1');
 		$filter2 = $this->input->post('filter2');
 		$order = $this->input->post('order');
@@ -1448,15 +1449,15 @@ class User extends CI_Controller {
         /* ===========================================
             END - PREPARING DATA
         ============================================ */
-        
+
         // Fields were selected?
         if(!isset($fields[0])){
             echo "Por favor, selecione algum campo para ser exibido.";
             exit;
         }
-        
+
         $sqla = "";
-        
+
         /* FILTER 2 */
         if($filter2=='all')
             $sqla .= ' ( type="student" OR type="instructor" OR type="noacademic") ';
@@ -1466,7 +1467,7 @@ class User extends CI_Controller {
             $sqla .= ' ( type="instructor" ) ';
         else if($filter2=='noacademic')
             $sqla .= ' ( type="noacademic" )';
-            
+
         /* FILTER 1 */
         if($filter1=='no')
             $sqla .= ' AND ( paid="no" ) ';
@@ -1476,50 +1477,50 @@ class User extends CI_Controller {
             $sqla .= ' AND ( paid="free" ) ';
         else if($filter1=='enrolled')
             $sqla .= ' AND ( paid="accepted" OR paid="free" ) ';
-            
+
         /* ORDER */
         if($order=='nameasc')
             $sqla .= ' ORDER BY name ASC ';
         else if($filter2=='namedesc')
             $sqla .= ' ORDER BY name DESC ';
-            
+
         if($sepfields=='')
             $sepfields=' ';
         else
             $sepfields= ' '.$sepfields.' ';
-            
-        /* PRINTING */    
-        
+
+        /* PRINTING */
+
         echo "<meta charset='UTF-8' />";
-            
+
         $result = R::find('user',$sqla);
-            
-        if($generate=='html') echo "<table border='1' style='width:100%'>";   
-            
+
+        if($generate=='html') echo "<table border='1' style='width:100%'>";
+
         foreach($result as $user){
-            if($generate=='html') echo "<tr>";   
+            if($generate=='html') echo "<tr>";
             $i = 1;
             foreach($fields as $field){
-                if($generate=='html') echo "<td>"; 
+                if($generate=='html') echo "<td>";
                 if($field=='email')
                     echo $user[$field];
                 else
                     echo strtoupper($user[$field]);
-                if($generate=='html') echo "</td>";   
+                if($generate=='html') echo "</td>";
                 if($i++!=count($fields))
                     echo ' '.$sepfields;
             }
-            if($generate=='html') echo "</tr>";   
+            if($generate=='html') echo "</tr>";
             else echo "<br/>";
-            
+
         }
-        
-        if($generate=='html') echo "</table>";   
-        
+
+        if($generate=='html') echo "</table>";
+
         echo "<br/><b>".count($result)." registros encontrados</b>";
-        
+
     }
-    
+
     public function manage(){
 
         $this->load->library( array('session','rb','pagination','uri') );
@@ -1537,15 +1538,15 @@ class User extends CI_Controller {
             redirect(base_url('dashboard'));
         /* =================================================
             END - CAPABILITIES SECURITY
-        ================================================== */    
-        
+        ================================================== */
+
         /* GETTING PARAMETERS */
         // http://www.codeigniter.com/user_guide/helpers/url_helper.html
         // http://stackoverflow.com/questions/2728978/codeigniter-passing-variables-via-url-alternatives-to-using-get
         // http://stackoverflow.com/questions/5809774/manipulate-a-url-string-by-adding-get-parameters
         // http://www.codeigniter.com/user_guide/libraries/uri.html
         $params = $this->uri->uri_to_assoc(2);
-        
+
         /* MANUALLY PAGINATION */
         // Pagination start in page 1 and so on
         $page = 1;
@@ -1553,11 +1554,11 @@ class User extends CI_Controller {
             $page = $params['page'];
         if($page<1)
             $page = 1;
-        
+
         $limit = 10;
-        
+
         /* SELECTING USERS */
-        
+
         $sqla = "";
         $arra = Array();
 
@@ -1566,7 +1567,7 @@ class User extends CI_Controller {
             $searchf = str_replace("%20", "%",$params['search']);
             $arra[] = '%'.$searchf.'%';
         }
-        
+
         if(isset($params['filter'])){
             if($params['filter']=='no')
                 $sqla .= ' AND ( paid <> "pendent" AND paid <> "free" AND paid <> "accepted" ) ';
@@ -1579,17 +1580,17 @@ class User extends CI_Controller {
             if($params['filter']=='enrolled')
                 $sqla .= ' AND ( paid = "free" OR paid= "accepted" ) ';
         }
-        
+
         if(isset($params['order'])){
             if($params['order']=='cresc')
                 $sqla .= ' ORDER BY name ASC ';
             if($params['order']=='desc')
                 $sqla .= ' ORDER BY name DESC ';
         }
-        
+
         $users = R::find('user',' ( type="student" OR type="instructor" OR type="noacademic" ) '.$sqla.' LIMIT ? , ? ',array_merge($arra,array(($page-1)*$limit,$limit)));
         $userscount = R::count('user',' ( type="student" OR type="instructor" OR type="noacademic" ) '.$sqla, $arra );
-        
+
         $data = array(
                     'success' => $this->session->flashdata('success'),
                     'error' => $this->session->flashdata('error'),
@@ -1605,12 +1606,12 @@ class User extends CI_Controller {
         $this->load->view('dashboard/footer');
 
 	}
-    
+
     function manageRetrieveDetails(){
-        
+
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form','utility') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1624,29 +1625,29 @@ class User extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $id = $this->input->get('id');
-        
+
         if(!is_numeric($id)){
             echo "The id is not numeric. Do not do that! :D";
             exit;
         }
 
         $user = R::findOne('user','id=?',array($id));
-        
-        $data = array( 
+
+        $data = array(
             'user' => $user,
             );
-        
+
         $this->load->view('dashboard/user/manage/retrieveDetails', $data);
-        
+
     }
-    
+
     function manageRetrieveEvaluatePayment(){
-        
+
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form','utility') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1660,26 +1661,26 @@ class User extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $id = $this->input->get('id');
-        
+
         if(!is_numeric($id)){
             echo "The id is not numeric. Do not do that! :D";
             exit;
         }
 
         $user = R::findOne('user','id=?',array($id));
-        
-        $data = array( 
+
+        $data = array(
             'user' => $user,
             );
-        
+
         $this->load->view('dashboard/user/manage/retrieveEvaluatePayment', $data);
-        
+
     }
-    
+
     function acceptPayment(){
-        
+
         $this->load->library( array('session','rb','email', 'gomail') );
         $this->load->helper( array('url') );
 
@@ -1709,7 +1710,7 @@ class User extends CI_Controller {
             redirect(base_url('dashboard/user/manage/filter/pendent'));
             exit;
         }
-        
+
         /* ===========================================
             BEGIN - SENDING EMAIL CONFIRMATION
         ============================================ */
@@ -1718,17 +1719,17 @@ class User extends CI_Controller {
         $msg .= "<p><a href='".base_url('dashboard')."'>Clique aqui para entrar no sistema</a></p>";
 
         $status = false;
-        
+
         try {
             $status = $this->gomail->send_email(
-                'seminario@ccsa.ufrn.br', 
-                'Seminário de Pesquisa do CCSA', 
-                $user->email, 
-                '[Pagamento Aceito] Seminário de Pesquisa do CCSA', 
+                'seminario@ccsa.ufrn.br',
+                'Seminário de Pesquisa do CCSA',
+                $user->email,
+                '[Pagamento Aceito] Seminário de Pesquisa do CCSA',
                 emailMsg($msg)
             );
         } catch (Exception $e) {
-            
+
         }
 
         if(!$status){
@@ -1736,21 +1737,21 @@ class User extends CI_Controller {
             redirect(base_url('dashboard/user/manage/filter/pendent'));
             exit;
         }
-        
+
         /* ===========================================
             END - SENDING EMAIL CONFIRMATION
         ============================================ */
-        
+
         $user->paid = 'accepted';
         R::store($user);
 
         $this->session->set_flashdata('success', 'O pagamento foi avaliado como <b>aceito</b> com sucesso.');
         redirect(base_url('dashboard/user/manage/filter/pendent'));
-        
+
     }
-    
+
     function rejectPayment(){
-    
+
         $this->load->library( array('session','rb','email','form_validation') );
         $this->load->helper( array('url') );
 
@@ -1769,11 +1770,11 @@ class User extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         /* ===========================================
             BEGIN - VALIDATION
         ============================================ */
-        
+
         $validation = array(
             array(
                 'field' => 'observation',
@@ -1781,18 +1782,18 @@ class User extends CI_Controller {
                 'rules' => 'required'
             )
         );
-        
+
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules($validation);
         customErrorMessages($this->form_validation);
-        
+
         // Verifyng validation error
         if(!$this->form_validation->run()){
-            $this->session->set_flashdata('error','Algum campo não foi preenchido corretamente, verifique se você preencheu o campo Observação, pois ele é obrigatório para reijeitar um pagamento.');            
+            $this->session->set_flashdata('error','Algum campo não foi preenchido corretamente, verifique se você preencheu o campo Observação, pois ele é obrigatório para reijeitar um pagamento.');
             redirect(base_url('dashboard/user/manage/filter/pendent'));
             exit;
         }
-        
+
         /* ===========================================
             END - VALIDATION
         ============================================ */
@@ -1808,7 +1809,7 @@ class User extends CI_Controller {
             redirect(base_url('dashboard/user/manage/filter/pendent'));
             exit;
         }
-        
+
         /* ===========================================
             BEGIN - SENDING EMAIL CONFIRMATION
         ============================================ */
@@ -1816,19 +1817,19 @@ class User extends CI_Controller {
         $msg .= "<p>Seu comprovante não foi aceito como válido, envie novamente o comprovante pelo sistema. Qualquer dúvida, você pode entrar no painel do seminário e abrir um chamado em 'suporte' para saber o que aconteceu.</p>";
         $msg .= "<p><b>Motivo: </b>".$observation."</p>";
         $msg .= "<p><a href='".base_url('dashboard')."'>Clique aqui para entrar no sistema</a></p>";
-        
+
         $status = false;
-        
+
         try {
             $status = $this->gomail->send_email(
-                'seminario@ccsa.ufrn.br', 
-                'Seminário de Pesquisa do CCSA', 
-                $user->email, 
-                '[Pagamento Rejeitado] Seminário de Pesquisa do CCSA', 
+                'seminario@ccsa.ufrn.br',
+                'Seminário de Pesquisa do CCSA',
+                $user->email,
+                '[Pagamento Rejeitado] Seminário de Pesquisa do CCSA',
                 emailMsg($msg)
             );
         } catch (Exception $e) {
-            
+
         }
 
         if(!$status){
@@ -1836,21 +1837,21 @@ class User extends CI_Controller {
             redirect(base_url('dashboard/user/manage/filter/pendent'));
             exit;
         }
-        
+
         /* ===========================================
             END - SENDING EMAIL CONFIRMATION
         ============================================ */
-        
+
         $user->paid = 'rejected';
         R::store($user);
 
         $this->session->set_flashdata('success', 'O pagamento foi avaliado como <b>rejeitado</b> com sucesso.');
         redirect(base_url('dashboard/user/manage/filter/pendent'));
-        
+
     }
-    
+
     function freePayment(){
-        
+
         $this->load->library( array('session','rb','email') );
         $this->load->helper( array('url') );
 
@@ -1880,26 +1881,26 @@ class User extends CI_Controller {
             redirect(base_url('dashboard/user/manage'));
             exit;
         }
-        
+
         /* ===========================================
             BEGIN - SENDING EMAIL CONFIRMATION
         ============================================ */
         $msg = "<h1 style='font-weight:bold;'>Você está confirmado para participar do seminário através da isenção do pagamento, parabéns!</h1>";
         $msg .= "<p>Nas datas previstas, você poderá submeter trabalhos ( artigos, pôsteres, casos de ensino, etc ) e se inscrever nas atividades (minicursos, mesas-redondas, etc ) pelo sistema, pois sua inscrição já está confirmada.</p>";
         $msg .= "<p><a href='".base_url('dashboard')."'>Clique aqui para entrar no sistema</a></p>";
-        
+
         $status = false;
-        
+
         try {
             $status = $this->gomail->send_email(
-                'seminario@ccsa.ufrn.br', 
-                'Seminário de Pesquisa do CCSA', 
-                $user->email, 
-                '[Isenção] Seminário de Pesquisa do CCSA', 
+                'seminario@ccsa.ufrn.br',
+                'Seminário de Pesquisa do CCSA',
+                $user->email,
+                '[Isenção] Seminário de Pesquisa do CCSA',
                 emailMsg($msg)
             );
         } catch (Exception $e) {
-            
+
         }
 
         if(!$status){
@@ -1907,17 +1908,17 @@ class User extends CI_Controller {
             redirect(base_url('dashboard/paper/evaluate'));
             exit;
         }
-        
+
         /* ===========================================
             END - SENDING EMAIL CONFIRMATION
         ============================================ */
-        
+
         $user->paid = 'free';
         R::store($user);
 
         $this->session->set_flashdata('success', 'O pagamento foi avaliado como <b>isento</b> com sucesso.');
         redirect(base_url('dashboard/user/manage'));
-        
+
     }
 
     function retrieveLinkSearchByName(){
