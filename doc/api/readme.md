@@ -1,5 +1,25 @@
 ### Main Page Content Provider API
 
+#### GET /news/[all]
+About: returns news  
+Endpoint: ``http://PATH_TO_CCSA/index.php?/api/news``  
+Method: ``GET``  
+Returns:
+```
+{
+    'status': 'error|success',
+    'message': 'Erro na conexão ao banco de dados',
+    'data': [{
+        'title': 'INSCRIÇÃO PARA MONITORES NO SPCCSA',
+        'text':'O XXI Seminário de Pesquisa...',
+        'created_at': '2017-02-10 11:13:10'
+    }]
+}
+```
+- **Note**: The default request '/news' returns only 3 news: one fixed (the first one)
+And two others no fixed news. Using the slug /all appended to url it returns all news
+From database.
+
 #### POST /login
 About: log in the system  
 Endpoint: ``http://PATH_TO_CCSA/index.php?/api/login``  
@@ -51,13 +71,12 @@ Returns:
     }
 }
 ```
-- The 'mail' field in the response indicate if the confirmation mail has successfuly sent
+- **Note**: The 'mail' field in the response indicate if the confirmation mail has successfuly sent
 
 #### GET /tgs
 About: Returns all listables thematic groups  
 Endpoint: ``http://PATH_TO_CCSA/index.php?/api/tgs``  
 Method: ``GET``  
-Requires: **nothing**  
 Returns:
 ```
 {

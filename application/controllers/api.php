@@ -282,7 +282,6 @@ class API extends CI_Controller {
               )
           )));
       } catch(Exception $e) {
-          echo $e;
           $this->output->set_status_header(500) // Internal Server Error
             ->set_output(json_encode(array(
               'status'=>'error',
@@ -354,7 +353,64 @@ class API extends CI_Controller {
           'status'=>'success',
           'message'=>'successfuly logged in'
       )));
+  } /* Ends login function */
 
-  }
+  /*
+   * News provider. Expects
+   * @slug /all
+   *
+   * Endpoint: http://URL_TO_CCSA/index.php?/api/news/all
+   */
+  public function news($all = FALSE) {
+      $this->load->library(array('rb'));
+
+      $this->output->set_content_type('application/json', 'utf-8');
+
+      $data = array();
+      try {
+          if($all==='all') {
+              /* get all news*/
+              $news = R::find('news');
+              foreach ($news as $new) {
+                  array_push($data, array(
+                      'title'=> $new->title,
+                      'text'=> $new->text,
+                      'created_at'=> $new->created_at
+                  ));
+              }
+          } else {
+              /* get one fixed new and two normal */
+              $fixed = R::findOne('news', 'is_fixed = ?', ['Y']);
+              if(count($fixed)) {
+                  array_push($data, array(
+                      'title'=> $fixed->title,
+                      'text'=> $fixed->text,
+                      'created_at'=> $fixed->created_at
+                  ));
+              }
+
+              $others = R::find('news', 'is_fixed = ? limit ?', ['N', 2]);
+              foreach ($others as $new) {
+                  array_push($data, array(
+                      'title'=> $new->title,
+                      'text'=> $new->text,
+                      'created_at'=> $new->created_at
+                  ));
+              }
+          }
+
+          $this->output->set_status_header(200)
+            ->set_output(json_encode(array(
+              'status'=>'success',
+              'data'=> $data
+          )));
+     } catch(Exception $e) {
+         $this->output->set_status_header(500) // Internal Server Error
+           ->set_output(json_encode(array(
+             'status'=>'error',
+             'message'=>'Ocorreu um erro de conexão ao banco de dados'
+         )));
+     }
+  } /* Ends new function */
 
 } /* Ends class Api*/
