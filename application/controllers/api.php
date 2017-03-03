@@ -8,6 +8,7 @@
 /* API Class. Expects REST requests and respond to them with JSON object */
 class API extends CI_Controller {
     public function __construct(){
+
         parent::__construct();
     }
 
@@ -19,7 +20,8 @@ class API extends CI_Controller {
       $this->output
         ->set_content_type('application/json')
         ->set_status_header(200) // OK
-        ->set_output(json_encode(array('foo'=>'bar')));
+        ->set_output(json_encode(array('foo'=>'bar')))
+        ->set_header('Access-Control-Allow-Origin: *');
     }
 
     /*
@@ -35,7 +37,9 @@ class API extends CI_Controller {
     public function message() {
       $this->load->library(array('output', 'rb'));
       $this->load->helper(array('date'));
-      $this->output->set_content_type('application/json', 'utf-8');
+      $this->output->set_content_type('application/json', 'utf-8')
+        ->set_header('Access-Control-Allow-Origin: *');;
+
 
       $fields = array('name', 'email', 'subject', 'message');
 
@@ -103,7 +107,8 @@ class API extends CI_Controller {
    */
   public function tgs() {
       $this->load->library(array('output', 'rb'));
-      $this->output->set_content_type('application/json', 'utf-8');
+      $this->output->set_content_type('application/json', 'utf-8')
+        ->set_header('Access-Control-Allow-Origin: *');;
 
       $data = array();
 
@@ -177,7 +182,8 @@ class API extends CI_Controller {
   public function new_user() {
       $this->load->library(array('output', 'rb', 'email', 'gomail'));
       $this->load->helper(array('date', 'security'));
-      $this->output->set_content_type('application/json', 'utf-8');
+      $this->output->set_content_type('application/json', 'utf-8')
+        ->set_header('Access-Control-Allow-Origin: *');;
 
       $user_password = $this->input->post('pass');
 
@@ -302,7 +308,8 @@ class API extends CI_Controller {
       $this->load->library(array('rb', 'session', 'email', 'gomail'));
       $this->load->helper( array('form' , 'url' , 'date' , 'security', 'utility' ) );
 
-      $this->output->set_content_type('application/json', 'utf-8');
+      $this->output->set_content_type('application/json', 'utf-8')
+        ->set_header('Access-Control-Allow-Origin: *');;
 
       $email = $this->input->post('email');
       $password = $this->input->post('pass');
@@ -364,7 +371,8 @@ class API extends CI_Controller {
   public function news($all = FALSE) {
       $this->load->library(array('rb'));
 
-      $this->output->set_content_type('application/json', 'utf-8');
+      $this->output->set_content_type('application/json', 'utf-8')
+        ->set_header('Access-Control-Allow-Origin: *');;
 
       $data = array();
       try {

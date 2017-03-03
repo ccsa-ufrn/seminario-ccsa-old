@@ -7,7 +7,7 @@ class Welcome extends CI_Controller {
 
         if(!verifyingInstallationConf())
             redirect(base_url('install'));
-        
+
     }
 
     public function generalView($id){
@@ -26,11 +26,11 @@ class Welcome extends CI_Controller {
         $this->load->view('template/footer');
 
     }
-    
+
     public function getCertificateView() {
         $this->load->library( array('session') );
         $this->load->helper( array('url') );
-        
+
         $this->load->view('template/header');
         $this->load->view('myPublicCertificate');
         $this->load->view('template/footer');
@@ -95,7 +95,7 @@ class Welcome extends CI_Controller {
 
     public function shortFilmsView(){
         $this->load->helper( array('url') );
-        
+
         $this->load->view('template/header');
         $this->load->view('shortfilms');
         $this->load->view('template/footer');
@@ -103,29 +103,38 @@ class Welcome extends CI_Controller {
 
     public function conversationCircleView(){
         $this->load->helper( array('url') );
-        
+
         $this->load->view('template/header');
         $this->load->view('conversationcircle');
         $this->load->view('template/footer');
     }
-    
+
     public function scheduleView(){
-        
+
         $this->load->library( array('rb','session') );
         $this->load->helper( array('url') );
 
-        
+
         $this->load->view('template/header');
         $this->load->view('schedule');
         $this->load->view('template/footer');
-        
+
     }
+
+    public function index2(){
+
+        $this->load->library( array('rb','session') );
+        $this->load->helper( array('url','text','form') );
+
+        $this->load->view('index');
+
+	}
 
     public function index(){
 
         $this->load->library( array('rb','session') );
         $this->load->helper( array('url','text','form') );
-        
+
         $areas = R::find('area','ORDER BY name ASC');
         $newt = R::find('news',' is_fixed = "N" ORDER BY created_at DESC LIMIT 4');
         $news = array();
@@ -137,9 +146,9 @@ class Welcome extends CI_Controller {
             'fixedNew' => R::findOne( 'news' , ' is_fixed = "Y" ' ),
             'areas' => $areas
         );
-        
+
         $this->load->view('template/header');
-        $this->load->view('index',$data);
+        $this->load->view('index2',$data);
         $this->load->view('template/footer');
 
 	}
@@ -148,33 +157,33 @@ class Welcome extends CI_Controller {
 
         $this->load->library( array('rb','form_validation','session') );
         $this->load->helper( array('url','form') );
-        
+
         $this->load->view('template/header');
         $this->load->view('debatescycle');
         $this->load->view('template/footer');
 
     }
-    
+
     public function retrieveDetailGT(){
-        
+
         $this->load->library( array('rb') );
         $this->load->helper( array('url') );
-        
+
         $data = array(
                     'gt' => R::findOne('thematicgroup','id=?',array($this->input->get('id')))
                 );
-        
+
         $this->load->view('retrievegt',$data);
-        
+
     }
-    
+
     public function retrieveStandard(){
-        
+
         $this->load->library( array('rb') );
         $this->load->helper( array('url') );
-        
+
         $id = $this->input->get('id');
-        
+
         if($id==1){
             $this->load->view('standards/papers');
         }else if($id==2){
@@ -184,11 +193,11 @@ class Welcome extends CI_Controller {
         }else if($id==4){
             $this->load->view('standards/roundtable');
         }
-        
-        
-        
+
+
+
     }
-    
+
     public function registerView(){
 
         $this->load->library( array('rb','form_validation','session') );
@@ -200,13 +209,13 @@ class Welcome extends CI_Controller {
                     'validation' => $this->session->flashdata('validation'),
                     'popform' => $this->session->flashdata('popform')
                 );
-        
+
         $this->load->view('template/header');
         $this->load->view('register',$data);
         $this->load->view('template/footer');
 
 	}
-    
+
     public function contactView(){
 
         $this->load->library( array('rb','form_validation','session') );
@@ -218,14 +227,14 @@ class Welcome extends CI_Controller {
                     'validation' => $this->session->flashdata('validation'),
                     'popform' => $this->session->flashdata('popform')
                 );
-        
+
         $this->load->view('template/header');
         $this->load->view('contact',$data);
         $this->load->view('template/footer');
 
 	}
-    
-    
+
+
     /*
      * Function : submitMessage()
      * Description : Send contact message
@@ -236,31 +245,31 @@ class Welcome extends CI_Controller {
         /*
         * Loading libraries and helpers
         */
-		$this->load->library( 
+		$this->load->library(
             array(
-                'rb', 
-                'form_validation', 
+                'rb',
+                'form_validation',
                 'session'
-            ) 
+            )
         );
-        
-		$this->load->helper( 
+
+		$this->load->helper(
             array(
-                'form' , 
-                'url' , 
-                'date' , 
-                'security', 
-                'utility' 
-            ) 
+                'form' ,
+                'url' ,
+                'date' ,
+                'security',
+                'utility'
+            )
         );
-        
-        
+
+
         /*
         * Setting json output
         */
         $this->output->set_header('Content-Type: application/json');
-        
-        
+
+
         /*
         * Setting validation rules
         */
@@ -286,9 +295,9 @@ class Welcome extends CI_Controller {
                 'rules' => 'required'
             )
         );
-        
-        
-        
+
+
+
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules($validation);
         customErrorMessages($this->form_validation);
@@ -299,7 +308,7 @@ class Welcome extends CI_Controller {
         */
         if(!$this->form_validation->run()){
             $this->session->set_flashdata(
-                    'validation', 
+                    'validation',
                     array(
                             'name' => form_error('name'),
                             'email' => form_error('email'),
@@ -307,9 +316,9 @@ class Welcome extends CI_Controller {
                             'message' => form_error('message')
                         )
                 );
-            
+
              $this->session->set_flashdata(
-                    'popform', 
+                    'popform',
                     array(
                             'name' => set_value('name'),
                             'email' => set_value('email'),
@@ -317,7 +326,7 @@ class Welcome extends CI_Controller {
                             'message' => set_value('message')
                         )
                 );
-            
+
             echo json_encode(
                 array(
                     'status' => 'error',
@@ -325,9 +334,9 @@ class Welcome extends CI_Controller {
                 )
             );
             exit;
-            
+
         }
-        
+
 
         /*
         * Getting post data
@@ -336,8 +345,8 @@ class Welcome extends CI_Controller {
 		$email = $this->input->post('email');
 		$subject = $this->input->post('subject');
 		$message = $this->input->post('message');
-        
-        
+
+
         /*
          * Sending message
         */
@@ -349,7 +358,7 @@ class Welcome extends CI_Controller {
 		$msg['created_at'] = mdate('%Y-%m-%d %H:%i:%s');
         $msg['answered'] =  'no';
 		R::store($msg);
-        
+
         echo json_encode(
             array(
                 'status' => 'success',
@@ -359,12 +368,12 @@ class Welcome extends CI_Controller {
         exit;
 
 	}
-    
+
     function workshopsView(){
 
         $this->load->library( array('rb') );
         $this->load->helper( array('url') );
-        
+
         $this->load->view('template/header');
         $this->load->view('workshops');
         $this->load->view('template/footer');
@@ -372,7 +381,7 @@ class Welcome extends CI_Controller {
     }
 
     public function minicoursesView(){
-        
+
         $this->load->library( array('rb') );
         $this->load->helper( array('url') );
 
@@ -385,15 +394,15 @@ class Welcome extends CI_Controller {
                 'mdsv' => $mdsv,
                 'mdsn' => $mdsn
             );
-        
+
         $this->load->view('template/header');
         $this->load->view('minicourses',$data);
         $this->load->view('template/footer');
-        
+
     }
-    
+
     public function roundtablesView(){
-        
+
         $this->load->library( array('rb','session') );
         $this->load->helper( array('url','form') );
 
@@ -401,20 +410,20 @@ class Welcome extends CI_Controller {
         $cdss = R::find('roundtabledayshift','ORDER BY date ASC');
         $cs = R::find('roundtable');
 
-        $data = array( 
+        $data = array(
             'cdss' => $cdss,
             'cs' => $cs,
             'user' => $user
         );
-        
+
         $this->load->view('template/header');
         $this->load->view('roundtables',$data);
         $this->load->view('template/footer');
-        
+
     }
 
     public function conferencesView(){
-        
+
         $this->load->library( array('rb','session') );
         $this->load->helper( array('url','form') );
 
@@ -422,18 +431,18 @@ class Welcome extends CI_Controller {
         $cdss = R::find('conferencedayshift','ORDER BY date ASC');
         $cs = R::find('conference');
 
-        $data = array( 
+        $data = array(
             'cdss' => $cdss,
             'cs' => $cs,
             'user' => $user
         );
-        
+
         $this->load->view('template/header');
         $this->load->view('conferences',$data);
         $this->load->view('template/footer');
-        
+
     }
-    
+
 }
 
 /* End of file welcome.php */

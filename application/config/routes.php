@@ -1,6 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$route['default_controller'] = "welcome";
+
+$route['default_controller'] = "welcome/index2";
+// $route['default_controller'] = "welcome";
+// $route['index2'] = "welcome/index2";
 $route['404_override'] = '';
 
 $route['install'] = "installation/installView";

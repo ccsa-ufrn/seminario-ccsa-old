@@ -1852,7 +1852,7 @@ class User extends CI_Controller {
 
     function freePayment(){
 
-        $this->load->library( array('session','rb','email') );
+        $this->load->library( array('session','rb','email','gomail') );
         $this->load->helper( array('url') );
 
         $user = R::findOne('user','id=?',array($this->session->userdata('user_id')));
