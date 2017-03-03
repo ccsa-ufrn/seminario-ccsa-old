@@ -41,6 +41,7 @@ class API extends CI_Controller {
 
       /* validating fields */
       $validated = true;
+
       foreach ($fields as $field) {
         if(empty($this->input->post($field))) {
           $validated = false;
@@ -49,7 +50,7 @@ class API extends CI_Controller {
       }
 
       if(!$validated) {
-          $this->output->set_status_header(400) // Bad Request
+        $this->output->set_status_header(400) // Bad Request
           ->set_output(json_encode(array(
             'status'=>'error',
             'message'=>'Campo(s) obrigatório(s) não preenchido(s)'
@@ -412,5 +413,70 @@ class API extends CI_Controller {
          )));
      }
   } /* Ends new function */
+
+  /*
+   * Forgot password.
+  */
+  public function forgot_pass() {
+      $this->load->library(array('rb', 'session', 'email', 'gomail'));
+      $this->load->helper( array('form' , 'url' , 'date' , 'security', 'utility' ) );
+
+      $this->output->set_content_type('application/json', 'utf-8');
+
+      $email = $this->input->post('email');
+
+      $users = R::find('user', "email = ?", [$email]);
+
+      if(!count($users)){
+          $this->output->set_status_header(404) // Internal Server Error
+            ->set_output(json_encode(array(
+              'status'=>'error',
+              'message'=>'Email não encontrado em nossos registros'
+          )))->_display();
+          exit;
+      }
+
+      foreach ($users as $user) {
+
+          $newPass = random_string('alnum',8);
+          $encNewPass = do_hash($newPass,'md5');
+
+          $status = false;
+
+          $msg = "<h1>Recuperação de Senha</h1>";
+          $msg .= "<p>Olá, sua nova senha é: ".$newPass."</p>";
+          $msg .= "<p>Acesse <a href='".base_url()."'>o seu painel</a> utilizando a nova senha, vá em <b>Meus dados</b> na parte superior direita, e escolha sua nova senha.</p> ";
+
+          $status = $this->gomail->send_email(
+              'assessoriatecnica@ccsa.ufrn.br',
+              'Seminário de Pesquisa do CCSA',
+              $email,
+              '[Recuperando senha] Seminário de Pesquisa do CCSA',
+              emailMsg($msg)
+          );
+
+          if(!$status){
+              $this->output->set_status_header(500) // Internal Server Error
+                ->set_output(json_encode(array(
+                  'status'=>'error',
+                  'message'=>'Problema ao enviar o email'
+              )))->_display();
+              exit;
+          }
+
+          $user->password = $encNewPass;
+          $user->retrievepass = 'yes';
+
+          R::store($user);
+
+          $this->output->set_status_header(200)
+            ->set_output(json_encode(array(
+              'status'=>'success',
+              'data'=> []
+          )));
+
+      }
+
+  }
 
 } /* Ends class Api*/
