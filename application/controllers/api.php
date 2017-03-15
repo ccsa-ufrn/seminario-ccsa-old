@@ -120,10 +120,6 @@ class API extends CI_Controller {
               $tgs = $a->ownThematicgroupList;
               $res_tgs = array();
               foreach ($tgs as $tg) {
-                  // If tg is not listable should not return it
-                  if($tg->is_listable != 'Y') {
-                      continue;
-                  }
                   // get tg coordinators
                   $coordinators = $tg->sharedUserList;
                   // create coordinators string
