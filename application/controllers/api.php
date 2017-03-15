@@ -369,7 +369,7 @@ class API extends CI_Controller {
       $this->load->library(array('rb'));
 
       $this->output->set_content_type('application/json', 'utf-8')
-        ->set_header('Access-Control-Allow-Origin: *');;
+        ->set_header('Access-Control-Allow-Origin: *');
 
       $data = array();
       try {
@@ -425,7 +425,8 @@ class API extends CI_Controller {
       $this->load->library(array('rb', 'session', 'email', 'gomail'));
       $this->load->helper( array('form' , 'url' , 'date' , 'security', 'utility' ) );
 
-      $this->output->set_content_type('application/json', 'utf-8');
+      $this->output->set_content_type('application/json', 'utf-8')
+        ->set_header('Access-Control-Allow-Origin: *');
 
       $email = $this->input->post('email');
 

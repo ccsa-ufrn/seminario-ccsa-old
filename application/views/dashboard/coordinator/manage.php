@@ -3,7 +3,7 @@
 			<div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Gerenciar Coordenadores</h1>
-                    
+
                     <?php if($success!=null): ?>
                         <div class='alert alert-success text-center'>
                             <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
@@ -17,7 +17,7 @@
                             <strong><?php echo $error; ?></strong>
                         </div>
                     <?php endif; ?>
-                    
+
                     <?php echo form_open(base_url('dashboard/coordinator/create'), array('id' => 'formCreateCoordinator','novalidate' => '','class'=>'waiting')); ?>
 
                         <div class="row">
@@ -60,6 +60,7 @@
                             <div class="col-md-12 col-xs-12 col-sm-12">
                                 <button type="submit" class="btn btn-block btn-large btn-success"> <i class="fa fa-plus-circle"></i> Adicionar Coordenador</button>
                             </div>
+
                             <div class="clearfix"></div>
                             <div class="col-lg-12 success-container text-center">
                                 <div class="success"></div>
@@ -67,7 +68,27 @@
 
                         </div>
                     </form>
-                
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <hr>
+                        </div>
+                    </div>
+
+                    <?php echo form_open(base_url('dashboard/coordinator/user2coordinator'), array('id' => 'formCreateCoordinator2','novalidate' => '','class'=>'waiting')); ?>
+
+                        <div class="row">
+                            <div class="col-md-8 col-xs-8 col-sm-9">
+                                <input class="form-control" name="email" placeholder="Email usuário">
+                            </div>
+                            <div class="col-md-4 col-xs-4 col-sm-3">
+                                <button type="submit" class="btn btn-block btn-large btn-success">
+                                    Usuário para Coordenador</button>
+                            </div>
+                        </div>
+
+                    </form>
+
                     <div class="row">
                         <div class="col-md-12">
                             <h3>Coordenadores Cadastrados</h3>
@@ -76,14 +97,14 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <?php 
+                                        <?php
                                             $link = base_url('dashboard/coordinator/name/ASC');
-                                            $asc = false;   
-                                            if($order[0]=='name') 
+                                            $asc = false;
+                                            if($order[0]=='name')
                                                 if($order[1]=='ASC'){
                                                     $link = base_url('dashboard/coordinator/name/DESC');
                                                     $asc = true;
-                                                }     
+                                                }
                                         ?>
                                         <th>
                                             <a href="<?php echo $link; ?>">
@@ -107,7 +128,7 @@
                             </table>
                         </div>
                     </div>
-                    
+
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -123,7 +144,7 @@
                 <div class="modal-body">
 
                     Carregando...
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>

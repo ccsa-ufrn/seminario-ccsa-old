@@ -1752,7 +1752,7 @@ class User extends CI_Controller {
 
     function rejectPayment(){
 
-        $this->load->library( array('session','rb','email','form_validation') );
+        $this->load->library( array('session','rb','email','form_validation', 'gomail') );
         $this->load->helper( array('url') );
 
         $user = R::findOne('user','id=?',array($this->session->userdata('user_id')));

@@ -305,6 +305,7 @@ $route['dashboard/coordinator/retrievedetails'] = 'coordinator/retrieveDetailsVi
 $route['dashboard/coordinator/create'] = 'coordinator/create';
 $route['dashboard/coordinator/update'] = 'coordinator/update';
 $route['dashboard/coordinator/delete'] = 'coordinator/delete';
+$route['dashboard/coordinator/user2coordinator'] = 'coordinator/user2coordinator';
 
 $route['dashboard/administrator'] = 'administrator/index';
 $route['dashboard/administrator/retrievedetails'] = 'administrator/retrieveDetailsView';

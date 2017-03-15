@@ -27,11 +27,11 @@ class Coordinator extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         /* =================================================
             BEGIN - ORDERING ELEMENTS
-        ================================================== */ 
-        
+        ================================================== */
+
         if($order=='name'){
             if($progs=='DESC')
                 $coordinators = R::find('user','type = ? ORDER BY name DESC',array('coordinator'));
@@ -43,7 +43,7 @@ class Coordinator extends CI_Controller {
         /* =================================================
             END - ORDERING ELEMENTS
         ================================================== */
-        
+
         $thematicGroups = R::find('thematicgroup','ORDER BY name ASC');
 
         $data = array(
@@ -62,14 +62,14 @@ class Coordinator extends CI_Controller {
         $this->load->view('dashboard/footer');
 
 	}
-    
+
     public function retrieveDetailsView(){
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         $user = R::findOne('user','id=?',array($this->session->userdata('user_id')));
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -82,15 +82,15 @@ class Coordinator extends CI_Controller {
             redirect(base_url('dashboard'));
         /* =================================================
             END - CAPABILITIES SECURITY
-        ================================================== */ 
-        
+        ================================================== */
+
         $id = $this->input->get('id');
-        
+
         if(!is_numeric($id)){
             echo "The id is not numeric. Do not do that! :D";
             exit;
         }
-        
+
         $coordinator = R::findOne('user','id=?',array($id));
         $thematicgroups = R::find('thematicgroup','ORDER BY name ASC');
 
@@ -107,15 +107,15 @@ class Coordinator extends CI_Controller {
 
         $this->load->library( array('rb', 'form_validation','session','email', 'gomail') );
         $this->load->helper( array('url','security','date') );
-        
+
         // It's a POST request?
         if($this->input->server('REQUEST_METHOD')!='POST'){
             echo "Don't do that. :D";
             exit;
         }
-        
+
         $user = R::findOne('user','id=?',array($this->session->userdata('user_id')));
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -133,7 +133,7 @@ class Coordinator extends CI_Controller {
         /* ===========================================
             BEGIN - VALIDATION
         ============================================ */
-        
+
         $validation = array(
             array(
                 'field' => 'name',
@@ -156,22 +156,22 @@ class Coordinator extends CI_Controller {
                 'rules' => 'required'
             )
         );
-        
+
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules($validation);
         customErrorMessages($this->form_validation);
-        
+
         $thematicGroups = $this->input->post('thematicGroups');
         $tgs = array();
-        
+
         foreach ($thematicGroups as $tgid) {
             $tgs[] = $tgid;
         }
-        
+
         // Verifyng validation error
         if(!$this->form_validation->run()){
             $this->session->set_flashdata(
-                    'validation', 
+                    'validation',
                     array(
                             'name' => form_error('name'),
                             'email' => form_error('email'),
@@ -179,33 +179,33 @@ class Coordinator extends CI_Controller {
                             'thematicGroups' => form_error('thematicGroups')
                         )
                 );
-            
+
              $this->session->set_flashdata(
-                    'popform', 
+                    'popform',
                     array(
                             'name' => set_value('name'),
                             'email' => set_value('email'),
                             'thematicGroups' => $tgs
                         )
                 );
-            
+
             redirect(base_url('dashboard/coordinator'));
             exit;
         }
-        
+
         /* ===========================================
             END - VALIDATION
         ============================================ */
-        
+
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
         $name = $this->input->post('name');
         $email = $this->input->post('email');
         $password = $this->input->post('password');
         $thematicGroups = $this->input->post('thematicGroups');
-        
+
         /* ===========================================
             END - PREPARING DATA
         ============================================ */
@@ -232,7 +232,7 @@ class Coordinator extends CI_Controller {
         }
 
         $id = R::store($user);
-        
+
         /* ===========================================
             BEGIN - SENDING EMAIL CONFIRMATION
         ============================================ */
@@ -246,17 +246,17 @@ class Coordinator extends CI_Controller {
         $msg .= "</ul>";
         $msg .= "<p>Seus dados de acesso são os seguintes:</p><ul><li><b>Email:</b> $email</li><li><b>Senha:</b> $password</li></ul>";
         $msg .= "<p><a href='".base_url('dashboard')."'>Clique aqui para entrar no sistema</a></p>";
-        
+
         try {
             $status = $this->gomail->send_email(
-                'seminario@ccsa.ufrn.br', 
-                'Seminário de Pesquisa do CCSA', 
-                $email, 
-                '[Cadastro de Coordenador] Seminário de Pesquisa do CCSA', 
+                'seminario@ccsa.ufrn.br',
+                'Seminário de Pesquisa do CCSA',
+                $email,
+                '[Cadastro de Coordenador] Seminário de Pesquisa do CCSA',
                 emailMsg($msg)
             );
         } catch (Exception $e) {
-            
+
         }
 
         if(!$status){
@@ -264,11 +264,11 @@ class Coordinator extends CI_Controller {
 </head><body><p>VOCÊ FOI CADASTRADO COM SUCESSO, porém o servidor de emails, neste momento parece estar fora do ar. Segue a mensagem que iria ser enviada para seu email:</p>'.$msg.'</body></html>';
             exit;
         }
-        
+
         /* ===========================================
             END - SENDING EMAIL CONFIRMATION
         ============================================ */
-        
+
 
         $this->session->set_flashdata('success','O coordenador foi adicionado com sucesso.');
         redirect(base_url('dashboard/coordinator'));
@@ -276,17 +276,17 @@ class Coordinator extends CI_Controller {
 
     }
 
-    public function update(){
+    public function user2coordinator() {
 
         $this->load->library( array('rb', 'form_validation','session','email', 'gomail') );
         $this->load->helper( array( 'url' , 'security' ) );
-        
+
         // It's a POST request?
         if($this->input->server('REQUEST_METHOD')!='POST'){
             echo "Don't do that. :D";
             exit;
         }
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -304,7 +304,94 @@ class Coordinator extends CI_Controller {
         /* ===========================================
             BEGIN - VALIDATION
         ============================================ */
-        
+        $validation = array(
+            array(
+                'field' => 'email',
+                'label' => 'Email',
+                'rules' => 'required'
+            )
+        );
+
+        $this->form_validation->set_error_delimiters('', '');
+        $this->form_validation->set_rules($validation);
+        customErrorMessages($this->form_validation);
+
+        // Verifyng validation error
+        if(!$this->form_validation->run()){
+            $this->session->set_flashdata('error','Você precisa preencher todos os campos obrigatórios para poder atualizar o coordenador. Repita a operação.');
+            redirect(base_url('dashboard/coordinator'));
+            exit;
+        }
+
+        /* ===========================================
+            END - VALIDATION
+        ============================================ */
+
+        /* ===========================================
+            BEGIN - PREPARING DATA
+        ============================================ */
+
+        $email = $this->input->post('email');
+
+        /* ===========================================
+            END - PREPARING DATA
+        ============================================ */
+
+        $user = R::findOne('user','email=?',array($email));
+
+        if(!$user) {
+            $this->session->set_flashdata('error','Este usuário não existe.');
+            redirect(base_url('dashboard/coordinator'));
+            exit;
+        } else if($user->type === 'administrator') {
+            $this->session->set_flashdata('error','Você não pode rebaixar um usuário administrador à um coordenador.');
+            redirect(base_url('dashboard/coordinator'));
+            exit;
+        } else if($user->type === 'coordinator') {
+            $this->session->set_flashdata('error','Este usuário já é coordenador.');
+            redirect(base_url('dashboard/coordinator'));
+            exit;
+        }
+
+        $user->type = 'coordinator';
+
+        R::store($user);
+
+        $this->session->set_flashdata('success','O usuário foi transformado em coordenador com sucesso.');
+        redirect(base_url('dashboard/coordinator'));
+        exit;
+
+    }
+
+    public function update(){
+
+        $this->load->library( array('rb', 'form_validation','session','email', 'gomail') );
+        $this->load->helper( array( 'url' , 'security' ) );
+
+        // It's a POST request?
+        if($this->input->server('REQUEST_METHOD')!='POST'){
+            echo "Don't do that. :D";
+            exit;
+        }
+
+        /* =================================================
+            BEGIN - CAPABILITIES SECURITY
+        ================================================== */
+        $type = 'administrator';
+        $userLogged = $this->session->userdata('user_logged_in');
+        if(!$userLogged)
+            redirect(base_url('dashboard'));
+        $u = R::findOne('user','id=?',array($this->session->userdata('user_id')));
+        if($u['type']!=$type)
+            redirect(base_url('dashboard'));
+        /* =================================================
+            END - CAPABILITIES SECURITY
+        ================================================== */
+
+        /* ===========================================
+            BEGIN - VALIDATION
+        ============================================ */
+
         $validation = array(
             array(
                 'field' => 'thematicGroups',
@@ -312,26 +399,26 @@ class Coordinator extends CI_Controller {
                 'rules' => 'required'
             )
         );
-        
+
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules($validation);
         customErrorMessages($this->form_validation);
-        
+
         // Verifyng validation error
         if(!$this->form_validation->run()){
             $this->session->set_flashdata('error','Você precisa preencher todos os campos obrigatórios para poder atualizar o coordenador. Repita a operação.');
             redirect(base_url('dashboard/coordinator'));
             exit;
         }
-        
+
         /* ===========================================
             END - VALIDATION
         ============================================ */
-        
+
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
         $id = $this->input->post('id');
 
         if(!is_numeric($id)){
@@ -341,7 +428,7 @@ class Coordinator extends CI_Controller {
 
         $password = $this->input->post('password');
         $tgs = $this->input->post('thematicGroups');
-        
+
         /* ===========================================
             END - PREPARING DATA
         ============================================ */
@@ -372,19 +459,19 @@ class Coordinator extends CI_Controller {
         $msg .= "</ul>";
         $msg .= "<p>Seus novos dados são os seguintes:</p><ul><li><b>Email:</b> ".$user->email."</li><li><b>Senha:</b> ".$password."</li></ul>";
         $msg .= "<p><a href='".base_url('dashboard')."'>Clique aqui para entrar no sistema</a></p>";
-        
+
         $status = false;
-        
+
         try {
             $status = $this->gomail->send_email(
-                'seminario@ccsa.ufrn.br', 
-                'Seminário de Pesquisa do CCSA', 
-                $user->email, 
-                '[Atualização de Coordenador] Seminário de Pesquisa do CCSA', 
+                'seminario@ccsa.ufrn.br',
+                'Seminário de Pesquisa do CCSA',
+                $user->email,
+                '[Atualização de Coordenador] Seminário de Pesquisa do CCSA',
                 emailMsg($msg)
             );
         } catch (Exception $e) {
-            
+
         }
 
         if(!$status){
@@ -392,7 +479,7 @@ class Coordinator extends CI_Controller {
             redirect(base_url('dashboard/coordinator'));
             exit;
         }
-        
+
         /* ===========================================
             END - SENDING EMAIL CONFIRMATION
         ============================================ */
@@ -404,18 +491,18 @@ class Coordinator extends CI_Controller {
         exit;
 
     }
-    
+
     public function delete(){
 
         $this->load->library( array('rb', 'form_validation','session') );
         $this->load->helper( array( 'url' , 'security' ) );
-        
+
         // It's a POST request?
         if($this->input->server('REQUEST_METHOD')!='POST'){
             echo "Don't do that. :D";
             exit;
         }
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -433,14 +520,14 @@ class Coordinator extends CI_Controller {
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
         $id = $this->input->post('id');
 
         if(!is_numeric($id)){
             echo "The ID has to be numeric. Do not do that! :D";
             exit;
         }
-        
+
         /* ===========================================
             END - PREPARING DATA
         ============================================ */
@@ -453,7 +540,7 @@ class Coordinator extends CI_Controller {
         exit;
 
     }
-    
+
 }
 
 /* End of file welcome.php */
