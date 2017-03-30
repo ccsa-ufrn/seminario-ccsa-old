@@ -180,6 +180,7 @@ $route['dashboard/paper/cancelsubmission'] = 'paper/cancelSubmission';
 //$route['dashboard/paper/useracceptasposter'] = 'paper/userAcceptAsPoster';
 //$route['dashboard/paper/userrejectasposter'] = 'paper/userRejectAsPoster';
 $route['paper/get-source'] = 'paper/getSource';
+$route['dashboard/advanced-control/paper'] = 'paper/advancedControl';
 
 $route['dashboard/poster/submit'] = 'poster/submitView';
 $route['dashboard/poster/create'] = 'poster/create';
