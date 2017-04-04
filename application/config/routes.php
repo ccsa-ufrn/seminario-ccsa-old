@@ -2,8 +2,7 @@
 
 
 $route['default_controller'] = "welcome/index2";
-// $route['default_controller'] = "welcome";
-// $route['index2'] = "welcome/index2";
+$route['index2'] = "welcome"; // rota para acessar a página na versão antiga.
 $route['404_override'] = '';
 
 $route['install'] = "installation/installView";
