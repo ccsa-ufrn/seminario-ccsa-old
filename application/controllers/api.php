@@ -355,9 +355,9 @@ class API extends CI_Controller {
         $this->output->set_status_header(200)
         ->set_output(json_encode(array(
             'status'=>'success',
-            'message'=>'successfuly logged in'
-        )));
-    } /* Ends login function */
+          'message'=>'successfuly logged in'
+      )));
+  } /* Ends login function */
 
     /*
     * News provider. Expects
@@ -415,7 +415,6 @@ class API extends CI_Controller {
             )));
 
         } catch(Exception $e) {
-
             $this->output->set_status_header(500) // Internal Server Error
             ->set_output(json_encode(array(
                 'status'=>'error',
@@ -425,6 +424,107 @@ class API extends CI_Controller {
         }
 
     } /* Ends new function */
+
+
+  /*
+   * Fixed News provider
+   * Endpoint: http://URL_TO_CCSA/index.php?/api/top_news
+   */
+  public function fixed_news() {
+      $this->load->library(array('rb'));
+      $this->output->set_content_type('application/json', 'utf-8')
+	->set_header('Access-Control-Allow-Origin: *');
+      $data = array();
+      try {
+	$news = R::find('news', 'is_fixed=?', ['Y']);
+	foreach($news as $new) {
+	   array_push($data, array(
+	      'title'=> $new->title,
+	      'text'=> $new->text,
+	      'created_at'=> $new->created_at,
+	   ));
+	}
+	$this->output->set_status_header(200)
+	   ->set_output(json_encode(array(
+		'status'=>'success',
+		'data'=>$data,
+	)));
+      } catch(Exception $e) {
+	$this->output->set_status_header(500)
+	   ->set_output(json_encode(array(
+		'status'=>'error',
+		'message'=>'Ocorreu um erro de conexão ao banco de dados'
+	   )));
+      }
+  }
+
+  /*
+   * Normal News provider
+   * Endpoint: http://URL_TO_CCSA/index.php?/api/normal_news
+   */
+  public function normal_news() {
+      $this->load->library(array('rb'));
+      $this->output->set_content_type('application/json', 'utf-8')
+	->set_header('Access-Control-Allow-Origin: *');
+      $data = array();
+      try {
+	$news = R::find('news', 'is_fixed=?', ['N']);
+	foreach($news as $new) {
+	   array_push($data, array(
+		'title'=>$new->title,
+		'text'=>$new->text,
+		'created_at'=>$new->created_at,
+	   ));
+	}
+	$this->output->set_status_header(200)
+	  ->set_output(json_encode(array(
+		'status'=>'success',
+		'data'=>$data,
+	  )));
+      } catch(Exception $e) {
+	$this->output->set_status_header(500)
+	   ->set_output(json_encode(array(
+	   	'status'=>'error',
+		'message'=>'Ocorreu um erro de conexão ao banco de dados'
+	   )));
+      }
+  }
+
+  /* Get New by ID
+   * Endpoint: http://URL_TO_CCSA/index.php?/api/new/:id
+   */
+  public function new($id = 0) {
+	$this->load->library(array('rb'));
+	$this->output->set_content_type('application/json', 'utf-8')
+	  ->set_header('Access-Control-Allow-Origin: *');
+	try {
+	  $new = R::findOne('news', 'id=?', [$id]);
+	  if(count($new) > 0) {
+	     $data_new = array(
+	        'title'=>$new->title,
+		'text'=>$new->text,
+		'create_at'=>$new->created_at,
+             );
+	     $this->output->set_status_header(200)
+		->set_output(json_encode(array(
+		    'status'=>'success',
+		    'data'=>$data_new
+	     )));
+	  } else {
+	     $this->output->set_status_header(404)
+		->set_output(json_encode(array(
+		    'status'=>'error',
+		    'message'=>'Notícia não encontrada'
+	     )));
+	  }
+	} catch(Exception $e) {
+	   $this->output->set_status_header(500)
+		->set_output(json_encode(array(
+		    'status'=>'error',
+		    'message'=>'Ocorreu um erro de conexão ao banco de dados',
+	   )));
+	}
+  }
 
     /*
     * Forgot password.
