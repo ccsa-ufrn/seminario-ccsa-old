@@ -8,15 +8,16 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link href="<?php echo asset_url(); ?>ng2/styles.20e40552d90a8354eaff.bundle.css" rel="stylesheet"/></head>
+    <link href="<?php echo asset_url(); ?>ng2/styles.0534854e1ca0c76287c7.bundle.css" rel="stylesheet"/></head>
 
 <body> <!--class="menu overlay"-->
     <app-root>Carregando...</app-root>
-<script type="text/javascript" src="<?php echo asset_url(); ?>ng2/inline.efa519f9139169492d46.bundle.js"></script>
-<script type="text/javascript" src="<?php echo asset_url(); ?>ng2/polyfills.502a4acbd8c91957ee75.bundle.js"></script>
-<script type="text/javascript" src="<?php echo asset_url(); ?>ng2/scripts.de15eb0dcb7a749c938d.bundle.js"></script>
-<script type="text/javascript" src="<?php echo asset_url(); ?>ng2/vendor.12da6583d2c6137b9f20.bundle.js"></script>
-<script type="text/javascript" src="<?php echo asset_url(); ?>ng2/main.9013c570f865b4b56a03.bundle.js"></script>
+
+    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/inline.d9cfcece56aaac75572a.bundle.js"></script>
+    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/polyfills.502a4acbd8c91957ee75.bundle.js"></script>
+    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/scripts.de15eb0dcb7a749c938d.bundle.js"></script>
+    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/vendor.12da6583d2c6137b9f20.bundle.js"></script>
+    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/main.a51d0b7b17914470022a.bundle.js"></script>
 
 </body>
 
