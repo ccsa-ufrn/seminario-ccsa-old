@@ -389,7 +389,7 @@ class API extends CI_Controller {
                 }
             } else {
                 /* get one fixed new and two normal */
-                $fixed = R::findOne('news', 'is_fixed = ?', ['Y']);
+                $fixed = R::findOne('news', 'is_fixed = ? ORDER BY id DESC', ['Y']);
                 if(count($fixed)) {
                     array_push($data, array(
                         'title'=> $fixed->title,
@@ -398,7 +398,7 @@ class API extends CI_Controller {
                     ));
                 }
 
-                $others = R::find('news', 'is_fixed = ? limit ?', ['N', 2]);
+                $others = R::find('news', 'is_fixed = ? ORDER BY id DESC limit ? ', ['N', 2]);
                 foreach ($others as $new) {
                     array_push($data, array(
                         'title'=> $new->title,
@@ -493,7 +493,7 @@ class API extends CI_Controller {
   /* Get New by ID
    * Endpoint: http://URL_TO_CCSA/index.php?/api/new/:id
    */
-  public function new($id = 0) {
+  public function newsone($id = 0) {
 	$this->load->library(array('rb'));
 	$this->output->set_content_type('application/json', 'utf-8')
 	  ->set_header('Access-Control-Allow-Origin: *');
