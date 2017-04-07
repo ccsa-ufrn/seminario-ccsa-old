@@ -382,6 +382,7 @@ class API extends CI_Controller {
                 $news = R::find('news', ' ORDER BY id DESC ');
                 foreach ($news as $new) {
                     array_push($data, array(
+                        'id'=> $new->id,
                         'title'=> $new->title,
                         'text'=> $new->text,
                         'created_at'=> $new->created_at
