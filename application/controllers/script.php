@@ -630,12 +630,12 @@ class Script extends CI_Controller {
 
                 $pdf->SetFillColor(255,255,255);
 
-                $pdf->Cell(
-                    170,
-                    10,
-                    strtoupper( character_limiter( utf8_decode(' '.trim( $p->title ) ) , 70, '...' ) ),
-                    'LT',
+
+                $pdf->MultiCell(
                     0,
+                    10,
+                    strtoupper( utf8_decode(' '.trim( $p->title ) ) ),
+                    'TRL',
                     'L',
                     false
                 );
@@ -661,17 +661,14 @@ class Script extends CI_Controller {
                 endif;
 
 
-                $pdf->Cell(
-                    107,
+                $pdf->MultiCell(
+                    0,
                     10,
                     utf8_decode( $evaluation ),
-                    'T',
-                    0,
+                    'RL',
                     'C',
                     true
                 );
-
-                $pdf->Ln(10);
 
                 $pdf->MultiCell(
                     277,
@@ -801,15 +798,14 @@ class Script extends CI_Controller {
 
             $pdf->SetFillColor(255,255,255);
 
-            $pdf->Cell(
-                170,
-                10,
-                strtoupper( character_limiter( utf8_decode(' '.trim( $tc->title ) ) , 70, '...' ) ),
-                'LT',
-                0,
-                'L',
-                false
-            );
+            $pdf->MultiCell(
+                    0,
+                    10,
+                    strtoupper( utf8_decode(' '.trim( $tc->title ) ) ),
+                    'TRL',
+                    'L',
+                    false
+                );
 
             $evaluation = '';
 
@@ -832,17 +828,14 @@ class Script extends CI_Controller {
             endif;
 
 
-            $pdf->Cell(
-                107,
+            $pdf->MultiCell(
+                0,
                 10,
                 utf8_decode( $evaluation ),
-                'T',
-                0,
+                'RL',
                 'C',
                 true
             );
-
-            $pdf->Ln(10);
 
             $pdf->MultiCell(
                 277,
@@ -1201,12 +1194,11 @@ class Script extends CI_Controller {
 
                 $pdf->SetFillColor(255,255,255);
 
-                $pdf->Cell(
-                    170,
-                    10,
-                    strtoupper( character_limiter( utf8_decode(' '.trim( $p->title ) ) , 70, '...' ) ),
-                    'LT',
+                $pdf->MultiCell(
                     0,
+                    10,
+                    strtoupper( utf8_decode(' '.trim( $p->title ) ) ),
+                    'LTR',
                     'L',
                     false
                 );
@@ -1232,17 +1224,14 @@ class Script extends CI_Controller {
                 endif;
 
 
-                $pdf->Cell(
-                    107,
+                $pdf->MultiCell(
+                    0,
                     10,
                     utf8_decode( $evaluation ),
-                    'T',
-                    0,
+                    'RL',
                     'C',
                     true
                 );
-
-                $pdf->Ln(10);
 
                 $pdf->MultiCell(
                     277,
@@ -1342,7 +1331,6 @@ class Script extends CI_Controller {
 
 
     }
-
     private function installConfig($config) {
         if(!R::count('configuration','name=?',array($config->name))){
             $c = R::dispense('configuration');
@@ -1357,7 +1345,6 @@ class Script extends CI_Controller {
         }
     }
 
-
     /*
      * Function : installConfigs()
      * Description : Install all basic configurations
@@ -1369,6 +1356,7 @@ class Script extends CI_Controller {
         $this->load->model('Configuration');
 
         $config = new Configuration();
+
 
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
@@ -1383,6 +1371,7 @@ class Script extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
+
 
         echo '<h1>Instalação de Configurações</h1>';
 
