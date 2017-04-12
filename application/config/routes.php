@@ -191,6 +191,7 @@ $route['dashboard/poster/cancelsubmission'] = 'poster/cancelSubmission';
 $route['dashboard/poster/uploadposter'] = 'poster/uploadPoster';
 $route['dashboard/poster/get-poster'] = 'poster/getPoster';
 $route['dashboard/poster/upload-later-do'] = 'poster/uploadLaterDo';
+$route['dashboard/poster/upload-later-art-do'] = 'poster/uploadLaterArtDo';
 $route['poster/get-source'] = 'poster/getSource';
 
 $route['dashboard/minicourse'] = 'minicourse/index';
