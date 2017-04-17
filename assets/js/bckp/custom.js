@@ -2,28 +2,27 @@
     MANAGE AREA PAGE
 ======================================== */
 
-$(document).ready(function()
-{
-
-
+$(document).ready(function() {
 
     $('#later-upload-art-poster-btn').click(function(){
-        $('#later-upload-art-poster').click();
+     var id = $(this).data('data');
+      $('#form-later-upload-poster2-'+id+' #later-upload-art-poster').click();
     });
 
     $('#later-upload-art-poster').change(function(){
-        $('#form-later-upload-poster2').submit();
+      var id = $(this).data('data');
+        $('#form-later-upload-poster2-'+id).submit();
     });
 
+    /** POSTER */
     $('#later-upload-poster-btn').click(function(){
-        $('#later-upload-poster').click();
+      var id = $(this).data('data');
+      $('#form-later-upload-poster-'+id+' #later-upload-poster').click();
     });
-
 
     $('#later-upload-poster').change(function(){
-
-        $('#form-later-upload-poster').submit();
-
+      var id = $(this).data('data');
+      $('#form-later-upload-poster-'+id).submit();
     });
 
     /*
