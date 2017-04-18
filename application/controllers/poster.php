@@ -58,7 +58,7 @@ class Poster extends Base {
 
 		$config['upload_path'] = './assets/upload/posters/';
 		$config['file_name'] = random_string('unique');
-		$config['allowed_types'] = 'gif|jpg|jpeg|png|pdf|odp|ppt|pptx';
+		$config['allowed_types'] = 'gif|jpg|jpeg|png|pdf|odp|ppt|pptx|doc|docx';
 
 		$this->load->library('upload', $config);
 
@@ -83,6 +83,48 @@ class Poster extends Base {
 			R::store($poster);
 
 			$this->session->set_flashdata('success','Parabéns, o pôster foi enviado com sucesso.');
+			redirect(base_url('dashboard/poster/submit'));
+
+			exit;
+		}
+
+	}
+
+  public function uploadLaterArtDo() {
+		$this->load->library( array('rb','session') );
+		$this->load->helper( array('string') );
+
+		$id = $this->input->post('id-poster');
+		$poster = $this->input->post('poster');
+
+		$config['upload_path'] = './assets/upload/posters/art/';
+		$config['file_name'] = random_string('unique');
+		$config['allowed_types'] = 'gif|jpg|jpeg|png|pdf|odp|ppt|pptx|doc|docx';
+
+		$this->load->library('upload', $config);
+
+		if (! $this->upload->do_upload('poster')){
+
+			$this->session->set_flashdata('error','O pôster não pode ser enviado, talvez o tipo de arquivo não seja permitido,
+        somente pdf,ppt,pptx e odp são permitidos. Caso persista, envie uma mensagem para o suporte informando o problema.');
+			redirect(base_url('dashboard/poster/submit'));
+
+			exit;
+		} else{
+
+			$data = $this->upload->data();
+
+			$poster = R::findOne(
+        'poster',
+        ' id = ? ',
+        array($id)
+      );
+
+			$poster->art = $data['file_name'];
+
+			R::store($poster);
+
+			$this->session->set_flashdata('success','Parabéns, a arte do pôster foi enviada com sucesso.');
 			redirect(base_url('dashboard/poster/submit'));
 
 			exit;

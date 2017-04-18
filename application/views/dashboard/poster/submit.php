@@ -23,10 +23,26 @@
                     <table class="table table-hover">
                     <!-- Falta centralizar verticalmente o texto -->
 
+                    <style>
+                      .click-poster,
+                      .click-art {
+                        background-color: #ff0000;
+                        padding: 5px;
+                        color: white;
+                      }
+
+                      .click-poster:hover ,
+                      .click-art:hover {
+                        color: white;
+                        cursor: pointer;
+                      }
+                    </style>
+
+                    <!-- PÔSTERES -->
                     <?php foreach($posters as $p): ?>
 
                         <tr class="active" style="text-align:center;" >
-                            <td style="width:40%;"><b><?php echo $p->title; ?></b></td>
+                            <td style="width:20%;"><b><?php echo $p->title; ?></b></td>
                             <td>Enviado em: <?php echo date("d/m/Y", strtotime($p->createdAt));  ?> </td>
 
                             <?php if($p->evaluation=='pending'): ?>
@@ -41,22 +57,68 @@
 
                                 <td  colspan="2" class="text-success" >Aceito</td>
 
+                                <!-- ENVIO DO RESUMO -->
                                 <?php if($p->poster != "") :  ?>
 
-                                    <td class="text-success">O pôster já foi enviado, parabéns!</td>
+                                    <td>
+                                        <a id="later-upload-poster-btn" class="click-poster" data-data="<?php echo $p->id; ?>" class="btn btn-danger" >Reenviar Resumo do Pôster</a>
+                                        <?php echo form_open_multipart(base_url('dashboard/poster/upload-later-do'), array('id' => 'form-later-upload-poster-'.$p->id, 'style' => 'display : none;')); ?>
+
+                                            <input type="text" name="id-poster" value="<?php echo $p->id; ?>" >
+                                            <input type="file" data-data="<?php echo $p->id; ?> "class="later-upload-poster" name="poster" >
+
+                                        </form>
+                                        <br>
+                                        <p><a href="/assets/upload/posters/<?php echo $p->poster; ?>"><?php echo $p->poster; ?></a></p>
+                                    </td>
 
                                 <?php elseif (! dateleq(date('Y-m-d'), date("Y-m-d", strtotime($date_limit_file->value)))) : ?> <!-- tornar isso dinâmico -->
 
-                                    <td class="text-success">Já passou do prazo de envio do pôster.</td>
+                                    <td class="text-success">Já passou do prazo de envio do Resumo do Pôster.</td>
 
-                                <?php elseif ($p->poster == "") : ?>
+                                <?php elseif ($p->poster == "" || $p->poster == null) : ?>
 
                                     <td>
-                                        <a id="later-upload-poster-btn" class="btn btn-danger">Enviar Pôster</a>
-                                         <?php echo form_open_multipart(base_url('dashboard/poster/upload-later-do'), array('id' => 'form-later-upload-poster', 'style' => 'display : none;')); ?>
+                                        <a id="later-upload-poster-btn" class="click-poster"  data-data="<?php echo $p->id; ?>" class="btn btn-danger">Enviar Resumo do Pôster</a>
+                                         <?php echo form_open_multipart(base_url('dashboard/poster/upload-later-do'), array('id' => 'form-later-upload-poster-'.$p->id, 'style' => 'display : none;')); ?>
 
                                             <input type="text" name="id-poster" value="<?php echo $p->id; ?>" >
-                                            <input type="file" id="later-upload-poster" name="poster" >
+                                            <input type="file" data-data="<?php echo $p->id; ?>" class="later-upload-poster" name="poster" >
+
+                                        </form>
+
+                                    </td>
+
+                                <?php endif; ?>
+
+                                <!-- ENVIO DA ARTE -->
+                                <?php if($p->art != "") :  ?>
+
+                                    <td>
+                                        <a id="later-upload-art-poster-btn" class="click-art" data-data="<?php echo $p->id; ?>" class="btn btn-danger">Reenviar Arte do Pôster</a>
+                                         <?php echo form_open_multipart(base_url('dashboard/poster/upload-later-art-do'), array('id' => 'form-later-upload-poster2-'.$p->id, 'style' => 'display : none;')); ?>
+
+                                            <input type="text" name="id-poster" value="<?php echo $p->id; ?>" >
+                                            <input type="file" data-data="<?php echo $p->id; ?>" class="later-upload-art-poster" name="poster" >
+
+                                        </form>
+                                        <br>
+                                        <p><a href="/assets/upload/posters/art/<?php echo $p->art; ?>"><?php echo $p->art; ?></a></p>
+                                    </td>
+
+                                <?php elseif (! dateleq(date('Y-m-d'), date("Y-m-d", strtotime($date_limit_file->value)))) : ?> <!-- tornar isso dinâmico -->
+
+                                    <td class="text-success">Já passou do prazo de envio da arte do pôster.</td>
+
+                                <?php elseif ($p->art == "" || !$p->art) : ?>
+
+                                    <td>
+                                        <a id="later-upload-art-poster-btn" class="click-art" data-data="<?php echo $p->id; ?>" class="btn btn-danger">Enviar Arte do Pôster</a>
+
+                                         <?php echo form_open_multipart(base_url('dashboard/poster/upload-later-art-do'), array('id' => 'form-later-upload-poster2-'.$p->id, 'style' => 'display : none;')); ?>
+
+                                            <input type="text" name="id-poster" value="<?php echo $p->id; ?>" >
+                                            <input type="file" data-data="<?php echo $p->id; ?>" class="later-upload-art-poster" name="poster" >
 
                                         </form>
 
