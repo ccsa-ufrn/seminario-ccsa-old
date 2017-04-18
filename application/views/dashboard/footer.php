@@ -36,7 +36,7 @@
     <script src="<?php echo asset_url(); ?>js/bckp/jquery.maskedinput.min.js"></script>
 
     <!-- Custom JavaScript -->
-    <script src="<?php echo asset_url(); ?>js/bckp/custom.js?v=1.2.4"></script>
+    <script src="<?php echo asset_url(); ?>js/bckp/custom.js?v=1.3.3"></script>
 
 </body>
 

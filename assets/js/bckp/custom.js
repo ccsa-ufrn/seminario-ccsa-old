@@ -4,26 +4,28 @@
 
 $(document).ready(function() {
 
-    $('#later-upload-art-poster-btn').click(function(){
+    $('.click-art').click(function(){
      var id = $(this).data('data');
-      $('#form-later-upload-poster2-'+id+' #later-upload-art-poster').click();
+      $('#form-later-upload-poster2-'+id+' .later-upload-art-poster').click();
     });
 
-    $('#later-upload-art-poster').change(function(){
+    $('.later-upload-art-poster').change(function(){
       var id = $(this).data('data');
         $('#form-later-upload-poster2-'+id).submit();
     });
 
     /** POSTER */
-    $('#later-upload-poster-btn').click(function(){
+    $('.click-poster').click(function(){
       var id = $(this).data('data');
-      $('#form-later-upload-poster-'+id+' #later-upload-poster').click();
+      $('#form-later-upload-poster-'+id+' .later-upload-poster').click();
     });
 
-    $('#later-upload-poster').change(function(){
+    $('.later-upload-poster').change(function(){
       var id = $(this).data('data');
       $('#form-later-upload-poster-'+id).submit();
     });
+
+
 
     /*
      * Language Instance

@@ -23,6 +23,21 @@
                     <table class="table table-hover">
                     <!-- Falta centralizar verticalmente o texto -->
 
+                    <style>
+                      .click-poster,
+                      .click-art {
+                        background-color: #ff0000;
+                        padding: 5px;
+                        color: white;
+                      }
+
+                      .click-poster:hover ,
+                      .click-art:hover {
+                        color: white;
+                        cursor: pointer;
+                      }
+                    </style>
+
                     <!-- PÔSTERES -->
                     <?php foreach($posters as $p): ?>
 
@@ -46,11 +61,11 @@
                                 <?php if($p->poster != "") :  ?>
 
                                     <td>
-                                        <a id="later-upload-poster-btn" data-data="<?php echo $p->id; ?>" class="btn btn-danger" >Reenviar Resumo do Pôster</a>
+                                        <a id="later-upload-poster-btn" class="click-poster" data-data="<?php echo $p->id; ?>" class="btn btn-danger" >Reenviar Resumo do Pôster</a>
                                         <?php echo form_open_multipart(base_url('dashboard/poster/upload-later-do'), array('id' => 'form-later-upload-poster-'.$p->id, 'style' => 'display : none;')); ?>
 
                                             <input type="text" name="id-poster" value="<?php echo $p->id; ?>" >
-                                            <input type="file" data-data="<?php echo $p->id; ?> "id="later-upload-poster" name="poster" >
+                                            <input type="file" data-data="<?php echo $p->id; ?> "class="later-upload-poster" name="poster" >
 
                                         </form>
                                         <br>
@@ -64,11 +79,11 @@
                                 <?php elseif ($p->poster == "" || $p->poster == null) : ?>
 
                                     <td>
-                                        <a id="later-upload-poster-btn" data-data="<?php echo $p->id; ?>" class="btn btn-danger">Enviar Resumo do Pôster</a>
+                                        <a id="later-upload-poster-btn" class="click-poster"  data-data="<?php echo $p->id; ?>" class="btn btn-danger">Enviar Resumo do Pôster</a>
                                          <?php echo form_open_multipart(base_url('dashboard/poster/upload-later-do'), array('id' => 'form-later-upload-poster-'.$p->id, 'style' => 'display : none;')); ?>
 
                                             <input type="text" name="id-poster" value="<?php echo $p->id; ?>" >
-                                            <input type="file" data-data="<?php echo $p->id; ?>" id="later-upload-poster" name="poster" >
+                                            <input type="file" data-data="<?php echo $p->id; ?>" class="later-upload-poster" name="poster" >
 
                                         </form>
 
@@ -80,11 +95,11 @@
                                 <?php if($p->art != "") :  ?>
 
                                     <td>
-                                        <a id="later-upload-art-poster-btn" data-data="<?php echo $p->id; ?>" class="btn btn-danger">Reenviar Arte do Pôster</a>
+                                        <a id="later-upload-art-poster-btn" class="click-art" data-data="<?php echo $p->id; ?>" class="btn btn-danger">Reenviar Arte do Pôster</a>
                                          <?php echo form_open_multipart(base_url('dashboard/poster/upload-later-art-do'), array('id' => 'form-later-upload-poster2-'.$p->id, 'style' => 'display : none;')); ?>
 
                                             <input type="text" name="id-poster" value="<?php echo $p->id; ?>" >
-                                            <input type="file" data-data="<?php echo $p->id; ?>" id="later-upload-art-poster" name="poster" >
+                                            <input type="file" data-data="<?php echo $p->id; ?>" class="later-upload-art-poster" name="poster" >
 
                                         </form>
                                         <br>
@@ -98,12 +113,12 @@
                                 <?php elseif ($p->art == "" || !$p->art) : ?>
 
                                     <td>
-                                        <a id="later-upload-art-poster-btn" data-data="<?php echo $p->id; ?>" class="btn btn-danger">Enviar Arte do Pôster</a>
+                                        <a id="later-upload-art-poster-btn" class="click-art" data-data="<?php echo $p->id; ?>" class="btn btn-danger">Enviar Arte do Pôster</a>
 
                                          <?php echo form_open_multipart(base_url('dashboard/poster/upload-later-art-do'), array('id' => 'form-later-upload-poster2-'.$p->id, 'style' => 'display : none;')); ?>
 
                                             <input type="text" name="id-poster" value="<?php echo $p->id; ?>" >
-                                            <input type="file" data-data="<?php echo $p->id; ?>" id="later-upload-art-poster" name="poster" >
+                                            <input type="file" data-data="<?php echo $p->id; ?>" class="later-upload-art-poster" name="poster" >
 
                                         </form>
 
