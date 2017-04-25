@@ -20,11 +20,11 @@
     <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/vendor.12da6583d2c6137b9f20.bundle.js"></script>
     <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/main.a51d0b7b17914470022a.bundle.js"></script>-->
 
-    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/inline.e18e19119973d5e29759.bundle.js"></script>
+    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/inline.d28ec9b11904721f791d.bundle.js"></script>
     <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/polyfills.4885d4290f8fd326beff.bundle.js"></script>
     <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/scripts.24758fe97d6ffed9351d.bundle.js"></script>
     <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/vendor.40d8e53602fbb45434cb.bundle.js"></script>
-    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/main.227b7e755e952433d865.bundle.js"></script>
+    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/main.df23a54a183c0066daae.bundle.js"></script>
 
 </body>
 
