@@ -60,6 +60,29 @@
               defaultView: 'basicWeek',
               locale: 'pt',
               defaultDate: '2017-05-08',
+              events: events,
+              eventClick:  function(event, jsEvent, view) {
+                  $('#modalTitle').html(event.title);
+                  $('#modalBody').html(event.description);
+                  $('#modalShift').html(event.shift);
+                  $('#modalLocal').html(event.local);
+
+                  if(event.debaters) {
+                    $('#modalAuthors').html(event.debaters);
+                  } else {
+                    $('#modalAuthors').html(event.authors);
+                  }
+
+                  if(event.expositor) {
+                    $('#modalCoordinator').html(event.expositor);
+                  } else {
+                    $('#modalCoordinator').html(event.coordinator);
+                  }
+
+
+                  modalAuthors
+                  $('#fullCalModal').modal();
+              }
           })
 
       });
