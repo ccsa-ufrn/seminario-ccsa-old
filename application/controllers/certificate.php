@@ -13,7 +13,7 @@ class Certificate extends CI_Controller {
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -27,14 +27,14 @@ class Certificate extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
-        $data = array( 
+
+        $data = array(
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
             'validation' => $this->session->flashdata('validation'),
             'popform' => $this->session->flashdata('popform')
         );
-        
+
         $this->load->view('dashboard/header');
         $this->load->view('dashboard/template/menuAdministrator');
         $this->load->view('dashboard/certificate/custom',$data);
@@ -46,7 +46,7 @@ class Certificate extends CI_Controller {
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -57,12 +57,12 @@ class Certificate extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
-        $data = array( 
+
+        $data = array(
             'user' => $u,
-            'active' => 'certificate'   
+            'active' => 'certificate'
             );
-        
+
         $this->load->view('dashboard/header');
         if($u->type=='student'||$u->type=='noacademic')
             $this->load->view('dashboard/template/menuStudent',$data);
@@ -79,7 +79,7 @@ class Certificate extends CI_Controller {
 
         $id = $_REQUEST['id'];
         $type = $_REQUEST['type'];
-        
+
         if(!is_numeric((int) $id) || $type != 'paper' || $type != 'roundtable' || $type != 'poster' || $type != 'conference' || $type != 'teachingcase' )
 
         $text = "";
@@ -304,7 +304,7 @@ class Certificate extends CI_Controller {
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form','text') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -325,20 +325,20 @@ class Certificate extends CI_Controller {
         $cert->certgen = date("His").'ctm'.$id;
         R::store($cert);
 
-        $data = array( 
+        $data = array(
             'text' => $this->input->post('text'),
             'certgen' => $cert->certgen
         );
-        
+
         $this->load->view('dashboard/certificate/customcertificate',$data);
-    
+
     }
 
     public function minicourseView(){
 
     	$this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -352,8 +352,8 @@ class Certificate extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
-        $data = array( 
+
+        $data = array(
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
             'validation' => $this->session->flashdata('validation'),
@@ -361,7 +361,7 @@ class Certificate extends CI_Controller {
             'mcs' => R::find('minicourse',' cernn IS NULL OR ( cernn="pending" ) ORDER BY title ASC '),
             'mcsa' => R::find('minicourse',' cernn="yes" OR cernn="no" ORDER BY title ASC ')
         );
-        
+
         $this->load->view('dashboard/header');
         $this->load->view('dashboard/template/menuAdministrator');
         $this->load->view('dashboard/certificate/minicourse',$data);
@@ -428,7 +428,7 @@ class Certificate extends CI_Controller {
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -446,8 +446,8 @@ class Certificate extends CI_Controller {
         // Retrieving content
         $id = $this->input->get('id');
         $type = $this->input->get('type');
-        
-        $data = array( 
+
+        $data = array(
             'id' => $id,
             'type' => $type
         );
@@ -457,10 +457,10 @@ class Certificate extends CI_Controller {
     }
 
     public function retrieveParticipantsList(){
-        
+
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -482,7 +482,7 @@ class Certificate extends CI_Controller {
 
         $name = str_replace(" ","%",$name);
 
-        $ps = R::find('user',' ( type = "student" OR type = "noacademic" OR type = "instructor" ) AND name LIKE ? ORDER BY name ASC', array( '%'.$name.'%'));
+        $ps = R::find('user',' ( type = "student" OR type = "noacademic" OR type = "instructor" ) AND name LIKE ? AND paid = "accepted" ORDER BY name ASC', array( '%'.$name.'%'));
 
         echo "<table class='table table-striped table-bordered table-condensed'>";
 
@@ -490,12 +490,12 @@ class Certificate extends CI_Controller {
         echo "<th>Nome</th>";
         echo "<th>Acrescentar</th>";
         echo "<tr></thead>";
-                        
+
         foreach ($ps as $p) {
             echo "<tr>";
             echo "<td style='text-transform:uppercase;' >".$p->name."</td>";
 
-            echo "<td style='width:20%;text-align:center;'>"; 
+            echo "<td style='width:20%;text-align:center;'>";
 
             echo "<a id='certificate-add-participant-button' style='cursor:pointer;' data-value='".$p->id."' >Adicionar</a>";
             echo form_open(base_url('dashboard/certificate/addparticipant'), array('id' => 'formCertificateAddParticipant-'.$p->id,'novalidate' => '','class' => 'waiting'));
@@ -634,7 +634,7 @@ class Certificate extends CI_Controller {
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -651,8 +651,8 @@ class Certificate extends CI_Controller {
 
         // Retrieving content
         $mcId = $this->input->get('id');
-        
-        $data = array( 
+
+        $data = array(
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
             'validation' => $this->session->flashdata('validation'),
@@ -775,14 +775,14 @@ class Certificate extends CI_Controller {
         $this->session->set_flashdata('success','Operação realizada com sucesso.');
         redirect(base_url('dashboard/certificate/minicourse'));
         exit;
-        
+
     }
 
     public function roundtableView(){
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -796,8 +796,8 @@ class Certificate extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
-        $data = array( 
+
+        $data = array(
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
             'validation' => $this->session->flashdata('validation'),
@@ -805,7 +805,7 @@ class Certificate extends CI_Controller {
             'mcs' => R::find('roundtable',' cernn IS NULL OR ( cernn="pending" ) ORDER BY title ASC '),
             'mcsa' => R::find('roundtable',' cernn="yes" OR cernn="no" ORDER BY title ASC ')
         );
-        
+
         $this->load->view('dashboard/header');
         $this->load->view('dashboard/template/menuAdministrator');
         $this->load->view('dashboard/certificate/roundtable',$data);
@@ -872,7 +872,7 @@ class Certificate extends CI_Controller {
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -889,8 +889,8 @@ class Certificate extends CI_Controller {
 
         // Retrieving content
         $mcId = $this->input->get('id');
-        
-        $data = array( 
+
+        $data = array(
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
             'validation' => $this->session->flashdata('validation'),
@@ -1013,14 +1013,14 @@ class Certificate extends CI_Controller {
         $this->session->set_flashdata('success','Operação realizada com sucesso.');
         redirect(base_url('dashboard/certificate/roundtable'));
         exit;
-        
+
     }
 
     public function conferenceView(){
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1034,8 +1034,8 @@ class Certificate extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
-        $data = array( 
+
+        $data = array(
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
             'validation' => $this->session->flashdata('validation'),
@@ -1043,7 +1043,7 @@ class Certificate extends CI_Controller {
             'mcs' => R::find('conference',' cernn IS NULL OR ( cernn="pending" ) ORDER BY title ASC '),
             'mcsa' => R::find('conference',' cernn="yes" OR cernn="no" ORDER BY title ASC ')
         );
-        
+
         $this->load->view('dashboard/header');
         $this->load->view('dashboard/template/menuAdministrator');
         $this->load->view('dashboard/certificate/conference',$data);
@@ -1110,7 +1110,7 @@ class Certificate extends CI_Controller {
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1127,8 +1127,8 @@ class Certificate extends CI_Controller {
 
         // Retrieving content
         $mcId = $this->input->get('id');
-        
-        $data = array( 
+
+        $data = array(
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
             'validation' => $this->session->flashdata('validation'),
@@ -1251,14 +1251,14 @@ class Certificate extends CI_Controller {
         $this->session->set_flashdata('success','Operação realizada com sucesso.');
         redirect(base_url('dashboard/certificate/conference'));
         exit;
-        
+
     }
 
     public function workshopView(){
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1272,8 +1272,8 @@ class Certificate extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
-        $data = array( 
+
+        $data = array(
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
             'validation' => $this->session->flashdata('validation'),
@@ -1281,7 +1281,7 @@ class Certificate extends CI_Controller {
             'mcs' => R::find('workshop',' cernn IS NULL OR ( cernn="pending" ) ORDER BY title ASC '),
             'mcsa' => R::find('workshop',' cernn="yes" OR cernn="no" ORDER BY title ASC ')
         );
-        
+
         $this->load->view('dashboard/header');
         $this->load->view('dashboard/template/menuAdministrator');
         $this->load->view('dashboard/certificate/workshop',$data);
@@ -1348,7 +1348,7 @@ class Certificate extends CI_Controller {
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1365,8 +1365,8 @@ class Certificate extends CI_Controller {
 
         // Retrieving content
         $mcId = $this->input->get('id');
-        
-        $data = array( 
+
+        $data = array(
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
             'validation' => $this->session->flashdata('validation'),
@@ -1489,13 +1489,13 @@ class Certificate extends CI_Controller {
         $this->session->set_flashdata('success','Operação realizada com sucesso.');
         redirect(base_url('dashboard/certificate/workshop'));
         exit;
-        
+
     }
-    
+
     public function teachingcaseView() {
     	$this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1509,15 +1509,15 @@ class Certificate extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
-        $data = array( 
+
+        $data = array(
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
             'validation' => $this->session->flashdata('validation'),
             'popform' => $this->session->flashdata('popform'),
             'teachingcases' => R::find('teachingcase', 'evaluation = "accepted" AND ( cernn IS NULL OR cernn = "pending" ) ')
         );
-        
+
         $this->load->view('dashboard/header');
         $this->load->view('dashboard/template/menuAdministrator');
         $this->load->view('dashboard/certificate/teachingcase',$data);
@@ -1529,7 +1529,7 @@ class Certificate extends CI_Controller {
 
     	$this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1543,15 +1543,15 @@ class Certificate extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
-        $data = array( 
+
+        $data = array(
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
             'validation' => $this->session->flashdata('validation'),
             'popform' => $this->session->flashdata('popform'),
             'tgs' => R::find('thematicgroup')
         );
-        
+
         $this->load->view('dashboard/header');
         $this->load->view('dashboard/template/menuAdministrator');
         $this->load->view('dashboard/certificate/paper',$data);
@@ -1650,9 +1650,9 @@ class Certificate extends CI_Controller {
        	$this->session->set_flashdata('success','Operação realizada com sucesso.');
         redirect(base_url('dashboard/certificate/paper'));
         exit;
-        
+
     }
-    
+
     public function acceptTeachingCase() {
         $this->load->library( array('session','rb','form_validation') );
         $this->load->helper( array('url') );
@@ -1697,7 +1697,7 @@ class Certificate extends CI_Controller {
         redirect(base_url('dashboard/certificate/teachingcase'));
         exit;
     }
-    
+
     public function rejectTeachingCase() {
         $this->load->library( array('session','rb','form_validation') );
         $this->load->helper( array('url') );
@@ -1747,7 +1747,7 @@ class Certificate extends CI_Controller {
 
     	$this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1761,15 +1761,15 @@ class Certificate extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
-        $data = array( 
+
+        $data = array(
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
             'validation' => $this->session->flashdata('validation'),
             'popform' => $this->session->flashdata('popform'),
             'tgs' => R::find('thematicgroup')
         );
-        
+
         $this->load->view('dashboard/header');
         $this->load->view('dashboard/template/menuAdministrator');
         $this->load->view('dashboard/certificate/poster',$data);
@@ -1876,21 +1876,21 @@ class Certificate extends CI_Controller {
        	$this->session->set_flashdata('success','Operação realizada com sucesso.');
         redirect(base_url('dashboard/certificate/poster'));
         exit;
-        
+
     }
 
     public function validateView(){
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
-        $data = array( 
+
+        $data = array(
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
             'validation' => $this->session->flashdata('validation'),
             'popform' => $this->session->flashdata('popform')
         );
-        
+
         $this->load->view('template/header');
         $this->load->view('dashboard/certificate/validate',$data);
         $this->load->view('template/footer');
@@ -2096,12 +2096,12 @@ class Certificate extends CI_Controller {
 
         }
 
-        $data = array( 
+        $data = array(
             'text' => $text,
             'certgen' => $certgen,
             'validated' => $validated
         );
-        
+
         $this->load->view('dashboard/certificate/customcertificate',$data);
 
     }

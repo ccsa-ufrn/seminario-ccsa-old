@@ -630,6 +630,7 @@ class Script extends CI_Controller {
 
                 $pdf->SetFillColor(255,255,255);
 
+
                 $pdf->MultiCell(
                     0,
                     10,
@@ -658,6 +659,7 @@ class Script extends CI_Controller {
                         $pdf->SetFillColor(255, 77, 77);
 
                 endif;
+
 
                 $pdf->MultiCell(
                     0,
@@ -824,6 +826,7 @@ class Script extends CI_Controller {
                     $pdf->SetFillColor(255, 77, 77);
 
             endif;
+
 
             $pdf->MultiCell(
                 0,
@@ -1220,6 +1223,7 @@ class Script extends CI_Controller {
 
                 endif;
 
+
                 $pdf->MultiCell(
                     0,
                     10,
@@ -1327,7 +1331,19 @@ class Script extends CI_Controller {
 
 
     }
-
+    private function installConfig($config) {
+        if(!R::count('configuration','name=?',array($config->name))){
+            $c = R::dispense('configuration');
+            $c->name = $config->name;
+            $c->nickname = $config->nickname;
+            $c->value = $config->value;
+            $c->type = $config->type;
+            R::store($c);
+            echo "<p style='color: green;'><b>{$config->nickname}</b> was successfully installed.</p>";
+        }else{
+            echo "<p style='color: orange;'><b>{$config->nickname}</b> wasn't successfully installed, it already exists.</p>";
+        }
+    }
 
     /*
      * Function : installConfigs()
@@ -1335,24 +1351,12 @@ class Script extends CI_Controller {
     */
     public function installConfigs()
     {
+        $this->load->library(array('session', 'rb'));
+        $this->load->helper(array('url', 'form'));
+        $this->load->model('Configuration');
 
+        $config = new Configuration();
 
-        /*
-         * Loading libraries and helpers
-        */
-        $this->load->library(
-            array(
-                'session',
-                'rb'
-            )
-        );
-
-        $this->load->helper(
-            array(
-                'url',
-                'form'
-            )
-        );
 
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
@@ -1368,410 +1372,113 @@ class Script extends CI_Controller {
             END - CAPABILITIES SECURITY
         ================================================== */
 
-        // MAX DATA FOR REGISTRATION (?)
+
+        echo '<h1>Instalação de Configurações</h1>';
 
         // MAX DATE FOR PAPERS SUBMISSIONS
-
-        $name = "max_date_paper_submission" ;
-        $nickname = "Data limite de submissão de artigo";
-        $value = "2015-03-15";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('max_date_paper_submission', 'Data limite de submissão de artigo',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // MAX DATE FOR POSTERS SUBMISSIONS
+        $config->setConfig('max_date_poster_submission', 'Data limite de submissão de pôsteres',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
-        $name = "max_date_poster_submission" ;
-        $nickname = "Data limite de submissão de pôster";
-        $value = "2015-03-15";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        // MAX DATE FOR POSTERS SUBMISSIONS
+        $config->setConfig('max_date_poster_file_submission',
+          'Data limite de submissão do arquivo de pôster, após aceitação',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // MAX DATE FOR MINICOURSE SUBMISSIONS
-
-        $name = "max_date_minicourse_submission" ;
-        $nickname = "Data limite de submissão de minicurso";
-        $value = "2015-03-15";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('max_date_minicourse_submission',
+          'Data limite de submissão de minicurso',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // MAX DATE FOR WORKSHOP SUBMISSIONS
-
-        $name = "max_date_workshop_submission" ;
-        $nickname = "Data limite de submissão de oficina";
-        $value = "2015-03-15";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('max_date_workshop_submission', 'Data limite de submissão de oficina',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // MAX DATE FOR ROUNDTABLE SUBMISSIONS
-
-        $name = "max_date_roundtable_submission" ;
-        $nickname = "Data limite de submissão de mesa-redonda";
-        $value = "2015-03-15";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('max_date_roundtable_submission', 'Data limite de submissão de mesa-redonda',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // MAX DATE FOR CASE STUDY SUBMISSIONS
-
-        $name = "max_date_teachingcases_submission" ;
-        $nickname = "Data limite de submissão de casos de ensino";
-        $value = "2015-03-15";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('max_date_teachingcases_submission', 'Data limite de submissão de casos de ensino',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // MAX DATE FOR ROUNDTABLE CONSOLIDATION
-
-        $name = "max_date_roundtable_consolidation" ;
-        $nickname = "Data limite para consolidação de mesas-redondas";
-        $value = "2015-03-22";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('max_date_roundtable_consolidation', 'Data limite para consolidação de mesas-redondas',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // MAX DATE FOR MINICOURSE CONSOLIDATION
-
-        $name = "max_date_minicourse_consolidation" ;
-        $nickname = "Data limite para consolidação de minicursos";
-        $value = "2015-03-22";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('max_date_minicourse_consolidation', 'Data limite para consolidação de minicursos',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // MAX DATE FOR CONFERENCE CONSOLIDATION
-
-        $name = "max_date_conference_consolidation" ;
-        $nickname = "Data limite para consolidação de conferências";
-        $value = "2015-03-22";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('max_date_conference_consolidation', 'Data limite para consolidação de conferências',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // START DATE FOR MINICOURSE INSCRIPTIONS
-
-        $name = "start_date_minicourse_inscription" ;
-        $nickname = "Data inicial para inscrições em minicursos";
-        $value = "2015-03-23";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('start_date_minicourse_inscription', 'Data inicial para inscrições em minicursos',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // END DATE FOR MINICOURSE INSCRIPTIONS
-
-        $name = "end_date_minicourse_inscription" ;
-        $nickname = "Data limite de inscrições em minicursos";
-        $value = "2015-04-24";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('end_date_minicourse_inscription', 'Data limite de inscrições em minicursos',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // START DATE FOR WORKSHOP INSCRIPTIONS
-
-        $name = "start_date_workshop_inscription" ;
-        $nickname = "Data inicial para inscrições em oficinas";
-        $value = "2015-03-23";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('start_date_workshop_inscription', 'Data inicial para inscrições em oficinas',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // END DATE FOR WORKSHOP INSCRIPTIONS
+        $config->setConfig('end_date_workshop_inscription', 'Data limite de inscrições em oficinas',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
-        $name = "end_date_workshop_inscription" ;
-        $nickname = "Data limite de inscrições em oficinas";
-        $value = "2015-04-24";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
 
         // START DATE FOR ROUNDTABLE INSCRIPTIONS
-
-        $name = "start_date_roundtable_inscription" ;
-        $nickname = "Data inicial para inscrições em mesas-redondas";
-        $value = "2015-03-23";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('start_date_roundtable_inscription', 'Data inicial para inscrições em mesas-redondas',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // END DATE FOR ROUNDTABLE INSCRIPTIONS
-
-        $name = "end_date_roundtable_inscription" ;
-        $nickname = "Data limite de inscrições em mesas-redondas";
-        $value = "2015-04-24";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('end_date_roundtable_inscription', 'Data limite de inscrições em mesas-redondas',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // START DATE FOR CONFERENCE INSCRIPTIONS
-
-        $name = "start_date_conference_inscription" ;
-        $nickname = "Data inicial para inscrições em conferências";
-        $value = "2015-03-23";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-
-        }
+        $config->setConfig('start_date_conference_inscription', 'Data inicial para inscrições em conferências',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // END DATE FOR CONFERENCE INSCRIPTIONS
-
-        $name = "end_date_conference_inscription" ;
-        $nickname = "Data limite de inscrições em conferências";
-        $value = "2015-04-24";
-        $type = "date";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('end_date_conference_inscription', 'Data limite de inscrições em conferências',
+          '2017-03-26', 'date');
+        $this->installConfig($config);
 
         // ONE OR TWO AVALIATIONS PER PAPER?
-
-        $name = "two_avaliations_paper" ;
-        $nickname = "Duas avaliações por artigo?";
-        $value = "false";
-        $type = "boolean";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
+        $config->setConfig('two_avaliations_paper', 'Duas avaliações por artigo?',
+          'false', 'boolean');
+        $this->installConfig($config);
 
         // WOKRS NEED PAYMENT TO BE SENT?
+        $config->setConfig('need_payment', 'Trabalhos precisam de pagamento para serem enviados?',
+          'false', 'boolean');
+        $this->installConfig($config);
 
-        $name = "need_payment" ;
-        $nickname = "Trabalhos precisam de pagamento para serem enviados?";
-        $value = "false";
-        $type = "boolean";
-
-        if(!R::count('configuration','name=?',array($name))){
-            $config = R::dispense('configuration');
-            $config->name = $name;
-            $config->nickname = $nickname;
-            $config->value = $value;
-            $config->type = $type;
-            R::store($config);
-
-        }else{
-            $config = R::findOne('configuration','name=?',array($name));
-            $config->value = $value;
-            R::store($config);
-        }
-
-        echo "All configurations were installed successfully. :D";
+        echo "<p style='color: green; font-weight: bold;'>All configurations were successfully updated or installed. :D</p>";
 
     }
 

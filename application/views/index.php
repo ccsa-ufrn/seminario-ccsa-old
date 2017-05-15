@@ -9,7 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <!--<link href="<?php echo asset_url(); ?>ng2/styles.0534854e1ca0c76287c7.bundle.css" rel="stylesheet"/></head>-->
-    <link href="<?php echo asset_url(); ?>ng2/styles.961a54cc640d59c609d3.bundle.css" rel="stylesheet"/></head>
+    <link href="<?php echo asset_url(); ?>ng2/styles.961a54cc640d59c609d3.bundle.css" rel="stylesheet"/>
+    </head>
 
 <body> <!--class="menu overlay"-->
     <app-root>Carregando...</app-root>
@@ -20,11 +21,11 @@
     <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/vendor.12da6583d2c6137b9f20.bundle.js"></script>
     <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/main.a51d0b7b17914470022a.bundle.js"></script>-->
 
-    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/inline.e18e19119973d5e29759.bundle.js"></script>
-    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/polyfills.4885d4290f8fd326beff.bundle.js"></script>
-    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/scripts.24758fe97d6ffed9351d.bundle.js"></script>
-    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/vendor.40d8e53602fbb45434cb.bundle.js"></script>
-    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/main.227b7e755e952433d865.bundle.js"></script>
+    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/inline.63d300b29db4a6f78f24.bundle.js"></script>
+    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/polyfills.fa315e7001ca51532ced.bundle.js"></script>
+    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/scripts.39531397370aaf3c59e3.bundle.js"></script>
+    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/vendor.230f355b2e3d62731e95.bundle.js"></script>
+    <script type="text/javascript" src="<?php echo asset_url(); ?>ng2/main.c1816f7e9d217b499163.bundle.js"></script>
 
 </body>
 

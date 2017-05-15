@@ -105,10 +105,36 @@
 		                            </ul>
 		                            <!-- /.nav-second-level -->
 		                        </li>
+
+                                <li> <!-- REALEASE 1.2.0 -->
+                                    <a href="#"><i class="fa fa-tasks fa-fw"></i> Controle Avançado<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-second-level">
+		                                <li>
+		                                    <a href="<?php echo base_url('dashboard/advanced-control/paper'); ?>" >Artigos</a>
+		                                </li>
+		                                <li>
+		                                    <a href="<?php echo base_url('dashboard/advanced-control/poster'); ?>" >Pôsteres</a>
+		                                </li>
+                                        <li>
+                                            <a href="<?php echo base_url('dashboard/advanced-control/teachingcase'); ?>">Casos para Ensino</a>
+                                        </li>
+		                                <li>
+		                                    <a href="<?php echo base_url('dashboard/advanced-control/minicourse'); ?>">Minicursos</a>
+		                                </li>
+		                                <li>
+		                                    <a href="<?php echo base_url('dashboard/advanced-control/roundtable'); ?>">Mesas-redondas</a>
+		                                </li>
+                                        <li>
+                                            <a href="<?php echo base_url('dashboard/advanced-control/workshop'); ?>">Oficinas</a>
+                                        </li>
+		                            </ul>
+                                </li>
+
                             </ul>
                             <!-- /.nav-second-level -->
+
                         </li>
-                        
+
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Relatório<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -154,7 +180,7 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        
+
                         <li>
                             <a href="<?php echo base_url('dashboard/configuration'); ?>"><i class="fa fa-cog fa-fw"></i> Configurações do sistema</a>
                         </li>
@@ -162,11 +188,11 @@
                         <!--<li>
                             <a href="<?php echo base_url('dashboard/message/send'); ?>"><i class="fa fa-envelope-o fa-fw"></i> Enviar Mensagens</a>
                         </li>-->
-                        
+
                         <li>
                             <a href="<?php echo base_url('dashboard/message'); ?>"><i class="fa fa-envelope-o fa-fw"></i> Mensagens</a>
                         </li>
-                        
+
                         <li>
                             <a href="<?php echo base_url('dashboard/issue/manage'); ?>"><i class="fa fa-bug fa-fw"></i> Suporte</a>
                         </li>
@@ -175,7 +201,7 @@
                 </div>
                 <!-- /.sidebar-collapse -->
             </div>
-            
+
             <!-- /.navbar-static-side -->
         </nav>
 

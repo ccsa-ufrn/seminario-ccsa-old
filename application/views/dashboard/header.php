@@ -10,13 +10,13 @@
     <meta name="author" content="">
 
     <title>Painel do Seminário</title>
-    
+
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo asset_url(); ?>css/vendor/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Awesome Font -->
     <link href="<?php echo asset_url(); ?>css/vendor/font-awesome.min.css" rel="stylesheet">
-    
+
     <!-- MetisMenu CSS -->
     <link href="<?php echo asset_url(); ?>css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet" />
     <!-- Datatable -->
@@ -25,7 +25,7 @@
 
     <!-- Custom CSS -->
     <link href="<?php echo asset_url(); ?>css/sb-admin-2.css" rel="stylesheet" />
-    
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -34,10 +34,14 @@
     <![endif]-->
 
 
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.css" rel="stylesheet" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.print.css" rel="stylesheet" />
+
 </head>
 
 <body>
-    
+
     <div id="wrapper">
 
         <input style="display:none;" id="geral-base-url" value="<?php echo base_url(); ?>" />
@@ -58,17 +62,16 @@
             <ul class="nav navbar-top-links navbar-right">
                 <li class="menu-link">
                     <a href="<?php echo base_url('dashboard/myInformation'); ?>">
-                        <i class="fa fa-edit fa-fw"></i> Meus dados 
+                        <i class="fa fa-edit fa-fw"></i> Meus dados
                     </a>
                 </li>
                 <!-- /.menu-link -->
                 <li class="menu-link">
                     <a href="<?php echo base_url('logout'); ?>">
-                        <i class="fa fa-close fa-fw"></i> Sair 
+                        <i class="fa fa-close fa-fw"></i> Sair
                     </a>
                 </li>
                 <!-- /.menu-link -->
             </ul>
             <!-- /.navbar-top-links -->
 
-            
