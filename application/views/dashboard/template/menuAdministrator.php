@@ -172,6 +172,9 @@
                                     <a href="<?php echo base_url('dashboard/conference/report'); ?>">Conferências</a>
                                 </li>
                                 <li>
+                                    <a href="<?php echo base_url('dashboard/user/submiter-report'); ?>">Relatório de Proponentes</a>
+                                </li>
+                                <li>
                                     <a href="<?php echo base_url('dashboard/user/reportinscription'); ?>">Relatório de Inscrito</a>
                                 </li>
                                 <li>

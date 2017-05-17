@@ -154,6 +154,8 @@ $route['dashboard/user/reportinscription'] = 'user/reportInscriptionView';
 $route['dashboard/user/reportinscription/retrieveLinkSearchByName'] = 'user/retrieveLinkSearchByNameReport';
 $route['dashboard/user/createreportinscription/(:any)'] = 'user/createReportInscription';
 $route['dashboard/user/myactivities'] = 'user/myActivitiesView';
+$route['dashboard/user/submiter-report'] = 'user/submitReporterView';
+
 
 $route['dashboard/issue/create'] = 'issue/createView';
 $route['dashboard/issue/open'] = 'issue/create';

@@ -1957,6 +1957,38 @@ class User extends CI_Controller {
 
     }
 
+    function submitReporterView() {
+      $this->load->library(array('session','rb'));
+      $this->load->helper(array('url','text'));
+
+      /* =================================================
+            BEGIN - CAPABILITIES SECURITY
+        ================================================== */
+        $type = 'administrator';
+        $userLogged = $this->session->userdata('user_logged_in');
+        if(!$userLogged)
+            redirect(base_url('dashboard'));
+        $u = R::findOne('user','id=?',array($this->session->userdata('user_id')));
+        if($u['type']!=$type)
+            redirect(base_url('dashboard'));
+        /* =================================================
+            END - CAPABILITIES SECURITY
+        ================================================== */
+
+      $minicourses = R::find('minicourse');
+      $roundtables = R::find('roundtable');
+      $workshops = R::find('workshop');
+
+      $this->load->view('dashboard/header');
+      $this->load->view('dashboard/template/menuAdministrator');
+      $this->load->view('dashboard/user/submiterReport', array(
+        'minicourses' => $minicourses,
+        'roundtables' => $roundtables,
+        'workshops' => $workshops
+      ));
+      $this->load->view('dashboard/footer');
+    }
+
 }
 
 /* End of file welcome.php */
