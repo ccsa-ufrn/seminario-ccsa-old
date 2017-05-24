@@ -7,14 +7,14 @@ class RoundTable extends CI_Controller {
 
         if(!verifyingInstallationConf())
             redirect(base_url('install'));
-        
+
     }
 
     public function retrieveEditInfo(){
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form','utility') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -31,7 +31,7 @@ class RoundTable extends CI_Controller {
 
         // Retrieving content
         $mcId = $this->input->get('id');
-        
+
         if(!is_numeric($mcId)){
             echo "The id is not numeric. Do not do that! :D";
             exit;
@@ -40,11 +40,11 @@ class RoundTable extends CI_Controller {
         $rt = R::findOne('roundtable','id=?',array($mcId));
         $rds = R::find('roundtabledayshift','ORDER BY date ASC');
 
-        $data = array( 
+        $data = array(
             'rt' => $rt,
             'rds' => $rds
             );
-        
+
         $this->load->view('dashboard/roundtable/retrieveEditInfo', $data);
 
     }
@@ -53,13 +53,13 @@ class RoundTable extends CI_Controller {
 
         $this->load->library( array('session','rb','form_validation') );
         $this->load->helper( array('url','form','date') );
-        
+
         // It's a POST request?
         if($this->input->server('REQUEST_METHOD')!='POST'){
             echo "Don't do that. :D";
             exit;
         }
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -73,14 +73,14 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         // Retrieving user
         $user = $u;
 
         /* ===========================================
             BEGIN - VALIDATION
         ============================================ */
-        
+
         $validation = array(
             array(
                 'field' => 'vacancies',
@@ -98,26 +98,26 @@ class RoundTable extends CI_Controller {
                 'rules' => 'required'
             )
         );
-        
+
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules($validation);
         customErrorMessages($this->form_validation);
-        
+
         // Verifyng validation error
         if(!$this->form_validation->run()){
             $this->session->set_flashdata('error','Você precisa preencher todos os dados corretamente. Repita a operação.');
             redirect(base_url('dashboard/roundtable/manage'));
             exit;
         }
-        
+
         /* ===========================================
             END - VALIDATION
         ============================================ */
-        
+
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
         $id = $this->input->post('id');
         $vacancies = $this->input->post('vacancies');
         $local = $this->input->post('local');
@@ -126,7 +126,7 @@ class RoundTable extends CI_Controller {
         /* ===========================================
             END - PREPARING DATA
         ============================================ */
-        
+
         // Retriving rountable
         $rt = R::findOne('roundtable','id=?',array($id));
 
@@ -136,13 +136,13 @@ class RoundTable extends CI_Controller {
             redirect(base_url('dashboard/roundtable/manage'));
             exit;
         }
-        
+
         $rt['consolidatedvacancies'] = $vacancies;
         $rt['consolidatedlocal'] = $local;
         R::store($rt);
-        
+
         // Relation with dayshift
-        
+
         $ds = R::findOne('roundtabledayshift','id=?',array($dayshift));
         $ds->ownRoundtableList[] = $rt;
         R::store($ds);
@@ -157,7 +157,7 @@ class RoundTable extends CI_Controller {
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form','utility','date') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -171,7 +171,7 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $id = $this->input->get('id');
 
         $status = 'ok';
@@ -188,19 +188,19 @@ class RoundTable extends CI_Controller {
             // Permite desconsolidação com aviso
             $status = 'warning';
         }
-        
+
         if(!is_numeric($id)){
             echo "The id is not numeric. Do not do that! :D";
             exit;
         }
 
         $mc = R::findOne('roundtable','id=?',array($id));
-        
-        $data = array( 
+
+        $data = array(
             'mc' => $mc,
             'status' => $status
             );
-        
+
         $this->load->view('dashboard/roundtable/retrieveConfirmOperation', $data);
 
     }
@@ -211,7 +211,7 @@ class RoundTable extends CI_Controller {
         $this->load->helper( array('url','form','date') );
 
         $user = R::findOne('user','id=?',array($this->session->userdata('user_id')));
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -225,15 +225,15 @@ class RoundTable extends CI_Controller {
             redirect(base_url('dashboard'));
         /* =================================================
             END - CAPABILITIES SECURITY
-        ================================================== */ 
-        
+        ================================================== */
+
         $config = R::findOne('configuration','name=?',array('max_date_roundtable_submission'));
-        
+
         if(dateleq(mdate('%Y-%m-%d'),$config->value))
             $open = true;
         else
             $open = false;
-        
+
         $data = array(
                     'success' => $this->session->flashdata('success'),
                     'error' => $this->session->flashdata('error'),
@@ -254,7 +254,7 @@ class RoundTable extends CI_Controller {
             if($this->session->userdata('user_type')=='instructor')
                 $this->load->view('dashboard/template/menuInstructor',$data);
         }
-        
+
         $this->load->view('dashboard/roundtable/submit',$data);
         $this->load->view('dashboard/footer');
 
@@ -262,8 +262,8 @@ class RoundTable extends CI_Controller {
 
     public function createReport()
     {
-        
-        /* 
+
+        /*
          * Loading libraries and helpers
         */
         $this->load->library(
@@ -273,13 +273,13 @@ class RoundTable extends CI_Controller {
                 'session'
             )
         );
-        
+
         $this->load->helper(
             array(
                 'text'
             )
         );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -293,308 +293,308 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
-        
+
+
         /*
          * Creating PDF
         */
         $pdf = new FPDI();
-        
+
         $pdf->addPage('L');
-        
+
         /* *********************************************************
          * BEGIN  - HEADER
          ********************************************************* */
-        
+
         $pdf->image(
             asset_url().'img/logopdf.png',
             132,
             5
         );
-        
+
         $pdf->ln(14);
         $pdf->SetFont('Courier','B',12);
-        
+
         $pdf->Cell(
             0,
-            0, 
-            utf8_decode( 'SEMINÁRIO DE PESQUISA DO CCSA' ), 
-            0, 
+            0,
+            utf8_decode( 'SEMINÁRIO DE PESQUISA DO CCSA' ),
+            0,
             0,
             'C'
         );
 
         $pdf->Ln(7);
         $pdf->SetFont('Courier','',9);
-        
+
         $pdf->Cell(
             0,
-            0, 
-            utf8_decode( 'Lista de Mesa-redonda' ), 
-            0, 
+            0,
+            utf8_decode( 'Lista de Mesa-redonda' ),
+            0,
             0,
             'C'
         );
-        
+
         /* *********************************************************
         * END - HEADER
         ********************************************************* */
-        
+
         $roundtableid = $this->input->post('roundtable');
         $lista = $this->input->post('list');
-        
-        /* 
+
+        /*
          * Loading User
         */
         $roundtable = R::findOne(
             'roundtable',
             ' id = ? ',
-            array( 
-                $roundtableid
-            )
-        );
-
-        
-        /* 
-         * General Info 
-        */
-        $pdf->Ln(6);
-        
-        $pdf->SetFont('Courier','B',9);
-        
-        $pdf->SetDrawColor(170,170,170);
-        $pdf->SetFillColor(244,244,244);
-        $pdf->Cell(
-            0, 
-            10, 
-            utf8_decode( strtoupper ( $roundtable->title ) ), 
-            'LRT',
-            0,
-            'C',
-            true
-        ); 
-
-        
-        $pdf->Ln(10);
-        
-        $pdf->SetFillColor(255,255,255);
-        
-        $pdf->Cell(
-            26, 
-            7, 
-            utf8_decode( 'Local/Vagas: ' ), 
-            'LTB',
-            0,
-            'L',
-            false
-        ); 
-        
-        $pdf->Cell(
-            251, 
-            7, 
-            utf8_decode($roundtable->consolidatedlocal.' - '.$roundtable->consolidatedvacancies.' vagas '), 
-            'TBR',
-            0,
-            'L',
-            false
-        ); 
-        
-        $pdf->Ln(7);
-        
-        $conj = $roundtable->coordinator;
-        $conj = explode('||', $conj);
-        $conj = implode(', ', $conj);
-        
-        $pdf->MultiCell(
-            277, 
-            7, 
-            utf8_decode('Coordenador: '.$conj), 
-            'LBR',
-            'L',
-            false
-        );
-        
-        $conj = $roundtable->debaters;
-        $conj = explode('||', $conj);
-        $conj = implode(', ', $conj);
-        
-        $pdf->MultiCell(
-            277, 
-            7, 
-            utf8_decode('Debatedores: '.$conj), 
-            'LBR',
-            'L',
-            false
-        ); 
-        
-        /* 
-         * Students
-        */
-        $pdf->Ln(10);
-        
-        
-        $result = R::find(
-            'roundtable_user',
-            'roundtable_id=?', 
             array(
                 $roundtableid
             )
         );
-        
+
+
+        /*
+         * General Info
+        */
+        $pdf->Ln(6);
+
+        $pdf->SetFont('Courier','B',9);
+
+        $pdf->SetDrawColor(170,170,170);
+        $pdf->SetFillColor(244,244,244);
+        $pdf->Cell(
+            0,
+            10,
+            utf8_decode( strtoupper ( $roundtable->title ) ),
+            'LRT',
+            0,
+            'C',
+            true
+        );
+
+
+        $pdf->Ln(10);
+
+        $pdf->SetFillColor(255,255,255);
+
+        $pdf->Cell(
+            26,
+            7,
+            utf8_decode( 'Local/Vagas: ' ),
+            'LTB',
+            0,
+            'L',
+            false
+        );
+
+        $pdf->Cell(
+            251,
+            7,
+            utf8_decode($roundtable->consolidatedlocal.' - '.$roundtable->consolidatedvacancies.' vagas '),
+            'TBR',
+            0,
+            'L',
+            false
+        );
+
+        $pdf->Ln(7);
+
+        $conj = $roundtable->coordinator;
+        $conj = explode('||', $conj);
+        $conj = implode(', ', $conj);
+
+        $pdf->MultiCell(
+            277,
+            7,
+            utf8_decode('Coordenador: '.$conj),
+            'LBR',
+            'L',
+            false
+        );
+
+        $conj = $roundtable->debaters;
+        $conj = explode('||', $conj);
+        $conj = implode(', ', $conj);
+
+        $pdf->MultiCell(
+            277,
+            7,
+            utf8_decode('Debatedores: '.$conj),
+            'LBR',
+            'L',
+            false
+        );
+
+        /*
+         * Students
+        */
+        $pdf->Ln(10);
+
+
+        $result = R::find(
+            'roundtable_user',
+            'roundtable_id=?',
+            array(
+                $roundtableid
+            )
+        );
+
         $result = $roundtable->with('ORDER BY name ASC')->sharedUserList;
-        
-        if ( $lista === 'list' ) : 
-        
+
+        if ( $lista === 'list' ) :
+
             /*
              * HEADER
             */
             $pdf->SetDrawColor(170,170,170);
             $pdf->SetFillColor(244,244,244);
-            
+
             $pdf->Cell(
-                140, 
-                10, 
-                utf8_decode( 'Nome' ), 
+                140,
+                10,
+                utf8_decode( 'Nome' ),
                 'LRTB',
                 0,
                 'C',
                 true
-            ); 
-            
+            );
+
             $pdf->Cell(
-                137, 
-                10, 
-                utf8_decode( 'Assinatura' ), 
+                137,
+                10,
+                utf8_decode( 'Assinatura' ),
                 'LRTB',
                 0,
                 'C',
                 true
-            ); 
-            
-           foreach ( $result as $i ) : 
-           
+            );
+
+           foreach ( $result as $i ) :
+
                 $pdf->Ln(10);
-           
+
                 $pdf->SetDrawColor(170,170,170);
-                
+
                 $pdf->Cell(
-                    140, 
-                    10, 
-                    utf8_decode( titleCase($i->name) ), 
+                    140,
+                    10,
+                    utf8_decode( titleCase($i->name) ),
                     'LRTB',
                     0,
                     'C',
                     false
-                ); 
-                
+                );
+
                 $pdf->Cell(
-                    137, 
-                    10, 
-                    utf8_decode(''), 
+                    137,
+                    10,
+                    utf8_decode(''),
                     'LRTB',
                     0,
                     'C',
                     false
-                ); 
-            
-            endforeach; 
-        
-        else : 
-        
-            /*
-             * HEADER
-            */
-            $pdf->SetDrawColor(170,170,170);
-            $pdf->SetFillColor(244,244,244);
-            
-            $pdf->Cell(
-                130, 
-                10, 
-                utf8_decode( 'Nome' ), 
-                'LRTB',
-                0,
-                'C',
-                true
-            ); 
-            
-            $pdf->Cell(
-                90, 
-                10, 
-                utf8_decode( 'Email' ), 
-                'LRTB',
-                0,
-                'C',
-                true
-            ); 
-            
-            $pdf->Cell(
-                57, 
-                10, 
-                utf8_decode( 'Telefone' ), 
-                'LRTB',
-                0,
-                'C',
-                true
-            ); 
-            
-           foreach ( $result as $i ) : 
-           
-                $pdf->Ln(10);
-           
-                $pdf->SetDrawColor(170,170,170);
-                
-                $pdf->Cell(
-                    130, 
-                    10, 
-                    utf8_decode( titleCase($i->name) ), 
-                    'LRTB',
-                    0,
-                    'C',
-                    false
-                ); 
-                
-                $pdf->Cell(
-                    90, 
-                    10, 
-                    utf8_decode( $i->email ), 
-                    'LRTB',
-                    0,
-                    'C',
-                    false
-                ); 
-                
-                
-                $pdf->Cell(
-                    57, 
-                    10, 
-                    utf8_decode( $i->phone), 
-                    'LRTB',
-                    0,
-                    'C',
-                    false
-                ); 
-            
+                );
+
             endforeach;
-        
+
+        else :
+
+            /*
+             * HEADER
+            */
+            $pdf->SetDrawColor(170,170,170);
+            $pdf->SetFillColor(244,244,244);
+
+            $pdf->Cell(
+                130,
+                10,
+                utf8_decode( 'Nome' ),
+                'LRTB',
+                0,
+                'C',
+                true
+            );
+
+            $pdf->Cell(
+                90,
+                10,
+                utf8_decode( 'Email' ),
+                'LRTB',
+                0,
+                'C',
+                true
+            );
+
+            $pdf->Cell(
+                57,
+                10,
+                utf8_decode( 'Telefone' ),
+                'LRTB',
+                0,
+                'C',
+                true
+            );
+
+           foreach ( $result as $i ) :
+
+                $pdf->Ln(10);
+
+                $pdf->SetDrawColor(170,170,170);
+
+                $pdf->Cell(
+                    130,
+                    10,
+                    utf8_decode( titleCase($i->name) ),
+                    'LRTB',
+                    0,
+                    'C',
+                    false
+                );
+
+                $pdf->Cell(
+                    90,
+                    10,
+                    utf8_decode( $i->email ),
+                    'LRTB',
+                    0,
+                    'C',
+                    false
+                );
+
+
+                $pdf->Cell(
+                    57,
+                    10,
+                    utf8_decode( $i->phone),
+                    'LRTB',
+                    0,
+                    'C',
+                    false
+                );
+
+            endforeach;
+
         endif;
-        
+
         $pdf->Output();
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
          // It's a POST request?
         if($this->input->server('REQUEST_METHOD')!='POST'){
             echo "Don't do that. :D";
             exit;
         }
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -608,22 +608,22 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
         $roundtable = $this->input->post('roundtable');
         $lista = $this->input->post('list');
 
         /* ===========================================
             END - PREPARING DATA
         ============================================ */
-            
-        /* PRINTING */    
-        
+
+        /* PRINTING */
+
         echo "<meta charset='UTF-8' />";
-            
+
         $result = R::find('roundtable_user','roundtable_id=?', array($roundtable));
         $m = R::findOne('roundtable','id=?',array($roundtable));
 
@@ -637,10 +637,10 @@ class RoundTable extends CI_Controller {
         echo "<p><b>Coordenador:</b> ".$m->coordinator."</p>";
 
         echo "<h4>LISTAGEM DE INSCRITOS</h4>";
-            
-        echo "<table border='1' style='width:100%'>";   
 
-        echo "<tr>";   
+        echo "<table border='1' style='width:100%'>";
+
+        echo "<tr>";
         if($lista!='list')
             echo "<th>ID</th>";
         echo "<th>Nome</th>";
@@ -648,14 +648,14 @@ class RoundTable extends CI_Controller {
             echo "<th>Email</th>";
             echo "<th>Telefone</th>";
         }else{
-           echo "<th style='width:40%;'>Assinatura</th>"; 
+           echo "<th style='width:40%;'>Assinatura</th>";
         }
         echo "</tr>";
 
         foreach ($result as $item) {
-            echo "<tr>";   
+            echo "<tr>";
             if($lista!='list')
-                echo "<td>".$item->user->id."</td>";  
+                echo "<td>".$item->user->id."</td>";
             echo "<td style='text-transform:uppercase;'>".$item->user->name."</td>";
             if($lista!='list'){
                 echo "<td>".$item->user->email."</td>";
@@ -663,11 +663,11 @@ class RoundTable extends CI_Controller {
             }else{
                 echo "<td></td>";
             }
-            echo "</tr>";   
+            echo "</tr>";
         }
-        
-        echo "</table>";   
-        
+
+        echo "</table>";
+
         echo "<br/><b>".count($result)." registros encontrados</b>";
 
     }
@@ -690,12 +690,12 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $adms = R::find('user','type=?',array('administrator'));
         $roundtables = R::find('roundtable',' consolidated="yes" ORDER BY title ASC ');
-        
+
         /* LIST OF FIELDS THAT CAN BE GENERATED WITH REPORT */
-        
+
         $data = array(
                     'success' => $this->session->flashdata('success'),
                     'error' => $this->session->flashdata('error'),
@@ -710,58 +710,58 @@ class RoundTable extends CI_Controller {
         $this->load->view('dashboard/footer');
 
     }
-    
+
     public function verifyingAuthors($str,$limit){
-        
+
         if($limit==0) return TRUE;
-        
+
         $result = explode('||',$str);
-        
+
         if(count($result)>$limit)
             return FALSE;
-        
+
         for($i=0;$i<count($result);++$i){
             $test = explode("[",$result[$i]);
-            
+
             if($test[0]=='' || $test[1]=='')
                 return FALSE;
-            
+
         }
-        
+
         // $limit == 0 then will not verify the quantity of authors, otherwise will verify
         return TRUE;
-        
+
     }
-    
+
     public function create(){
 
         $this->load->library( array('session','rb','form_validation') );
         $this->load->helper( array('url','form','date') );
-        
+
         // It's a POST request?
         if($this->input->server('REQUEST_METHOD')!='POST'){
             echo "Don't do that. :D";
             exit;
         }
-        
+
         /* ===========================================
             BEGIN - CHECKING CONFIGURATIONS LIMITS
         ============================================ */
-        
+
         $config = R::findOne('configuration','name=?',array('max_date_roundtable_submission'));
-        
+
         if(!dateleq(mdate('%Y-%m-%d'),$config->value)){
             echo "Você não pode realizar esta operação. Está fora do limite de envio de trabalho. =D";
             exit;
-        }      
-        
+        }
+
         /* ===========================================
             END - CHECKING CONFIGURATIONS LIMITS
         ============================================ */
-        
+
 
         $user = R::findOne('user','id=?',array($this->session->userdata('user_id')));
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -775,7 +775,7 @@ class RoundTable extends CI_Controller {
             redirect(base_url('dashboard'));
         /* =================================================
             END - CAPABILITIES SECURITY
-        ================================================== */ 
+        ================================================== */
 
         // Retrieving user
         $user = R::findOne('user','id=?',array($user->id));
@@ -819,7 +819,7 @@ class RoundTable extends CI_Controller {
         // Verifyng validation error
         if(!$this->form_validation->run()){
             $this->session->set_flashdata(
-                    'validation', 
+                    'validation',
                     array(
                             'title' => form_error('title'),
                             'authors' => form_error('authors'),
@@ -829,9 +829,9 @@ class RoundTable extends CI_Controller {
                             'shift' => form_error('shift')
                         )
                 );
-            
+
              $this->session->set_flashdata(
-                    'popform', 
+                    'popform',
                     array(
                             'title' => set_value('title'),
                             'authors' => set_value('authors'),
@@ -841,8 +841,8 @@ class RoundTable extends CI_Controller {
                             'shift' => set_value('shift')
                         )
                 );
-            
-            $this->session->set_flashdata('error','Algum campo não foi preenchido corretamente, verifique o formulário.');   
+
+            $this->session->set_flashdata('error','Algum campo não foi preenchido corretamente, verifique o formulário.');
             redirect(base_url('dashboard/roundtable/submit'));
             exit;
         }
@@ -887,12 +887,12 @@ class RoundTable extends CI_Controller {
         exit;
 
     }
-    
+
     public function manageView($filter = 'all'){
-        
+
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -906,9 +906,9 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $rtdss = R::find('roundtabledayshift','ORDER BY date ASC');
-        
+
         if($filter=='consolidated'){
             $rts = R::find('roundtable',' consolidated="yes" ');
         }else if($filter=='noconsolidated'){
@@ -916,8 +916,8 @@ class RoundTable extends CI_Controller {
         }else{
             $rts = R::find('roundtable');
         }
-        
-        $data = array( 
+
+        $data = array(
             'rtdss' => $rtdss,
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
@@ -925,25 +925,25 @@ class RoundTable extends CI_Controller {
             'popform' => $this->session->flashdata('popform'),
             'rts' => $rts
         );
-        
+
         $this->load->view('dashboard/header');
         $this->load->view('dashboard/template/menuAdministrator');
         $this->load->view('dashboard/roundtable/manage',$data);
         $this->load->view('dashboard/footer');
-        
+
     }
 
     public function createDayShift(){
-        
+
         $this->load->library( array('session','rb','form_validation') );
         $this->load->helper( array('url','form','date') );
-        
+
         // It's a POST request?
         if($this->input->server('REQUEST_METHOD')!='POST'){
             echo "Don't do that. :D";
             exit;
         }
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -961,7 +961,7 @@ class RoundTable extends CI_Controller {
         /* ===========================================
             BEGIN - VALIDATION
         ============================================ */
-        
+
         $validation = array(
             array(
                 'field' => 'day',
@@ -984,24 +984,24 @@ class RoundTable extends CI_Controller {
                 'rules' => 'numeric|is_natural_no_zero|exact_length[4]|required'
             )
         );
-        
+
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules($validation);
         customErrorMessages($this->form_validation);
-        
+
         // Verifyng validation error
         if(!$this->form_validation->run()){
             $this->session->set_flashdata(
-                    'validation', 
+                    'validation',
                     array(
                             'day' => form_error('day'),
                             'month' => form_error('month'),
                             'year' => form_error('year')
                         )
                 );
-            
+
              $this->session->set_flashdata(
-                    'popform', 
+                    'popform',
                     array(
                             'day' => set_value('day'),
                             'month' => set_value('month'),
@@ -1009,19 +1009,19 @@ class RoundTable extends CI_Controller {
                             'year' => set_value('year')
                         )
                 );
-            
+
             redirect(base_url('dashboard/roundtable/manage'));
             exit;
         }
-        
+
         /* ===========================================
             END - VALIDATION
         ============================================ */
-        
+
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
         $day = $this->input->post('day');
         $month = $this->input->post('month');
         $year = $this->input->post('year');
@@ -1036,7 +1036,7 @@ class RoundTable extends CI_Controller {
         if(!checkdate($month,$day,$year)){
             $this->session->set_flashdata('error','Data não válida.');
             $this->session->set_flashdata(
-                'popform', 
+                'popform',
                 array(
                         'day' => set_value('day'),
                         'month' => set_value('month'),
@@ -1050,11 +1050,11 @@ class RoundTable extends CI_Controller {
 
         // Verifying that will not be any collision
         $v = R::find('roundtabledayshift','date=? AND shift=?', array($date,$shift));
-        
+
         if(count($v)){
             $this->session->set_flashdata('error','Combinação de dia e turno já existe no calendário.');
             $this->session->set_flashdata(
-                'popform', 
+                'popform',
                 array(
                         'day' => set_value('day'),
                         'month' => set_value('month'),
@@ -1067,7 +1067,7 @@ class RoundTable extends CI_Controller {
         }
 
         $rtds = R::dispense('roundtabledayshift');
-        
+
         $rtds['date'] = $date;
         $rtds['shift'] = $shift;
         $rtds['created_at'] = mdate('%Y-%m-%d %H:%i:%s');
@@ -1077,14 +1077,14 @@ class RoundTable extends CI_Controller {
         $this->session->set_flashdata('success','Dia/Turno adicionado no calendário.');
         redirect(base_url('dashboard/roundtable/manage'));
         exit;
-        
+
     }
-    
+
     public function retrieveConsolidationView(){
-        
+
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form','utility') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1101,7 +1101,7 @@ class RoundTable extends CI_Controller {
 
         // Retrieving content
         $mcId = $this->input->get('id');
-        
+
         if(!is_numeric($mcId)){
             echo "The id is not numeric. Do not do that! :D";
             exit;
@@ -1112,26 +1112,26 @@ class RoundTable extends CI_Controller {
         // Retrieving days and shifts availables
         $dss = R::find('roundtabledayshift','ORDER BY date ASC');
 
-        $data = array( 
+        $data = array(
             'rt' => $rt,
             'dss' => $dss
             );
-        
+
         $this->load->view('dashboard/roundtable/retrieveConsolidation', $data);
-        
+
     }
-    
+
     public function consolidate(){
-        
+
         $this->load->library( array('session','rb','form_validation') );
         $this->load->helper( array('url','form','date') );
-        
+
         // It's a POST request?
         if($this->input->server('REQUEST_METHOD')!='POST'){
             echo "Don't do that. :D";
             exit;
         }
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1145,14 +1145,14 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         // Retrieving user
         $user = $u;
 
         /* ===========================================
             BEGIN - VALIDATION
         ============================================ */
-        
+
         $validation = array(
             array(
                 'field' => 'vacancies',
@@ -1170,26 +1170,26 @@ class RoundTable extends CI_Controller {
                 'rules' => 'required'
             )
         );
-        
+
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules($validation);
         customErrorMessages($this->form_validation);
-        
+
         // Verifyng validation error
         if(!$this->form_validation->run()){
             $this->session->set_flashdata('error','Você precisa preencher todos os dados corretamente. Repita a operação.');
             redirect(base_url('dashboard/roundtable/manage'));
             exit;
         }
-        
+
         /* ===========================================
             END - VALIDATION
         ============================================ */
-        
+
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
         $id = $this->input->post('id');
         $vacancies = $this->input->post('vacancies');
         $local = $this->input->post('local');
@@ -1198,10 +1198,10 @@ class RoundTable extends CI_Controller {
         /* ===========================================
             END - PREPARING DATA
         ============================================ */
-        
+
         // Retriving rountable
         $rt = R::findOne('roundtable','id=?',array($id));
-        
+
         // Can't continue if the roundtable is consolidated
         if($rt->consolidated=="yes"){
             $this->session->set_flashdata('error','Esta mesa-redonda já está consolidado.');
@@ -1215,14 +1215,14 @@ class RoundTable extends CI_Controller {
             redirect(base_url('dashboard/roundtable/manage'));
             exit;
         }
-        
+
         $rt['consolidatedvacancies'] = $vacancies;
         $rt['consolidatedlocal'] = $local;
         $rt['consolidated'] = 'yes';
         R::store($rt);
-        
+
         // Relation with dayshift
-        
+
         $ds = R::findOne('roundtabledayshift','id=?',array($dayshift));
         $ds->ownRoundtableList[] = $rt;
         R::store($ds);
@@ -1230,9 +1230,9 @@ class RoundTable extends CI_Controller {
         $this->session->set_flashdata('success','A mesa-redonda foi consolidada com sucesso.');
         redirect(base_url('dashboard/roundtable/manage'));
         exit;
-        
+
     }
-    
+
     public function deallocate(){
 
         $this->load->library( array('session','rb') );
@@ -1252,7 +1252,7 @@ class RoundTable extends CI_Controller {
             redirect(base_url('dashboard/roundtable/manage'));
             exit;
         }
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1268,14 +1268,14 @@ class RoundTable extends CI_Controller {
         ================================================== */
 
         $id = $this->input->post('id');
-        
+
         if(!is_numeric($id)){
             echo "The id is not numeric. Do not do that! :D";
             exit;
         }
 
         $rt = R::findOne('roundtable','id=?',array($id));
-        
+
         $rt->consolidated = 'no';
         $rt->roundtabledayshift = NULL;
         R::store($rt);
@@ -1285,9 +1285,9 @@ class RoundTable extends CI_Controller {
         exit;
 
     }
-    
+
     public function deleteDayShift(){
-        
+
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url') );
 
@@ -1296,7 +1296,7 @@ class RoundTable extends CI_Controller {
             echo "Don't do that. :D";
             exit;
         }
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1310,35 +1310,35 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $id = $this->input->post('id');
-        
+
         if(!is_numeric($id)){
             echo "The id is not numeric. Do not do that! :D";
             exit;
         }
-        
+
         $ds = R::findOne('roundtabledayshift','id=?',array($id));
-        
+
         if(count($ds->ownRoundtableList)!=0){
             $this->session->set_flashdata('error','Você não pode remover um turno quando existem mesas-redondas alocadas para ele. Desconsolide as mesas-redondas para remover o turno.');
             redirect(base_url('dashboard/roundtable/manage'));
             exit;
         }
-        
+
         R::trash($ds);
-        
+
         $this->session->set_flashdata('success','O turno foi removido com successo.');
         redirect(base_url('dashboard/roundtable/manage'));
         exit;
-        
+
     }
-    
+
     public function retrieveDetailsView(){
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form','utility') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1352,29 +1352,29 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $id = $this->input->get('id');
-        
+
         if(!is_numeric($id)){
             echo "The id is not numeric. Do not do that! :D";
             exit;
         }
 
         $rt = R::findOne('roundtable','id=?',array($id));
-        
-        $data = array( 
+
+        $data = array(
             'rt' => $rt,
             );
-        
+
         $this->load->view('dashboard/roundtable/retrieveDetails', $data);
 
     }
-    
+
     public function retrieveEnrollDetailsView(){
-        
+
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form','utility') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1385,29 +1385,29 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $id = $this->input->get('id');
-        
+
         if(!is_numeric($id)){
             echo "The id is not numeric. Do not do that! :D";
             exit;
         }
 
         $rt = R::findOne('roundtable','id=?',array($id));
-        
-        $data = array( 
+
+        $data = array(
             'rt' => $rt,
             );
-        
+
         $this->load->view('dashboard/roundtable/retrieveEnrollDetails', $data);
-        
+
     }
-    
+
     public function enrollView(){
 
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url','form','date') );
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1417,20 +1417,20 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $user = R::findOne('user','id=?',array($this->session->userdata('user_id')));
         $cdss = R::find('roundtabledayshift','ORDER BY date ASC');
         $cs = R::find('roundtable');
-        
+
         $inscriptionStart = R::findOne('configuration','name=?',array('start_date_roundtable_inscription'));
         $inscriptionEnd = R::findOne('configuration','name=?',array('end_date_roundtable_inscription'));
-        
+
         if( dateleq(mdate('%Y-%m-%d'),$inscriptionEnd->value) && datebeq(mdate('%Y-%m-%d'),$inscriptionStart->value) && ( $user->paid=='accepted' || $user->paid=='free' ) )
             $open = true;
         else
             $open = false;
-        
-        $data = array( 
+
+        $data = array(
             'cdss' => $cdss,
             'success' => $this->session->flashdata('success'),
             'error' => $this->session->flashdata('error'),
@@ -1441,7 +1441,7 @@ class RoundTable extends CI_Controller {
             'user' => $user,
             'date_limit' => array( 'inscriptionStart' => $inscriptionStart , 'inscriptionEnd' => $inscriptionEnd , 'open' => $open )
         );
-        
+
         $this->load->view('dashboard/header');
         if($this->session->userdata('user_type')=='administrator'){
             $this->load->view('dashboard/template/menuAdministrator');
@@ -1457,18 +1457,18 @@ class RoundTable extends CI_Controller {
         $this->load->view('dashboard/footer');
 
     }
-    
+
     public function enrolla(){
-    
+
         $this->load->library( array('rb', 'form_validation','session') );
         $this->load->helper( array( 'url' , 'security' , 'date' ) );
-        
+
         // It's a POST request?
         if($this->input->server('REQUEST_METHOD')!='POST'){
             echo "Don't do that. :D";
             exit;
         }
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1479,60 +1479,60 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $user = $u;
 
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
         $id = $this->input->post('id');
 
         if(!is_numeric($id)){
             echo "The ID has to be numeric. Do not do that! :D";
             exit;
         }
-        
+
         /* ===========================================
             END - PREPARING DATA
         ============================================ */
-        
+
         $inscriptionStart = R::findOne('configuration','name=?',array('start_date_roundtable_inscription'));
         $inscriptionEnd = R::findOne('configuration','name=?',array('end_date_roundtable_inscription'));
-        
+
         // The inscription period is open?
-        if( !(dateleq(mdate('%Y-%m-%d'),$inscriptionEnd->value) && datebeq(mdate('%Y-%m-%d'),$inscriptionStart->value)) ){
+        if( !(dateleq(mdate('%Y-%m-%d'),$inscriptionEnd->value) && datebeq(mdate('%Y-%m-%d'), $inscriptionStart->value)) ){
             $this->session->set_flashdata('error','Não está no período de inscrições.');
             redirect(base_url('dashboard/roundtable/enroll'));
             exit;
         }
-        
+
         // User paid?
         if( !($user->paid=='accepted' || $user->paid=='free') ){
             $this->session->set_flashdata('error','Você precisa realizar o pagamento para se inscrever em uma mesa-redonda.');
             redirect(base_url('dashboard/roundtable/enroll'));
             exit;
         }
-        
+
         $conf = R::findOne('roundtable','id=?', array($id) );
-        
+
         // There are vacancies?
         if($conf->consolidatedvacanciesfilled >= $conf->consolidatedvacancies){
             $this->session->set_flashdata('error','Não há mais vagas disponíveis para esta mesa-redonda.');
             redirect(base_url('dashboard/roundtable/enroll'));
             exit;
         }
-        
+
         // Quantidade de registros excedeu?
         if(R::count('roundtableUser','user_id=?',array($user->id))>=3){
             $this->session->set_flashdata('error','Você pode se inscrever em no máximo 3 mesas-redondas.');
             redirect(base_url('dashboard/roundtable/enroll'));
             exit;
         }
-        
+
         // Já está inscrito em algum outra mesa-redonda no mesmo turno
         $mcl = $user->sharedRoundtableList;
-        
+
         foreach($mcl as $m){
             if( ($m->roundtabledayshift->shift==$conf->roundtabledayshift->shift) && ($m->roundtabledayshift->date==$conf->roundtabledayshift->date) ){
                 $this->session->set_flashdata('error','Você já está inscrito em um outra mesa-redonda no mesmo dia/turno. Você só pode se inscrever, no mesmo dia, em uma por turno.');
@@ -1540,14 +1540,14 @@ class RoundTable extends CI_Controller {
                 exit;
             }
         }
-        
+
         // Já está registrado?
         if(R::count('roundtableUser','user_id = ? AND roundtable_id = ?',array($user->id,$id))){
             $this->session->set_flashdata('error','Você já se inscreveu nesta mesa-redonda.');
             redirect(base_url('dashboard/roundtable/enroll'));
             exit;
         }
-        
+
         $conf->consolidatedvacanciesfilled = $conf->consolidatedvacanciesfilled + 1;
         $conf->sharedUserList[] = $user;
         R::store($conf);
@@ -1555,20 +1555,20 @@ class RoundTable extends CI_Controller {
         $this->session->set_flashdata('success','Você se inscreveu na mesa-redonda com sucesso.');
         redirect(base_url('dashboard/roundtable/enroll'));
         exit;
-        
+
     }
-    
+
      public function unroll(){
-     
+
         $this->load->library( array('rb', 'form_validation','session') );
         $this->load->helper( array( 'url' , 'security' , 'date' ) );
-        
+
         // It's a POST request?
         if($this->input->server('REQUEST_METHOD')!='POST'){
             echo "Don't do that. :D";
             exit;
         }
-        
+
         /* =================================================
             BEGIN - CAPABILITIES SECURITY
         ================================================== */
@@ -1579,57 +1579,57 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $user = $u;
 
         /* ===========================================
             BEGIN - PREPARING DATA
         ============================================ */
-        
+
         $id = $this->input->post('id');
 
         if(!is_numeric($id)){
             echo "The ID has to be numeric. Do not do that! :D";
             exit;
         }
-        
+
         /* ===========================================
             END - PREPARING DATA
         ============================================ */
-        
+
         $conf = R::findOne('roundtable','id=?', array($id) );
-         
+
         $inscriptionStart = R::findOne('configuration','name=?',array('start_date_roundtable_inscription'));
         $inscriptionEnd = R::findOne('configuration','name=?',array('end_date_roundtable_inscription'));
-         
+
         // The inscription period is open?
         if( !(dateleq(mdate('%Y-%m-%d'),$inscriptionEnd->value) && datebeq(mdate('%Y-%m-%d'),$inscriptionStart->value)) ){
             $this->session->set_flashdata('error','Não está no período de inscrições, você só pode fazer modificações em suas mesas-redondas no período referido.');
             redirect(base_url('dashboard/roundtable/enroll'));
             exit;
         }
-        
+
         // Está registrado nesta conferência?
         if(!R::count('roundtableUser','user_id = ? AND roundtable_id = ?',array($user->id,$id))){
             $this->session->set_flashdata('error','Você não está inscrito neste mesa-redonda.');
             redirect(base_url('dashboard/roundtable/enroll'));
             exit;
         }
-         
+
         $conf->consolidatedvacanciesfilled = $conf->consolidatedvacanciesfilled - 1;
-        R::store($conf); 
-         
+        R::store($conf);
+
         $rel = R::findOne('roundtable_user','user_id = ? AND roundtable_id = ?',array($user->id,$id));
         R::trash($rel);
 
         $this->session->set_flashdata('success','Você não está mais inscrito na mesa-redonda escolhida.');
         redirect(base_url('dashboard/roundtable/enroll'));
         exit;
-         
+
      }
-    
+
     public function cancelSubmission(){
-        
+
         $this->load->library( array('session','rb') );
         $this->load->helper( array('url') );
 
@@ -1644,7 +1644,7 @@ class RoundTable extends CI_Controller {
         /* =================================================
             END - CAPABILITIES SECURITY
         ================================================== */
-        
+
         $id = $this->input->post('id');
 
         $roundtable = R::findOne('roundtable','id=?',array($id));
@@ -1660,9 +1660,9 @@ class RoundTable extends CI_Controller {
 
         $this->session->set_flashdata('success', 'A submissão da mesa-redonda foi <b>cancelada</b> com sucesso.');
         redirect(base_url('dashboard/roundtable/submit'));
-        
+
     }
-    
+
 }
 
 /* End of file welcome.php */
