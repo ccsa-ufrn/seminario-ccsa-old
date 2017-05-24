@@ -1493,7 +1493,7 @@ class Workshop extends CI_Controller {
         }
 
         // There are vacancies?
-        if($conf->vacanciesfilled >= $conf->vacancies){
+        if($conf->vacanciesfilled >= $conf->consolidatedvacancies){
             $this->session->set_flashdata('error','Não há mais vagas disponíveis para esta oficina.');
             redirect(base_url('dashboard/workshop/enroll'));
             exit;
