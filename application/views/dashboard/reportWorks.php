@@ -16,44 +16,78 @@
       <tbody>
 
         <?php foreach ($minicourses as $m): ?>
+
+          <?php
+            $horarios = $m->sharedMinicoursedayshiftList;
+
+            $diashoras = Array();
+
+            foreach($horarios as $h) {
+              array_push($diashoras,  (new DateTime($h->date))->format('d/m/Y'). ' / ' . $h->shift);
+            }
+          ?>
+
           <tr>
             <td>Minicurso</td>
             <td><?php echo $m->title; ?></td>
+            <td><?php echo $m->consolidatedlocal; ?></td>
+            <td>
+              <?php foreach($diashoras as $d) : ?>
+                <span class="badge"><?php echo $d; ?></span>
+              <?php endforeach; ?>
+            </td>
             <td><?php echo $m->user->name; ?></td>
-            <td><?php echo $m->user->email; ?></td>
-            <td><?php echo $m->user->phone; ?></td>
           </tr>
         <?php endforeach ?>
 
-       <!-- <?php foreach ($workshops as $m): ?>
+        <?php foreach ($workshops as $m): ?>
+
+          <?php
+            $horarios = $m->sharedWorkshopdayshiftList;
+
+            $diashoras = Array();
+
+            foreach($horarios as $h) {
+              array_push($diashoras,  (new DateTime($h->date))->format('d/m/Y'). ' / ' . $h->shift);
+            }
+          ?>
+
           <tr>
+            <td>Oficinas</td>
             <td><?php echo $m->title; ?></td>
-            <td>Oficina</td>
+            <td><?php echo $m->local; ?></td>
+            <td>
+              <?php foreach($diashoras as $d) : ?>
+                <span class="badge"><?php echo $d; ?></span>
+              <?php endforeach; ?>
+            </td>
             <td><?php echo $m->user->name; ?></td>
-            <td><?php echo $m->user->email; ?></td>
-            <td><?php echo $m->user->phone; ?></td>
           </tr>
         <?php endforeach ?>
 
-        <?php<th>Trabalho</th> foreach ($roundtables as $m): ?>
+        <?php foreach ($roundtables as $m): ?>
           <tr>
+            <td>Mesa-Redonda</td>
             <td><?php echo $m->title; ?></td>
-            <td>Mesa Redonda</td>
+            <td><?php echo $m->consolidatedlocal; ?></td>
+            <td>
+              <span class="badge"><?php echo (new DateTime($m->roundtabledayshift->date))->format('d/m/Y'). ' / ' . $m->roundtabledayshift->shift; ?></span>
+            </td>
             <td><?php echo $m->user->name; ?></td>
-            <td><?php echo $m->user->email; ?></td>
-            <td><?php echo $m->user->phone; ?></td>
           </tr>
         <?php endforeach ?>
 
         <?php foreach ($conferences as $m): ?>
           <tr>
-            <td><?php echo $m->title; ?></td>
             <td>Conferência</td>
+            <td><?php echo $m->title; ?></td>
+            <td><?php echo $m->local; ?></td>
+            <td>
+              <span class="badge"><?php echo (new DateTime($m->conferencedayshift->date))->format('d/m/Y'). ' / ' . $m->conferencedayshift->shift; ?></span>
+            </td>
             <td><?php echo $m->user->name; ?></td>
-            <td><?php echo $m->user->email; ?></td>
-            <td><?php echo $m->user->phone; ?></td>
           </tr>
-        <?php endforeach ?>-->
+        <?php endforeach ?>
 
       </tbody>
 
