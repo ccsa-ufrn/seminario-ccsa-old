@@ -175,6 +175,9 @@
                                     <a href="<?php echo base_url('dashboard/user/submiter-report'); ?>">Relatório de Proponentes</a>
                                 </li>
                                 <li>
+                                    <a href="<?php echo base_url('dashboard/script/report-works'); ?>">Relatório de Trabalhos</a>
+                                </li>
+                                <li>
                                     <a href="<?php echo base_url('dashboard/user/reportinscription'); ?>">Relatório de Inscrito</a>
                                 </li>
                                 <li>

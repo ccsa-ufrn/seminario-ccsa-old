@@ -29,6 +29,7 @@ $route['dashboard/script/report-teaching-cases'] = 'script/reportTeachingCases';
 //$route['dashboard/script/asposterpending'] = 'script/asPosterPending';
 $route['dashboard/script/rabstract'] = 'script/rabstract';
 $route['dashboard/script/listErrors'] = 'script/listErrors';
+$route['dashboard/script/report-works'] = 'script/reportWorks';
 
 /* Reports */
 $route['dashboard/script/general-report'] = 'script/generalReport';
