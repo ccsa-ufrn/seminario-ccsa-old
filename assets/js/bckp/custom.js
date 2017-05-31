@@ -2548,3 +2548,29 @@ jQuery(function($){
    $("#schedule-paper-form-end-hour").mask("99:99");
 
 });
+
+
+/** ADVANCED CONTROL */
+
+
+// $('.modal-workshop-confirm-operation').on('show.bs.modal', function (event) {
+
+//   var button = $(event.relatedTarget) // Button that triggered the modal
+//   var data = button.data('id');
+
+//   $(".modal-workshop-confirm-operation div.modal-content").html('Carregando...');
+
+//   $.ajax({
+//     url: $("#geral-base-url").val() + "dashboard/workshop/retrieveconfirmoperation",
+//     data: { id: data }
+//   }).done(function (html) {
+
+//     $(".modal-workshop-confirm-operation div.modal-content").html(html);
+
+//     setTimeout(function () {
+//       $(window).resize();
+//     }, 250);
+
+//   });
+
+// });

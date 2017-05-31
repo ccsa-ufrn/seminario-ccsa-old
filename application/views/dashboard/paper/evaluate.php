@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        
+
         <h1 class="page-header">Avaliação de Artigos</h1>
 
         <?php if($success!=null): ?>
@@ -16,28 +16,28 @@
                 <strong><?php echo $error; ?></strong>
             </div>
         <?php endif; ?>
-        
-        <?php 
-        
+
+        <?php
+
             $ccount = 0;
             foreach($tgs as $tg)
-                $ccount += count(
-                                $tg
-                                ->withCondition(
-                                    'evaluation=? AND user_id!=? AND avaliation1_user_id != ? ',
-                                    array(
-                                        'pending',
-                                        $this->session->userdata('user_id'),
-                                        $this->session->userdata('user_id')
-                                    )
-                                )
-                                ->ownPaperList
-                            );
-                
+
+            $ccount += count(
+              $tg->withCondition(
+                'evaluation=? AND user_id!=? AND avaliation1_user_id != ? ',
+                array(
+                  'pending',
+                  $this->session->userdata('user_id'),
+                  $this->session->userdata('user_id')
+                )
+              )
+              ->ownPaperList
+            );
+
         ?>
-        
+
         <?php if($ccount): ?>
-        
+
             <div class="alert alert-danger">
                 <b>Atenção! </b>
                 <?php if($ccount==1): ?>
@@ -46,19 +46,19 @@
                     <?php echo $ccount; ?> artigos precisam ser avaliados.
                 <?php endif; ?>
             </div>
-            
+
         <?php endif; ?>
 
         <h2>Avaliar</h2>
-        
+
         <?php foreach ($tgs as $tg): ?>
-            
+
             <h4><?php echo $tg->name; ?></h4>
-        
+
             <table id="tablePendingPapers" class="table table-striped table-bordered table-condensed">
-                
-                <?php 
-                
+
+                <?php
+
                     $papers = R::find(
                         'paper',
                         'evaluation=? AND thematicgroup_id=? AND user_id!=? AND avaliation1_user_id != ?',
@@ -69,7 +69,7 @@
                             $this->session->userdata('user_id')
                         )
                     );
-                    
+
                 ?>
 
                 <thead>
@@ -92,13 +92,13 @@
                 <?php if(!count($papers)): ?>
                     <tr>
                         <td colspan="2">Não há nenhum artigo esperando avaliação.</td>
-                    </tr>                        
+                    </tr>
                 <?php endif; ?>
 
             </table>
-        
-        <?php endforeach; ?>            
-        
+
+        <?php endforeach; ?>
+
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -118,7 +118,7 @@
             <div class="modal-body">
 
                 <!-- AJAX HERE -->
-                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>

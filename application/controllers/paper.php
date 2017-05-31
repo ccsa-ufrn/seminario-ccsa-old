@@ -1100,7 +1100,7 @@ class Paper extends Base
 
         $this->load->view('dashboard/header');
         $this->load->view('dashboard/template/menuAdministrator');
-		$this->load->view('dashboard/paper/advancedControl', ['papers' => $papers]);
+		    $this->load->view('dashboard/paper/advancedControl', ['papers' => $papers]);
         $this->load->view('dashboard/footer');
 
     }
